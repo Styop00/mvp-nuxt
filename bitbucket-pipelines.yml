@@ -1,0 +1,91 @@
+image: node:19.5.0
+
+pipelines:
+  branches:
+    staging:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm set audit false
+            - touch .env
+            - echo 'API_ROUTE=https://api5-staging.mvpapp.dk/api' >> .env
+            - echo 'GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID' >> .env
+            - npm install
+            - npm run generate
+            - ls
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploy
+          deployment: production
+          script:
+            - npm set audit false
+            - touch .env
+            - echo 'API_ROUTE=https://api5-staging.mvpapp.dk/api' >> .env
+            - echo 'BACKEND_URL=https://api5-staging.mvpapp.dk/' >> .env
+            - echo 'GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID' >> .env
+            - npm install
+            - npm run generate
+            - pipe: atlassian/aws-s3-deploy:1.6.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_REGION
+                S3_BUCKET: $AWS_BUCKET_NAME_STAGING
+                LOCAL_PATH: ".output/public"
+                ACL: "public-read"
+                CACHE_CONTROL: "max-age=30672000"
+                DELETE_FLAG: "true"
+            - pipe: atlassian/aws-cloudfront-invalidate:0.10.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_REGION
+                DISTRIBUTION_ID: $STAGING_CLOUDFRONT_ID
+                PATHS: '/*'
+
+    main:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm set audit false
+            - touch .env
+            - echo 'API_ROUTE=https://api5.mvpapp.dk/api' >> .env
+            - echo 'GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID' >> .env
+            - npm install
+            - npm run generate
+            - ls
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploy
+          deployment: production
+          script:
+            - npm set audit false
+            - touch .env
+            - echo 'API_ROUTE=https://api5.mvpapp.dk/api' >> .env
+            - echo 'BACKEND_URL=https://api5.mvpapp.dk/' >> .env
+            - echo 'GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID' >> .env
+            - npm install
+            - npm run generate
+            - pipe: atlassian/aws-s3-deploy:1.6.0
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_REGION
+                S3_BUCKET: $AWS_BUCKET_NAME_PRODUCTION
+                LOCAL_PATH: ".output/public"
+                ACL: "public-read"
+                CACHE_CONTROL: "max-age=30672000"
+                DELETE_FLAG: "true"
+            - pipe: atlassian/aws-cloudfront-invalidate:0.10.1
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: $AWS_REGION
+                DISTRIBUTION_ID: $PRODUCTION_CLOUDFRONT_ID
+                PATHS: '/*'

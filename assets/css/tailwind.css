@@ -1,0 +1,95 @@
+@layer base {
+  @font-face {
+    font-family: "montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(public/fonts/montserrat/Montserrat-Regular.ttf);
+  }
+  @font-face {
+    font-family: "montserrat-semibold";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(public/fonts/montserrat/Montserrat-SemiBold.ttf);
+  }
+  @font-face {
+    font-family: "inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(public/fonts/inter/Inter-Regular.ttf);
+  }
+  @font-face {
+    font-family: "inter-semibold";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(public/fonts/inter/Inter-SemiBold.ttf);
+  }
+  @font-face {
+    font-family: "inter-medium";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(public/fonts/inter/Inter-Medium.ttf);
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.small-scrollbar::-webkit-scrollbar {
+  height: 2px;
+  background-color: #504e4e26;
+  color: #9ca3af;
+  width: 4px;
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb {
+  background: #504e4e;
+  border-radius: 10px;
+}
+
+body {
+  color: #111111;
+}
+
+.quill-message-style {
+  font-size: 13px;
+
+  & ol {
+    list-style: decimal;
+    margin-left: 15px;
+  }
+
+  & ul {
+    list-style: disc;
+    margin-left: 15px;
+  }
+
+  & .ql-size-large {
+    font-size: 1.5em;
+  }
+
+  & .ql-size-small {
+    font-size: 0.75em;
+  }
+
+  & a {
+    text-decoration: underline;
+    color: #0066cc;
+  }
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.35rem;
+  border-top-right-radius: 0.35rem;
+  border-color: #e5e7eb !important;
+}
+
+.ql-tooltip {
+  left: 0 !important;
+  border-color: #e5e7eb !important;
+}

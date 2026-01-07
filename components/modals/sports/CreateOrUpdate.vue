@@ -1,0 +1,90 @@
+<template>
+  <BaseModalComponent v-model:visible="modal" :width="3">
+    <div class="p-4">
+      <div class="flex justify-between items-center mb-3 pb-3 border-b">
+        <p class="font-bold">
+          {{ id ? 'Edit Sport' : 'Create a new Sport' }}
+        </p>
+        <font-awesome
+          :icon="['fas', 'xmark']"
+          @click="() => modal = false"
+          class="cursor-pointer"
+        />
+      </div>
+      <form
+        action="#"
+        @submit.prevent="createOrUpdate"
+        class="flex flex-col items-center justify-center h-full"
+      >
+        <div class="w-full mx-auto">
+          <TextInput
+            v-model:value="name"
+            label="Name"
+            :required="true"
+            placeholder="Name"
+          />
+        </div>
+        <BaseButton class="!py-2 block mt-4 mx-auto">
+          {{ id ? 'Edit' : 'Create' }}
+        </BaseButton>
+      </form>
+    </div>
+  </BaseModalComponent>
+</template>
+
+<script setup lang="ts">
+import BaseModalComponent from '~/components/modals/BaseModalComponent.vue';
+import TextInput from '~/components/inputs/TextInput.vue';
+import BaseButton from '~/components/buttons/BaseButton.vue';
+import { useApiV5Fetch } from '~/composables/useApiV5Fetch';
+
+const props = defineProps({
+  visible: Boolean,
+  id: Number,
+  name: String,
+  invoicePrefix: String,
+});
+
+const emit = defineEmits(['update:visible', 'refreshData']);
+
+const modal = ref(false);
+const name = ref(props.name || '');
+const invoicePrefix = ref(props.invoicePrefix || '');
+
+watch(() => props.visible, (newVal) => {
+  modal.value = newVal;
+  if (newVal) {
+    name.value = props.name || '';
+    invoicePrefix.value = props.invoicePrefix || '';
+  }
+});
+
+watch(() => modal.value, (newVal) => {
+  if (!newVal) {
+    resetModal();
+    emit('update:visible', false);
+  }
+});
+
+function resetModal() {
+  name.value = '';
+  invoicePrefix.value = '';
+}
+
+async function createOrUpdate() {
+  const method = props.id ? 'PUT' : 'POST';
+  const endpoint = props.id ? `sports/${props.id}` : 'sports';
+  const response = await useApiV5Fetch(endpoint, {
+    method,
+    body: {
+      name: name.value,
+      invoicePrefix: invoicePrefix.value,
+    },
+  });
+
+  if (response.data.value) {
+    modal.value = false;
+    emit('refreshData');
+  }
+}
+</script>
