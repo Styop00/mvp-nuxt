@@ -520,7 +520,7 @@ export const useSidebarStore = defineStore("sidebar", () => {
 
   function getNavigations() {
     const userStore = useUserStore();
-    const userRoles = userStore.getUserRoleNames();
+    const user_roles = userStore.getUserRoleNames();
 
     let availableNavigations = JSON.parse(JSON.stringify(navigations)).filter(
       (navigation: any) => {
@@ -529,7 +529,7 @@ export const useSidebarStore = defineStore("sidebar", () => {
         }
 
         return !!navigation.roles.filter(
-          (role: string) => userRoles.indexOf(role) > -1
+          (role: string) => user_roles.indexOf(role) > -1
         ).length;
       }
     );
@@ -541,7 +541,7 @@ export const useSidebarStore = defineStore("sidebar", () => {
         // @ts-ignore
         navigation.children = navigation.children.filter((child) => {
           return child.roles.filter(
-            (role: string) => userRoles.indexOf(role) > -1
+            (role: string) => user_roles.indexOf(role) > -1
           ).length;
         });
 
@@ -549,7 +549,7 @@ export const useSidebarStore = defineStore("sidebar", () => {
           if (child.type === "route_group" && child.children) {
             child.children = child.children.filter((child: any) => {
               return child.roles.filter(
-                (role: string) => userRoles.indexOf(role) > -1
+                (role: string) => user_roles.indexOf(role) > -1
               ).length;
             });
           }

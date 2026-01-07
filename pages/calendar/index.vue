@@ -237,7 +237,7 @@ async function fetchUsers(clubId: number) {
 fetchCourts()
 
 onMounted(() => {
-  const userClub = userStore.user.userRoles
+  const userClub = userStore.user.user_roles
       .find((userRole: any) => userRole.seasonSportId === userStore.seasonSportId && userRole.userRoleApprovedByUserId > 0 && userRole.clubId)
   if (userClub) {
     filterOptions.value.push({

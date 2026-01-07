@@ -67,18 +67,25 @@ const dashboardItems = ref([
 
 async function getData() {
   loading.value = true;
-  const results = await Promise.all([
-    getGamesCount({type: 'attention', seasonSportId: userStore.seasonSportId}),
-    getGamesCount({type: 'conflicts', seasonSportId: userStore.seasonSportId}),
-    getGamesCount({statusId: 4, seasonSportId: userStore.seasonSportId}),
-    getMessagesCount(),
-  ])
+  try {
+    const results = await Promise.all([
+      getGamesCount({type: 'attention', seasonSportId: userStore.seasonSportId}),
+      getGamesCount({type: 'conflicts', seasonSportId: userStore.seasonSportId}),
+      getGamesCount({statusId: 4, seasonSportId: userStore.seasonSportId}),
+      getMessagesCount(),
+    ])
 
-  dashboardItems.value[0].count = results[0]
-  dashboardItems.value[1].count = results[1]
-  dashboardItems.value[2].count = results[2]
-  dashboardItems.value[3].count = results[3]
-  loading.value = false
+    dashboardItems.value[0].count = results[0] ?? 0
+    dashboardItems.value[1].count = results[1] ?? 0
+    dashboardItems.value[2].count = results[2] ?? 0
+    dashboardItems.value[3].count = results[3] ?? 0
+  } catch (error) {
+    console.error('Error loading dashboard data:', error);
+    // Set all counts to 0 on error
+    dashboardItems.value.forEach(item => item.count = 0);
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(() => {

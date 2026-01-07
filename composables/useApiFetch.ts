@@ -20,7 +20,7 @@ export const useApiFetch: typeof useFetch = (request, opts) => {
                     await navigateTo('/login')
                 }
 
-                if (!response.ok && response._data.message.length) {
+                if (!response.ok && response._data && response._data.message && Array.isArray(response._data.message) && response._data.message.length) {
                     if (typeof response._data.message[0] === "string") {
                         return response._data.message
                     } else {

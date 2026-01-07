@@ -15,7 +15,7 @@ export default interface Coach {
     userId: number;
     [key: string]: any;
     user: {
-      userRoles: {
+      user_roles: {
         teamId: number;
         roleId: number;
         team: {

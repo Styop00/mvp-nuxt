@@ -252,7 +252,7 @@ const gameStatus = computed(() => {
 })
 
 const canSetTime = computed(() => {
-  const isOrganizerCM = userStore.user?.userRoles?.find(
+  const isOrganizerCM = userStore.user?.user_roles?.find(
       (userRole: any) =>
           userRole.roleId === 1 &&
           (
@@ -263,7 +263,7 @@ const canSetTime = computed(() => {
 })
 
 const isGuestCMOrCoach = computed(() => {
-  const isGuestCoach = !!userStore.user?.userRoles?.find(
+  const isGuestCoach = !!userStore.user?.user_roles?.find(
       (userRole: any) =>
           (
               ((userRole.roleId === 5 || userRole.roleId === 6) &&
@@ -276,7 +276,7 @@ const isGuestCMOrCoach = computed(() => {
 })
 
 const isHomeCMOrCoach = computed(() => {
-  const isHomeCouch = !!userStore.user?.userRoles?.find(
+  const isHomeCouch = !!userStore.user?.user_roles?.find(
       (userRole: any) =>
           (
               ((userRole.roleId === 5 || userRole.roleId === 6) &&
@@ -288,14 +288,14 @@ const isHomeCMOrCoach = computed(() => {
 })
 
 const isCMHome = computed(() => {
-  return !!userStore.user?.userRoles?.find(
+  return !!userStore.user?.user_roles?.find(
       (userRole: any) =>
           (userRole.roleId === 1 && userRole.clubId === game.value?.homeTeam?.clubId)
   )
 })
 
 const isCMGuest = computed(() => {
-  return !!userStore.user?.userRoles?.find(
+  return !!userStore.user?.user_roles?.find(
       (userRole: any) =>
           (userRole.roleId === 1 && userRole.clubId === game.value?.guestTeam?.clubId)
   )

@@ -24,5 +24,5 @@ export default interface Team {
     officialTypeId: Number;
     officialTeamId: Number;
     club?: Clubs;
-    UserRoles?: UserRole;
+    user_roles?: UserRole;
 }

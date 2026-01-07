@@ -100,8 +100,8 @@ async function deleteConflict() {
   if (userStore.isAdmin) {
     await updateConflictById(props.conflict.id, {ignoreAssociations: true})
   } else if (userStore.isCoach || userStore.isClubManager) {
-    const userRoles = userStore.user.userRoles.filter(role => [1, 5, 6, 7].includes(role.roleId))
-    if (userRoles.find(role => (role.clubId === props.homeTeam.clubId || role.teamId === props.homeTeam.id))) {
+    const user_roles = userStore.user.user_roles.filter(role => [1, 5, 6, 7].includes(role.roleId))
+    if (user_roles.find(role => (role.clubId === props.homeTeam.clubId || role.teamId === props.homeTeam.id))) {
       await updateConflictById(props.conflict.id, {ignoreHome: true})
     } else {
       await updateConflictById(props.conflict.id, {ignoreAway: true})

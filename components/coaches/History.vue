@@ -31,7 +31,7 @@ const headers = [
 
 onMounted(() => {
 
-  if (props.coach?.person?.user?.userRoles) {
+  if (props.coach?.person?.user?.user_roles) {
     data.value = props.coach.coachHistories.map(item => {
 
       return {

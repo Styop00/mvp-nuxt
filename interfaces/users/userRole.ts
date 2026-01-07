@@ -6,5 +6,5 @@ export default interface UserRole {
     teamId: number | null;
     seasonSportId: number | null;
     userRoleApprovedByUserId: number | null;
-    userRoleSpec: string | null;
+    user_rolespec: string | null;
 }

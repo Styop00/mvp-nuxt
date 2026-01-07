@@ -54,8 +54,8 @@ export function useCoachesFetch() {
         let teams = "";
 
         let activeForTeamsData: string = "";
-        if (data.person?.user?.userRoles.length > 0) {
-          data.person.user.userRoles.map((team) => {
+        if (data.person?.user?.user_roles.length > 0) {
+          data.person.user.user_roles.map((team) => {
             if (team.team) {
               teams += `${team?.team?.club?.name || ""} - ${
                 team?.team?.localName
@@ -83,11 +83,11 @@ export function useCoachesFetch() {
           license: data.license,
           status: `
             <span class="px-2 py-1 rounded-sm text-[9px] font-bold ${
-              data.person?.user?.userRoles?.length
+              data.person?.user?.user_roles?.length
                 ? "text-brand-green bg-green-100"
                 : "text-red-500 bg-red-100"
             }">
-              ${data.person?.user?.userRoles?.length ? "Active" : "Inactive"}
+              ${data.person?.user?.user_roles?.length ? "Active" : "Inactive"}
             </span>
             ${
               new Date(data.end).getTime() <= Date.now()

@@ -24,8 +24,8 @@ export default interface Clubs {
   isActive: boolean;
   calKey: string;
   license: number;
-  userRoles: {}[];
+  user_roles: {}[];
   managers: Users[];
   clubVenues: { venueId: number; clubId: number }[];
-  UserRoles?: UserRole,
+  user_roles?: UserRole,
 }

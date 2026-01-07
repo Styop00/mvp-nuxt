@@ -32,8 +32,8 @@ const handleOnSuccess = async (response: AuthCodeFlowSuccessResponse) => {
       jwt.value = accessToken;
       userStore.setToken(accessToken);
       userStore.setUser(user);
-      if (user.seasonSports.length) {
-        userStore.setSeasonSportId(user.seasonSports[0].id)
+      if (user.season_sports.length) {
+        userStore.setSeasonSportId(user.season_sports[0].id)
       }
       navigateTo('/')
     }

@@ -207,7 +207,7 @@ function sort(column: string) {
 }
 const clubIds = ref<string[]>([])
 
-clubIds.value = userStore.user.userRoles.filter((role) => role.roleId === 1).map((item) => item.clubId);
+clubIds.value = userStore.user.user_roles.filter((role) => role.roleId === 1).map((item) => item.clubId);
 
 if(clubIds.value.length > 1) {
     const clubs = await fetchClubsByIds(clubIds);
@@ -220,7 +220,7 @@ if(clubIds.value.length > 1) {
     })
     clubId.value = {...clubOptions.value[0]}
 } else {
-  const clubIdValue = userStore.user.userRoles.find((role) => role.roleId === 1).clubId
+  const clubIdValue = userStore.user.user_roles.find((role) => role.roleId === 1).clubId
   const club = await fetchClubById(clubIdValue);
 
   if (club) {

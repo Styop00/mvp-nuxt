@@ -190,7 +190,7 @@ const {deleteUserRole} = useUsersFetch()
 const route = useRoute()
 let clubId = route.params.clubId
 if (!clubId) {
-  const club = userStore.user.userRoles
+  const club = userStore.user.user_roles
       .find(
           (userRole: UserRole) => ([1, 2, 3, 4].includes(userRole.roleId) &&
               userRole.seasonSportId === userStore.seasonSportId &&
@@ -374,8 +374,8 @@ function getRoles(user: Users) {
   let parentRoles = '';
   user.roles?.forEach((role) => {
     let team = null
-    if (role.UserRoles?.teamId) {
-      team = user.teams.find((team: Team) => team.id === role.UserRoles?.teamId);
+    if (role.user_roles?.teamId) {
+      team = user.teams.find((team: Team) => team.id === role.user_roles?.teamId);
     }
 
     if (role.id === 5 || role.id === 6) {
@@ -400,7 +400,7 @@ function getRoles(user: Users) {
       }
     } else if (role.id === 11) {
       userIsRefClub = true;
-    } else if (role.UserRoles?.userRoleApprovedByUserId && role.UserRoles?.seasonSportId === userStore.seasonSportId && !([5, 6, 7, 8, 9, 11].includes(role.UserRoles?.roleId))) {
+    } else if (role.user_roles?.userRoleApprovedByUserId && role.user_roles?.seasonSportId === userStore.seasonSportId && !([5, 6, 7, 8, 9, 11].includes(role.user_roles?.roleId))) {
       roles += `${roles.length ? '<br/>' : ''} ${rolesStore.roles.find((projectRole) => projectRole.id === role.id)?.description}`
     }
   })

@@ -200,8 +200,8 @@ const canEdit = computed(() => {
   if (!league.value?.clubId) {
     return userStore.isAdmin
   }
-  const userRoles = userStore.user?.userRoles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
-  const clubIds = userRoles?.map((userRole: any) => userRole.clubId);
+  const user_roles = userStore.user?.user_roles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
+  const clubIds = user_roles?.map((userRole: any) => userRole.clubId);
   return clubIds.includes(league.value.clubId)
 })
 

@@ -125,15 +125,15 @@ function setActiveTabFromRoute() {
         sidebarStore.setActiveTab(navItem.label);
       } else if (navItem.type === 'group_name' && navItem.children) {
         navItem.children.forEach((childNav: any) => {
-          if (childNav.type === 'route_group' && childNav.children) {
+          if (childNav.type === 'route_group' && childNav.children && Array.isArray(childNav.children)) {
             const childRoute = childNav.children.find(
-              (routeChild: any) => routeChild.route.includes(route.path.split('/')[2])
+              (routeChild: any) => routeChild && routeChild.route && routeChild.route.includes(route.path.split('/')[2])
             );
             if (childRoute) {
               openedNavigations.value = [childNav.label];
               sidebarStore.setActiveTab(childRoute.label);
             }
-          } else if (childNav.route.includes(activePage)) {
+          } else if (childNav.route && childNav.route.includes(activePage)) {
               sidebarStore.setActiveTab(childNav.label);
           }
         });

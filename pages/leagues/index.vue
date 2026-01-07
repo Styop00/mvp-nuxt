@@ -121,8 +121,8 @@ const isAdmin = computed(() => {
 })
 
 const clubIds = computed(() => {
-  const userRoles = userStore.user?.userRoles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
-  return userRoles?.map((userRole: any) => userRole.clubId);
+  const user_roles = userStore.user?.user_roles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
+  return user_roles?.map((userRole: any) => userRole.clubId);
 })
 
 onMounted(() => {

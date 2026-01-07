@@ -149,8 +149,8 @@ async function getOrganizers() {
       disabled: false
     }]
   } else {
-    const userRoles = userStore.user.userRoles.filter((role: any) => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId))
-    const clubIds = userRoles.map((userRole: any) => userRole.clubId)
+    const user_roles = userStore.user.user_roles.filter((role: any) => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId))
+    const clubIds = user_roles.map((userRole: any) => userRole.clubId)
 
     if (clubIds.length) {
       const res = await fetchAllClubs({clubIds: clubIds})

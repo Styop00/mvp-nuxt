@@ -188,15 +188,15 @@ const restrictionOptions = [
 const restriction = ref(restrictionOptions[0])
 
 function isUserAdmin(user: any) {
-  return !!user.userRoles.find((userRole: any) => userRole.roleId === 100 || userRole.roleId === 1000)
+  return !!user.user_roles.find((userRole: any) => userRole.roleId === 100 || userRole.roleId === 1000)
 }
 
 function isFromHomeTeam(user: any) {
-  return !!user.userRoles.find((userRole: any) => userRole.teamId === props.homeTeam.id || userRole.clubId === props.homeTeam.clubId)
+  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.homeTeam.id || userRole.clubId === props.homeTeam.clubId)
 }
 
 function isFromGuestTeam(user: any) {
-  return !!user.userRoles.find((userRole: any) => userRole.teamId === props.guestTeam.id || userRole.clubId === props.guestTeam.clubId)
+  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.guestTeam.id || userRole.clubId === props.guestTeam.clubId)
 }
 
 function showMessage(message: Message) {
@@ -205,13 +205,13 @@ function showMessage(message: Message) {
   } else if (message.restriction === 1) {
     return props.isHomeCMOrCoach || props.isGuestCMOrCoach || userStore.isAdmin
   } else if (message.restriction === 2) {
-    return userStore.isAdmin || !!userStore.user.userRoles.find((userRole: any) => userRole.roleId === 1 && (userRole.clubId === props.homeTeam?.clubId || userRole.clubId === props.guestTeam?.clubId))
+    return userStore.isAdmin || !!userStore.user.user_roles.find((userRole: any) => userRole.roleId === 1 && (userRole.clubId === props.homeTeam?.clubId || userRole.clubId === props.guestTeam?.clubId))
   } else if (message.restriction === 3) {
-    const userRoles = message.writer?.userRoles?.filter((userRole: any) => [1, 5, 6, 7].includes(userRole.roleId))
-    if (userRoles) {
-      if (userRoles.find((userRole: any) => userRole.clubId === props.homeTeam.clubId)) {
+    const user_roles = message.writer?.user_roles?.filter((userRole: any) => [1, 5, 6, 7].includes(userRole.roleId))
+    if (user_roles) {
+      if (user_roles.find((userRole: any) => userRole.clubId === props.homeTeam.clubId)) {
         return props.isHomeCMOrCoach
-      } else if (userRoles.find((userRole: any) => userRole.clubId === props.guestTeam.clubId)) {
+      } else if (user_roles.find((userRole: any) => userRole.clubId === props.guestTeam.clubId)) {
         return props.isGuestCMOrCoach
       }
     }
@@ -220,7 +220,7 @@ function showMessage(message: Message) {
   } else if (message.restriction === 5) {
     return isFromGuestTeam(userStore.user)
   } else if (message.restriction === 6) {
-    return userStore.user?.userRoles?.find(
+    return userStore.user?.user_roles?.find(
         (userRole: any) =>
             (
                 ((userRole.roleId === 5 || userRole.roleId === 6 || userRole.roleId === 7) &&

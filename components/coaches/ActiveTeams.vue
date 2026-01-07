@@ -46,8 +46,8 @@ const headers = [
 
 onMounted(() => {
 
-  if (props.coach?.person?.user?.userRoles) {
-    data.value = props.coach.person.user.userRoles.map(item => {
+  if (props.coach?.person?.user?.user_roles) {
+    data.value = props.coach.person.user.user_roles.map(item => {
       const tournaments = item.team?.tournaments || [];
       const tournamentNames = tournaments.map((tournament: any) => tournament?.shortName || 'Unknown Tournament').join(', ');
 

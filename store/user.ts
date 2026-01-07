@@ -135,15 +135,15 @@ export const useUserStore = defineStore(
           if (!response.data.value) {
             reject("Incorrect values.");
           } else {
-            const { accessToken, seasonSports, ...user } = response.data.value;
+            const { accessToken, season_sports, ...user } = response.data.value;
             const jwt = useCookie("accessToken", {
               maxAge: 2592000,
             });
             jwt.value = accessToken;
             setToken(accessToken);
             setUser(user);
-            if (seasonSports.length) {
-              setSeasonSportId(seasonSports[0].id);
+            if (season_sports.length) {
+              setSeasonSportId(season_sports[0].id);
             }
             resolve(response.data);
           }
@@ -187,9 +187,9 @@ export const useUserStore = defineStore(
 
           if (response.data.value) {
             setUser(response.data.value);
-            let seasonSports = response.data.value.seasonSports;
-            if (seasonSports.length) {
-              setSeasonSportId(seasonSports[0].id);
+            let season_sports = response.data.value.season_sports;
+            if (season_sports.length) {
+              setSeasonSportId(season_sports[0].id);
             }
           }
 
@@ -212,7 +212,7 @@ export const useUserStore = defineStore(
     };
 
     const getUserRoleNames = () => {
-      if (user.value) {
+      if (user.value && user.value.roles && Array.isArray(user.value.roles)) {
         return user.value.roles.map((role: Roles) => role.description);
       }
       return [];
@@ -234,6 +234,9 @@ export const useUserStore = defineStore(
     });
 
     const isCoach = computed(() => {
+      if (!user.value || !user.value.roles || !Array.isArray(user.value.roles)) {
+        return undefined;
+      }
       return user.value.roles.find(
         (role: Roles) => role.id === 5 || role.id === 6 || role.id === 7
       );

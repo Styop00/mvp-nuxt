@@ -137,11 +137,11 @@ async function fetchCoach(id: number) {
   if (response) {
     coach.value = response as Coach;
     status.value =  `<span class="px-2 py-1 rounded-sm text-[9px] font-bold ${
-              coach.value.person?.user?.userRoles?.length
+              coach.value.person?.user?.user_roles?.length
                 ? "text-brand-green bg-green-100"
                 : "text-red-500 bg-red-100"
             }">
-              ${coach.value.person?.user?.userRoles?.length ? "Active" : "Inactive"}
+              ${coach.value.person?.user?.user_roles?.length ? "Active" : "Inactive"}
             </span>
             ${
               new Date(coach.value.end as string).getTime() <= Date.now()

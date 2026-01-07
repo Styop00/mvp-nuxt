@@ -25,7 +25,7 @@ const loading = ref(false)
 
 async function fetchUsers(data: any) {
   loading.value = true
-  const clubId = userStore.user.userRoles
+  const clubId = userStore.user.user_roles
       .find(
           (userRole: UserRole) => ([1, 2, 3, 4].includes(userRole.roleId) &&
               userRole.seasonSportId === userStore.seasonSportId &&
@@ -41,7 +41,7 @@ async function fetchUsers(data: any) {
     count.value = response.count
     users.value = response.rows
   } else {
-    const teamId = userStore.user.userRoles
+    const teamId = userStore.user.user_roles
         .find(
             (userRole: UserRole) => ([5, 6, 7].includes(userRole.roleId) &&
                 userRole.seasonSportId === userStore.seasonSportId &&

@@ -280,7 +280,7 @@ async function fetchTeamData() {
       return `
       <p>
         <span class="font-bold mr-2 text-xs">
-          ${rolesStore.roles.find(role => role.id === user.UserRoles.roleId)?.description}
+          ${rolesStore.roles.find(role => role.id === user.user_roles.roleId)?.description}
         </span>
         <span class="text-xs">${user.name}</span>
       </p>`

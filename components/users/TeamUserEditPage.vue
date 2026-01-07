@@ -304,7 +304,7 @@ async function fetchUser() {
     user.value = response
 
     if (!clubId) {
-      clubId = userStore.user.userRoles
+      clubId = userStore.user.user_roles
           .find(
               (userRole: UserRole) => ([1, 2, 3, 4].includes(userRole.roleId) &&
                   userRole.seasonSportId === userStore.seasonSportId &&
@@ -312,7 +312,7 @@ async function fetchUser() {
           )?.clubId
 
       if (!clubId && !teamId) {
-        const teamId = userStore.user.userRoles
+        const teamId = userStore.user.user_roles
             .find(
                 (userRole: UserRole) => ([5, 6, 7].includes(userRole.roleId) &&
                     userRole.seasonSportId === userStore.seasonSportId &&
@@ -326,7 +326,7 @@ async function fetchUser() {
     }
 
     roleData.value = []
-    user.value.userRoles?.forEach((userRole: UserRole) => {
+    user.value.user_roles?.forEach((userRole: UserRole) => {
       if (userRole.teamId) {
         const team = user.value.teams?.find(team => team.id === userRole.teamId)
         if (team) {
@@ -382,7 +382,7 @@ async function fetchUser() {
 
 async function fetchClub() {
   if (!clubId && !teamId) {
-    clubId = userStore.user.userRoles
+    clubId = userStore.user.user_roles
         .find(
             (userRole: UserRole) => ([1, 2, 3, 4].includes(userRole.roleId) &&
                 userRole.seasonSportId === userStore.seasonSportId &&
@@ -435,7 +435,7 @@ async function saveChanges() {
       })
     }
     const oldRoles = [] as Array<number>
-    user.value.userRoles?.forEach((userRole: UserRole) => {
+    user.value.user_roles?.forEach((userRole: UserRole) => {
       if (userRole.teamId) {
         const team = user.value.teams?.find(team => team.id === userRole.teamId)
         if (team) {
@@ -452,14 +452,14 @@ async function saveChanges() {
     let deleted = oldRoles.filter((role: number) => !existingOldRoles.includes(role));
 
     if (deleted.length) {
-      await denyUserRole(user.value.id, {userRoles: deleted})
+      await denyUserRole(user.value.id, {user_roles: deleted})
     }
 
-    const unApprovedRoles = user.value.userRoles?.filter(role => !role.userRoleApprovedByUserId).map(role => role.id)
+    const unApprovedRoles = user.value.user_roles?.filter(role => !role.userRoleApprovedByUserId).map(role => role.id)
     if (unApprovedRoles && unApprovedRoles.length) {
       const approvedRoles = roleData.value.filter(role => role.id && role.approvedBy > 0 && unApprovedRoles.includes(role.id)).map(role => role.id);
       if (approvedRoles && approvedRoles.length) {
-        await approveUserRole(user.value.id, {userRoles: approvedRoles})
+        await approveUserRole(user.value.id, {user_roles: approvedRoles})
       }
     }
   }

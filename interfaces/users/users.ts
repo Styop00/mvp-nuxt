@@ -31,7 +31,7 @@ export default interface Users {
   roles?: Roles[];
   person: Person;
   referee?: Referee;
-  userRoles?: UserRole[];
+  user_roles?: UserRole[];
   coachLicense?: Coach;
   teams: Team[];
   player?: Player;

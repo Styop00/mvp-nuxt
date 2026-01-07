@@ -4,5 +4,5 @@ export default interface Roles {
   id: number;
   value: string;
   description: string;
-  UserRoles?: UserRole;
+  user_roles?: UserRole;
 }

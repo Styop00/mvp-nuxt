@@ -465,7 +465,7 @@ async function fetchVenues() {
 }
 
 async function fetchData() {
-  const clubManagerClubs = userStore.user.userRoles
+  const clubManagerClubs = userStore.user.user_roles
       .filter((userRole: any) => userRole.roleId === 1)
       .map((userRole: any) => userRole.clubId);
 

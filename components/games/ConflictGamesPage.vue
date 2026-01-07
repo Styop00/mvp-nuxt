@@ -74,8 +74,8 @@ async function deleteConflict() {
   if (userStore.isAdmin) {
     await updateConflictById(selectedGame.value.conflict?.id, {ignoreAssociations: true})
   } else if (userStore.isCoach || userStore.isClubManager) {
-    const userRoles = userStore.user.userRoles.filter((role: any) => [1, 5, 6, 7].includes(role.roleId))
-    if (userRoles.find((role: any) => (role.clubId === selectedGame.value.homeTeam?.clubId || role.teamId === selectedGame.value.homeTeam?.id))) {
+    const user_roles = userStore.user.user_roles.filter((role: any) => [1, 5, 6, 7].includes(role.roleId))
+    if (user_roles.find((role: any) => (role.clubId === selectedGame.value.homeTeam?.clubId || role.teamId === selectedGame.value.homeTeam?.id))) {
       await updateConflictById(selectedGame.value.conflict?.id, {ignoreHome: true})
     } else {
       await updateConflictById(selectedGame.value.conflict?.id, {ignoreAway: true})
