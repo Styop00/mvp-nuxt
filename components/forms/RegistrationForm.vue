@@ -31,7 +31,7 @@
                 type="number"
                 v-model.number="row.teams"
                 placeholder="Enter number"
-                class="w-full border border-gray-300 rounded px-2 py-1"
+                class="w-full border border-dark-border-default rounded px-2 py-1"
               />
               <p v-if="row.error" class="text-red-700 text-xs mt-2">
                 {{ row.error }}
@@ -67,13 +67,13 @@
 
         <div
           v-if="isAccordionOpen"
-          class=" p-4 border-b border-l border-r  w-full lg:w-2/3 xl:w-1/2 rounded-b-md bg-white"
+          class=" p-4 border-b border-l border-r  w-full lg:w-2/3 xl:w-1/2 rounded-b-md bg-dark-surface-default"
         >
           <div
             v-if="clubNames && clubNames.length > 0"
             v-html="clubNames"
           ></div>
-          <div v-else class="text-gray-500">No clubs registered.</div>
+          <div v-else class="text-dark-text-secondary">No clubs registered.</div>
         </div>
       </div>
 

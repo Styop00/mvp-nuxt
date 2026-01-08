@@ -1,7 +1,7 @@
 <template>
   <div class="relative text-sm w-40 mx-auto">
     <div
-        class="flex items-center text-xs  px-2 py-px my-px gap-2 justify-between w-full rounded cursor-pointer"
+        class="flex items-center text-sm text-dark-text-primary px-3 py-2.5 min-h-11 gap-2 justify-between w-full rounded-lg cursor-pointer border border-dark-border-default bg-dark-bg-primary hover:border-dark-border-light hover:shadow-sm focus-within:border-brand-primary-color focus-within:ring-2 focus-within:ring-brand-primary-color/20 transition-all duration-200"
         @click="openDropdown">
       {{ selectOptions[value] }}
       <template v-if="!dropdownOpened">
@@ -17,11 +17,12 @@
     </div>
     <div
         v-if="dropdownOpened"
-        class="absolute border rounded border-gray-300 w-full text-xs overflow-y-auto small-scrollbar bg-gray-100 z-[100] top-full"
+        class="absolute border rounded-lg border-dark-border-default w-full text-sm overflow-y-auto small-scrollbar bg-dark-surface-elevated top-full shadow-xl mt-1"
+        style="z-index: 99999 !important; position: absolute !important;"
     >
       <template v-for="(option, index) in selectOptions">
         <p
-            class="px-2 py-1 cursor-pointer hover:bg-white hover:text-black"
+            class="px-3 py-2.5 cursor-pointer text-sm text-dark-text-primary hover:bg-dark-bg-hover hover:text-brand-primary-color transition-all duration-200 border-b border-dark-border-default last:border-b-0"
             @click="setOption(index)"
         >
           {{ option }}

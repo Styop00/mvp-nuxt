@@ -1,5 +1,5 @@
 <template>
-  <BaseModalComponent v-model:visible="modal">
+  <BaseModalComponent v-model:visible="modal" :position="'top'">
     <div class="p-3 relative">
       <font-awesome :icon="['fas', 'xmark']" @click="() => modal = false"
                     class="text-xl cursor-pointer absolute right-0.5 top-0"/>

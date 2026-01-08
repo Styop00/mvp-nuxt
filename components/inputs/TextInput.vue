@@ -1,10 +1,10 @@
 <template>
   <label class="flex flex-col text-sm">
-    <span class="font-inter-medium flex gap-1"
+    <span class="font-inter-medium flex gap-1 text-dark-text-primary"
     >
       {{ label }}
       <span v-if="required && label"
-            class="text-red-600"
+            class="text-red-500"
       >
         *
       </span>
@@ -13,7 +13,7 @@
     <input
         :type="type"
         :placeholder="placeholder"
-        class="px-3 py-2 border min-h-11 w-full p-3 rounded-[0.35rem] bg-white border-gray-300 outline-none focus:shadow placeholder:text-xs"
+        class="px-3 py-2.5 border min-h-11 w-full rounded-lg bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm"
         :class="inputClasses"
         v-model="inputValue"
         :name="name"

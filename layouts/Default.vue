@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex font-inter" ref="mainPageRef">
+  <div class="min-h-screen flex font-inter bg-dark-bg-primary" ref="mainPageRef">
     <LoadingSpinner v-if="isLoading" />
     <Sidebar
       :showFullSidebar="showFullSidebar"
@@ -7,7 +7,7 @@
     />
 
     <div
-      class="lg:hidden fixed top-0 left-0 w-screen h-screen bg-brand-blue-900/50 z-50"
+      class="lg:hidden fixed top-0 left-0 w-screen h-screen bg-dark-bg-primary/80 backdrop-blur-sm z-50 transition-opacity duration-300"
       v-if="showFullSidebar"
       @click="() => showFullSidebar = false"
     >
@@ -19,14 +19,16 @@
     </div>
 
     <div
-      class="bg-body-gray transition-all	max-lg:!w-full"
+      class="bg-dark-bg-primary transition-all duration-300 ease-in-out max-lg:!w-full"
       :class="showFullSidebar ? 'contentWidth' : 'contentBigWidth'"
     >
       <Header
         v-model:showDropdowns="showDropdowns"
         v-model:showFullSidebar="showFullSidebar"
       />
-      <slot />
+      <div class="min-h-[calc(100vh-56px)]">
+        <slot />
+      </div>
     </div>
   </div>
 </template>

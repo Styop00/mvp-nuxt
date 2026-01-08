@@ -1,8 +1,8 @@
 <template>
-  <div class="md:p-6">
-    <form @submit.prevent="saveUser" class="w-full">
+  <div>
+    <form @submit.prevent="saveUser" class="w-full space-y-5">
       <div
-        :class="['flex', 'flex-col', 'flex-wrap', 'mb-2', { 'opacity-50 pointer-events-none': props.userId }]"
+        :class="['flex', 'flex-col', 'flex-wrap', { 'opacity-50 pointer-events-none': props.userId }]"
       >
         <TextInput
           label="Email"
@@ -10,83 +10,100 @@
           :placeholder="user.email"
           type="email"
           :readonly="props.userId"
-          class="md:w-1/2 w-full mb-1"
-          required
-        />
-        <p v-if="emailError" class="text-red-700 text-xs">
-          {{ emailError }}
-        </p>
-      </div>
-
-      <CheckBox
-        v-if="props.userId"
-        v-model:value="(user.disableEmails as boolean)"
-        label="Disable Emails"
-        :style="{ display: props.showDisableEmails ? 'block' : 'none' } "
-        class="mb-4"
-      />
-
-      <div class="flex sm:flex-nowrap flex-wrap gap-4 w-full mb-3">
-        <TextInput
-          label="Name"
-          v-model:value="user.name"
-          placeholder="Name"
-          type="text"
           class="w-full"
           required
         />
-        <TextInput
-          label="License"
-          v-model:value="user.license"
-          placeholder="License"
-          type="text"
-          class="w-full "
+        <div v-if="emailError" class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm mt-2">
+          <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+          <span>{{ emailError }}</span>
+        </div>
+      </div>
+
+      <div>
+        <CheckBox
+          v-if="props.userId"
+          v-model:value="(user.disableEmails as boolean)"
+          label="Disable Emails"
+          :style="{ display: props.showDisableEmails ? 'block' : 'none' } "
+          class="p-3 rounded-lg bg-dark-surface-elevated/50 border border-dark-border-default"
         />
       </div>
 
-      <div class="flex sm:flex-nowrap flex-wrap gap-4 mb-3">
-        <TextInput
-          label="Birth Year"
-          v-model:value="user.birthYear"
-          placeholder="Birth Year"
-          type="number"
-          class="w-full"
-          :min="1900"
-          :max="currentYear"
-        />
-        <Select
-          label="Birth Month"
-          v-model:value="birthMonthValue"
-          :options="monthOptions"
-          class="w-full"
-        />
-
-        <TextInput
-          label="Birth Day"
-          v-model:value="user.birthDay"
-          placeholder="Birth Day"
-          type="number"
-          class="w-full"
-          :min="1"
-          :max="31"
-        />
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <TextInput
+            label="Name"
+            v-model:value="user.name"
+            placeholder="Enter your name"
+            type="text"
+            class="w-full"
+            required
+          />
+        </div>
+        <div>
+          <TextInput
+            label="License"
+            v-model:value="user.license"
+            placeholder="Enter license number"
+            type="text"
+            class="w-full"
+          />
+        </div>
       </div>
-      <p v-if="dateValidationError" class="text-red-700 text-xs mb-3">
-        {{ dateValidationError }}
-      </p>
-      <div class="flex sm:flex-nowrap flex-wrap gap-4 w-full mb-3">
-        <Select
-          v-model:value="genderValue"
-          :options="genderGroup"
-          label="Gender"
-          class="w-full"
-        />
-        <Select
-          v-model:value="nationalityValue"
-          :options="nationalityGroup"
-          label="Nationality"
-          class="w-full"
-        />
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <TextInput
+            label="Birth Year"
+            v-model:value="user.birthYear"
+            placeholder="Year"
+            type="number"
+            class="w-full"
+            :min="1900"
+            :max="currentYear"
+          />
+        </div>
+        <div>
+          <Select
+            label="Birth Month"
+            v-model:value="birthMonthValue"
+            :options="monthOptions"
+            class="w-full"
+          />
+        </div>
+        <div>
+          <TextInput
+            label="Birth Day"
+            v-model:value="user.birthDay"
+            placeholder="Day"
+            type="number"
+            class="w-full"
+            :min="1"
+            :max="31"
+          />
+        </div>
+      </div>
+      <div v-if="dateValidationError" class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm">
+        <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+        <span>{{ dateValidationError }}</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <Select
+            v-model:value="genderValue"
+            :options="genderGroup"
+            label="Gender"
+            class="w-full"
+          />
+        </div>
+        <div>
+          <Select
+            v-model:value="nationalityValue"
+            :options="nationalityGroup"
+            label="Nationality"
+            class="w-full"
+          />
+        </div>
       </div>
       <SuccessAlert
         v-model:visible="showSuccessAlertCreate"
@@ -96,12 +113,15 @@
         v-model:visible="showSuccessAlertUpdate"
         text="User has been successfully updated."
       />
-      <div class="flex justify-start mt-4">
+      <div class="flex justify-start pt-4 border-t border-dark-border-default">
         <BaseButton
-          class="text-white font-bold py-2 px-4 rounded"
+          class="px-6 py-3 font-semibold"
           :class="loading ? 'opacity-40 cursor-not-allowed' : ''"
         >
-          Save
+          <span class="flex items-center gap-2">
+            <font-awesome :icon="['fas', 'check']" class="text-sm"/>
+            Save Changes
+          </span>
         </BaseButton>
       </div>
     </form>

@@ -9,7 +9,7 @@
         <BaseButton class="text-white font-bold py-2 px-4 rounded-xl"  @onClick="() => modal=false">
           Cancel
         </BaseButton>
-        <BaseButton class="text-white font-bold py-2 px-4 rounded-xl hover:!bg-white hover:!text-red-600 bg-red-600 border border-red-600"
+        <BaseButton class="text-white font-bold py-2 px-4 rounded-xl hover:!bg-dark-surface-default hover:!text-red-600 bg-red-600 border border-red-600"
                     @onClick="deleteMatch">
           Delete
         </BaseButton>

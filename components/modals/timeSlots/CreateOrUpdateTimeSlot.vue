@@ -52,9 +52,10 @@
                     :required="true"
                     placeholder="Date"
                 />
-                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                      @click.stop
-                     v-if="showDateCalendar">
+                     v-if="showDateCalendar"
+                     style="z-index: 99999 !important; position: absolute !important;">
                   <DatePicker
                       v-model:model-value="date"
                       color="blue"
@@ -93,9 +94,10 @@
                     :required="true"
                     placeholder="Last date that time slot can be reserved"
                 />
-                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                      @click.stop
-                     v-if="showExpirationDateCalendar">
+                     v-if="showExpirationDateCalendar"
+                     style="z-index: 99999 !important; position: absolute !important;">
                   <DatePicker
                       v-model:model-value="expiredAt"
                       :max-date="date"

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white mt-4 border border-gray-200 rounded-2xl overflow-hidden">
+  <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl overflow-hidden">
     <p class="bg-amber-400 text-lg p-4 text-white font-bold tracking-wide">
       <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-xl text-white mr-3"/>
       Possible conflicts
@@ -13,12 +13,12 @@
       </template>
       <div class="flex gap-4 items-center">
         <BaseButton
-            class="border bg-red-500 border-red-500 hover:bg-white hover:text-red-500 font-normal !p-2 !px-4 text-sm"
+            class="border bg-red-500 border-red-500 hover:bg-dark-surface-default hover:text-red-500 font-normal !p-2 !px-4 text-sm"
             @onClick="showConfirmDeleteModal = true">
           Delete Conflict
         </BaseButton>
         <BaseButton
-            class="bg-white border border-brand-primary-color !text-brand-primary-color hover:!text-white hover:!bg-brand-primary-color font-normal !p-2 !px-4 text-sm"
+            class="bg-dark-surface-default border border-brand-primary-color !text-brand-primary-color hover:!text-white hover:!bg-brand-primary-color font-normal !p-2 !px-4 text-sm"
             @onClick="showConfirmCheckAgainModal = true">
           Check Again
         </BaseButton>

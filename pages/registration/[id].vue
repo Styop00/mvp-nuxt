@@ -1,7 +1,7 @@
 <template>
   <div class="py-2 lg:p-6">
     <Breadcrumb />
-    <div class="rounded-lg overflow-hidden p-6 bg-white">
+    <div class="rounded-lg overflow-hidden p-6 bg-dark-surface-default">
       <div>
         <RegistrationForm
           @unsavedChanges="handleUnsavedChanges"

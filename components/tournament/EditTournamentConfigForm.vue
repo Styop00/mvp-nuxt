@@ -16,9 +16,10 @@
                        @click.stop.prevent="() => {closeCalendars(); showGameDeadLineCalendar = !showDisabledInputs}"
                        :prevent-input="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
-                 v-if="showGameDeadLineCalendar">
+                 v-if="showGameDeadLineCalendar"
+                 style="z-index: 99999 !important; position: absolute !important;"
               <DatePicker v-model:model-value="editData.gameDeadLine" color="blue"/>
             </div>
 
@@ -31,7 +32,7 @@
                        @click.stop.prevent="() => {closeCalendars(); showRegistrationDeadlineCalendar = !showDisabledInputs}"
                        :prevent-input="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow" @click.stop
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow" @click.stop
                  v-if="showRegistrationDeadlineCalendar">
               <DatePicker v-model:model-value="editData.registrationDeadLine" color="blue"/>
             </div>
@@ -47,7 +48,7 @@
                        @click.stop.prevent="() => {closeCalendars(); showFreeRescheduleCalendar = !showDisabledInputs}"
                        :prevent-input="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                  @click.stop
                  v-if="showFreeRescheduleCalendar">
               <DatePicker v-model:model-value="editData.freeRescheduleUntilDate" color="blue"/>
@@ -62,7 +63,7 @@
                        @click.stop.prevent="() => {closeCalendars(); showCMTimeSetUntilCalendar = !showDisabledInputs}"
                        :prevent-input="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                  @click.stop
                  v-if="showCMTimeSetUntilCalendar">
               <DatePicker v-model:model-value="editData.CMTimeSetUntil" color="blue"/>

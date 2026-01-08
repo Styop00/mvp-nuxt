@@ -1,9 +1,9 @@
 <template>
-  <label class="flex flex-col text-sm font-inter-medium">
+  <label class="flex flex-col text-sm font-inter-medium text-dark-text-primary">
     {{ props.label }}
     <textarea
         :placeholder="props.placeholder"
-        class="px-3 py-2 border w-full p-3 rounded-[0.35rem] bg-white border-gray-300 outline-none focus:shadow resize-none small-scrollbar"
+        class="px-3 py-2.5 border w-full rounded-lg bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 resize-none small-scrollbar placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm"
         :class="props.inputClasses"
         v-model="inputValue"
         :name="name"

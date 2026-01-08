@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-2xl p-2 lg:p-8">
+  <div class="bg-dark-surface-default rounded-2xl p-2 lg:p-8">
     <p class="text-xl mb-4">Update User</p>
     <div class="grid grid-cols-3 gap-4">
       <TextInput
@@ -64,9 +64,10 @@
               :prevent-input="true"
           />
           <div
-              class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+              class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
               @click.stop
               v-if="showStartLicenseCalendar"
+              style="z-index: 99999 !important; position: absolute !important;"
           >
             <DatePicker
                 @update:model-value="() => licenseChange(true)"
@@ -81,9 +82,10 @@
               :prevent-input="true"
           />
           <div
-              class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+              class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
               @click.stop
               v-if="showEndLicenseCalendar"
+              style="z-index: 99999 !important; position: absolute !important;"
           >
             <DatePicker
                 @update:model-value="() => licenseChange(true)"
@@ -99,7 +101,7 @@
         :data="roleData"
         :show-edit="false"
         :show-delete="true"
-        class="bg-white mt-12 px-4 shadow-none"
+        class="bg-dark-surface-default mt-12 px-4 shadow-none"
         @deleteIconClicked="(rowId) => deleteUserRole(rowId)"
         :fixed-table="true"
     >
@@ -119,7 +121,7 @@
                         @click="() => showApproveUserRole(row.id)"
                         class="p-1.5 text-base rounded-full hover:text-green-300 transition text-green-400 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
             Approve
           </span>
         </span>
@@ -128,7 +130,7 @@
                         @click="() => showJerseyNumber()"
                         class="p-1.5 text-base rounded-full hover:text-teal-500 transition text-teal-600 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
             Jersey number
           </span>
         </span>

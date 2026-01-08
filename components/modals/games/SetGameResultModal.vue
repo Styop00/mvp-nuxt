@@ -3,16 +3,16 @@
     <form class="p-4 min-h-[70vh] flex flex-col justify-between" @submit.prevent="() => save()">
       <div>
         <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-        <p class="font-bold my-5 text-lg">
+        <p class="font-bold my-5 text-lg text-dark-text-primary">
           Set Match Result
         </p>
         <div class="grid grid-cols-7 gap-4">
-          <p class="col-span-3">Team</p>
-          <p>Score/Goal</p>
-          <p>Automatic</p>
-          <p>Points</p>
-          <p>Bonus</p>
-          <p class="col-span-3 flex items-center">{{ game.homeTeam.tournamentName }}</p>
+          <p class="col-span-3 text-dark-text-primary">Team</p>
+          <p class="text-dark-text-primary">Score/Goal</p>
+          <p class="text-dark-text-primary">Automatic</p>
+          <p class="text-dark-text-primary">Points</p>
+          <p class="text-dark-text-primary">Bonus</p>
+          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.homeTeam.tournamentName }}</p>
           <TextInput
               type="number"
               v-model:value="homeTeamScore"/>
@@ -24,7 +24,7 @@
               type="number"
               v-model:value="homeTeamPoints"
               :disabled="homeTeamSetAutomatic"
-              :input-classes="homeTeamSetAutomatic ? 'cursor-not-allowed !bg-gray-100' : ''"
+              :input-classes="homeTeamSetAutomatic ? 'cursor-not-allowed !bg-dark-bg-secondary opacity-50' : ''"
           />
           <CheckBox
               class="flex w-full justify-center items-center"
@@ -32,7 +32,7 @@
               :disabled="homeTeamSetAutomatic"
               :input-classes="homeTeamSetAutomatic ? '!cursor-not-allowed !opacity-40' : ''"
           />
-          <p class="col-span-3 flex items-center">{{ game.guestTeam.tournamentName }}</p>
+          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.guestTeam.tournamentName }}</p>
           <TextInput
               type="number"
               v-model:value="guestTeamScore"/>
@@ -44,7 +44,7 @@
               type="number"
               v-model:value="guestTeamPoints"
               :disabled="guestTeamSetAutomatic"
-              :input-classes="guestTeamSetAutomatic ? 'cursor-not-allowed !bg-gray-100' : ''"
+              :input-classes="guestTeamSetAutomatic ? 'cursor-not-allowed !bg-dark-bg-secondary opacity-50' : ''"
           />
           <CheckBox
               class="flex w-full justify-center items-center"
@@ -59,7 +59,7 @@
             class="mt-8"
         />
 
-        <p class="mt-4 text-sm">
+        <p class="mt-4 text-sm text-dark-text-secondary">
           The result can be deleted completely by leaving the fields empty and setting the position points & bonus to
           automatic.
         </p>

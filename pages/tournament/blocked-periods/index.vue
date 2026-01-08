@@ -9,7 +9,7 @@
             :clickable="false"
             :data="blockedPeriodsData"
             :title="$t('blocked periods')"
-            class="bg-white min-h-96 flex flex-col justify-between"
+            class="bg-dark-surface-default min-h-96 flex flex-col justify-between"
             :show-edit="true"
             :show-delete="true"
             @sorted="sort"
@@ -47,9 +47,10 @@
                       :required="true"
                       class="min-w-52"
                   />
-                  <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                        @click.stop
-                       v-if="showRangeCalendar">
+                       v-if="showRangeCalendar"
+                       style="z-index: 99999 !important; position: absolute !important;">
                     <BaseButton
                         class="!py-1 !px-1 mx-auto mt-2 text-xs sm:text-base sm:!px-8 block"
                         @click="() => {range = []; showRangeCalendar = false}"
@@ -347,7 +348,7 @@ async function fetchPeriods() {
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#00d9c0" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
           </span>
           <span
-              class="absolute z-[999] top-full text-xs mb-1 tracking-wider group-hover:!inline-block hidden inline-block w-fit !bg-white left-1/2 shadow-2xl -translate-x-1/2 p-3 ml-1 rounded-md"
+              class="absolute z-[999] top-full text-xs mb-1 tracking-wider group-hover:!inline-block hidden inline-block w-fit !bg-dark-surface-default left-1/2 shadow-2xl -translate-x-1/2 p-3 ml-1 rounded-md"
           >
             ${period.tournamentGroups.map(group =>
           `

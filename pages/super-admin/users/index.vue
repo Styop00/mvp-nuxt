@@ -10,7 +10,7 @@
         :loading="loading"
         :show-edit="isAdmin"
         :show-delete="isAdmin"
-        class="bg-white"
+        class="bg-dark-surface-default"
         @sorted="sort"
         @editIconClicked="editUser"
         @deleteIconClicked="showDeleteConfirmation"
@@ -33,7 +33,7 @@
               <FilterSelect
                 :options="rolesGroup"
                 v-model:value="selectedRoleDescription"
-                class="bg-white "
+                class="bg-dark-surface-default "
               />
             </form>
 

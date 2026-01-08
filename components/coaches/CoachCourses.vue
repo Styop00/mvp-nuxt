@@ -4,7 +4,7 @@
     :clickable="true"
     :data="data"
     title="Courses"
-    class="bg-white"
+    class="bg-dark-surface-default"
     :show-edit="isAdmin"
     :show-delete="isAdmin"
     @editIconClicked="editCoachEducation"

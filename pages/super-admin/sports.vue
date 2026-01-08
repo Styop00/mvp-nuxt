@@ -10,7 +10,7 @@
         title="Sports"
         :show-edit="isAdmin"
         :show-delete="isAdmin"
-        class="bg-white"
+        class="bg-dark-surface-default"
         @sorted="sort"
         @editIconClicked="editSport"
         @deleteIconClicked="showDeleteConfirmation"

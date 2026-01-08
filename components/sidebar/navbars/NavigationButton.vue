@@ -1,14 +1,14 @@
 <template>
   <button
     @click="emit('click')"
-    class="p-3 my-px hover:text-brand-primary-color text-white text-start rounded-lg hover:bg-brand-secondary-color text-sm flex gap-2 items-center hover:font-bold"
+    class="p-3 my-px hover:text-brand-primary-color text-dark-text-secondary text-start rounded-lg hover:bg-dark-bg-hover text-sm flex gap-2 items-center hover:font-semibold transition-all duration-300 ease-in-out group"
     :class="{
             'w-52' : (props.showLabel || props.hovered),
-            '!text-brand-primary-color bg-brand-secondary-color font-bold' : props.activeTab === props.label
+            '!text-brand-primary-color bg-dark-bg-hover font-semibold border-l-2 border-brand-primary-color' : props.activeTab === props.label
           }"
   >
     <template v-if="props.icon">
-      <font-awesome :icon="props.icon" class="py-1" :class="props.activeTab === props.label ? 'text-brand-primary-color' : ''"/>
+      <font-awesome :icon="props.icon" class="py-1 transition-colors duration-300" :class="props.activeTab === props.label ? 'text-brand-primary-color' : 'text-dark-text-tertiary group-hover:text-brand-primary-color'"/>
     </template>
     <template v-if="props.showLabel || props.hovered">
       {{ props.label }}

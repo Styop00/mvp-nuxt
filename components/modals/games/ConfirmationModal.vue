@@ -8,7 +8,7 @@
           Cancel
         </BaseButton>
         <BaseButton class="text-white font-bold py-2 px-4 rounded-xl"
-                    :class="showDangerConfirmation ? 'hover:!bg-white hover:!text-red-600 bg-red-600 border border-red-600': ''"
+                    :class="showDangerConfirmation ? 'hover:!bg-dark-surface-default hover:!text-red-600 bg-red-600 border border-red-600': ''"
                     @onClick="emit('confirmed')">
           Confirm
         </BaseButton>

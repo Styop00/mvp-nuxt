@@ -42,18 +42,69 @@
 
 .small-scrollbar::-webkit-scrollbar {
   height: 2px;
-  background-color: #504e4e26;
-  color: #9ca3af;
+  @apply bg-dark-bg-secondary;
   width: 4px;
 }
 
 .small-scrollbar::-webkit-scrollbar-thumb {
-  background: #504e4e;
+  @apply bg-dark-border-default;
   border-radius: 10px;
 }
 
+/* Dark Theme Base Styles */
+/* Note: The 'dark' class is applied via the theme plugin and nuxt config */
+html.dark,
+html {
+  color-scheme: dark;
+  background-color: #0F172A !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  color: #111111;
+  @apply bg-dark-bg-primary text-dark-text-primary;
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 100vh;
+}
+
+/* Prevent white flash during page transitions */
+#__nuxt {
+  background-color: #0F172A !important;
+  min-height: 100vh;
+}
+
+/* Ensure all page containers have dark background */
+.page-enter-active,
+.page-leave-active,
+.layout-enter-active,
+.layout-leave-active {
+  background-color: #0F172A !important;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-bg-secondary;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-border-default;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-border-light;
 }
 
 .quill-message-style {
@@ -86,10 +137,101 @@ body {
 .ql-toolbar {
   border-top-left-radius: 0.35rem;
   border-top-right-radius: 0.35rem;
-  border-color: #e5e7eb !important;
+  @apply border-dark-border-default bg-dark-surface-elevated !important;
 }
 
 .ql-tooltip {
   left: 0 !important;
-  border-color: #e5e7eb !important;
+  @apply border-dark-border-default bg-dark-surface-elevated !important;
+}
+
+/* Page Transition Styles */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* Layout Transition */
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Fade Transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Slide Transition */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.card-hover:hover {
+  @apply transform -translate-y-1 shadow-lg;
+}
+
+/* Glow Effect */
+.glow {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.glow-lg {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+}
+
+/* Global z-index for all dropdowns and selects - ensure they overlap everything */
+.vc-popover-content-wrapper,
+.vc-popover-content,
+.vc-popover,
+[class*="vc-popover"],
+.multiselect__content-wrapper,
+.multiselect__content {
+  z-index: 99999 !important;
+  position: absolute !important;
+}
+
+/* Ensure all select dropdowns have highest z-index */
+[class*="dropdown"],
+[class*="select"] [class*="dropdown"],
+[class*="multiselect"] [class*="content"] {
+  z-index: 99999 !important;
 }

@@ -4,7 +4,7 @@
       :clickable="true"
       :data="tableData"
       title="Games"
-      class="bg-white min-h-96 flex flex-col justify-between"
+      class="bg-dark-surface-default min-h-96 flex flex-col justify-between"
       :loading="loading"
       :show-actions="type === 'conflicts'"
       @sorted="(column) => emit('sort', {column: column, data: emitData})"
@@ -13,41 +13,86 @@
       :fixed-table="false"
   >
     <template #headerBottom>
-      <div class="flex gap-3 w-full  items-center justify-between ml-2">
-        <div class="flex gap-3 items-center">
-          <div class="flex gap-4 items-center">
-            <span class="text-nowrap text-sm font-bold">Filter by</span>
+      <div class="flex flex-col xl:flex-row gap-4 xl:gap-6 w-full items-stretch xl:items-center justify-between px-4 xl:px-6 py-5 bg-gradient-to-br from-dark-surface-default/40 via-dark-bg-primary/30 to-dark-surface-default/40 border-t border-dark-border-default backdrop-blur-sm relative">
+        <!-- Filters Section -->
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch lg:items-center flex-1">
+          <!-- Filter Label and Type Select -->
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center min-w-0 flex-shrink-0 relative">
+            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary-color/10 to-brand-primary-color/5 border border-brand-primary-color/20 shadow-sm hover:shadow-md hover:border-brand-primary-color/30 transition-all duration-200">
+              <font-awesome :icon="['fas', 'filter']" class="text-brand-primary-color text-sm"/>
+              <span class="text-nowrap text-xs sm:text-sm font-bold text-dark-text-primary uppercase tracking-wider whitespace-nowrap">Filters</span>
+            </div>
             <Select
                 :options="filterOptions"
                 v-model:value="filter"
                 v-show="filterOptions.length > 1"
-                class="min-w-40"
+                class="w-full sm:w-auto sm:min-w-[140px]"
             />
           </div>
-          <div class="flex gap-4 items-center" v-if="tournamentGroupId || tournamentId">
-            <FilterSelect :options="clubs" v-model:value="selectedClub" class="min-w-52"/>
-          </div>
-          <div class="flex gap-4 items-center">
-            <FilterSelect :options="courts" v-model:value="selectedCourt" class="min-w-60"/>
-          </div>
-          <div class="relative">
-            <TextInput
-                :value="range.join(' - ')"
-                placeholder="Date"
-                @click.prevent="showDatePicker"
-                :prevent-input="true"
-                :required="true"
-                class="min-w-52"
+
+          <!-- Visual Separator (Desktop) -->
+          <div class="hidden lg:block w-px h-8 bg-gradient-to-b from-transparent via-dark-border-default to-transparent mx-1"></div>
+
+          <!-- Club Filter (Conditional) -->
+          <div class="flex items-center gap-3 w-full sm:w-auto group relative" v-if="tournamentGroupId || tournamentId">
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'landmark']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            </div>
+            <FilterSelect 
+              :options="clubs" 
+              v-model:value="selectedClub" 
+              class="w-full sm:w-auto sm:min-w-[180px] flex-1"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
-                 @click.stop
-                 v-if="showRangeCalendar">
-              <BaseButton
-                  class="!py-1 !px-1 mx-auto mt-2 text-xs sm:text-base sm:!px-8 block"
-                  @click="() => {range = []; showRangeCalendar = false}"
-              >
-                Clear Date Filter
-              </BaseButton>
+          </div>
+
+          <!-- Court Filter -->
+          <div class="flex items-center gap-3 w-full sm:w-auto group relative">
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'location-dot']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            </div>
+            <FilterSelect 
+              :options="courts" 
+              v-model:value="selectedCourt" 
+              class="w-full sm:w-auto sm:min-w-[200px] flex-1"
+            />
+          </div>
+
+          <!-- Date Filter -->
+          <div class="flex items-center gap-3 w-full sm:w-auto group relative">
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'calendar']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            </div>
+            <div class="relative flex-1 w-full sm:w-auto sm:min-w-[200px]">
+              <TextInput
+                  :value="range.join(' - ') || ''"
+                  placeholder="Select Date Range"
+                  @click.prevent="showDatePicker"
+                  :prevent-input="true"
+                  :required="true"
+                  :input-classes="'cursor-pointer pr-10'"
+                  class="w-full"
+              />
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none lg:hidden">
+                <font-awesome :icon="['fas', 'calendar']" class="text-sm text-dark-text-tertiary"/>
+              </div>
+            </div>
+            <div 
+              class="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/2 bg-dark-surface-default border border-dark-border-default shadow-2xl rounded-xl mt-3 backdrop-blur-md animate-scale-in"
+              @click.stop
+              v-if="showRangeCalendar"
+              style="z-index: 99999 !important; position: absolute !important;">
+              <div class="p-3 border-b border-dark-border-default flex items-center justify-between bg-dark-surface-elevated">
+                <p class="text-sm font-semibold text-dark-text-primary flex items-center gap-2">
+                  <font-awesome :icon="['fas', 'calendar']" class="text-brand-primary-color"/>
+                  Select Date Range
+                </p>
+                <BaseButton
+                    class="!py-1 !px-3 text-xs"
+                    @click="() => {range = []; showRangeCalendar = false}"
+                >
+                  Clear
+                </BaseButton>
+              </div>
               <RangePicker
                   @close="showRangeCalendar = false"
                   v-model:model-value="range"
@@ -56,11 +101,28 @@
             </div>
           </div>
         </div>
-        <SearchInput
-            v-model="searchQuery"
-            placeholder="Search by game number"
-            class="min-w-48 ml-4"
-        />
+
+        <!-- Visual Separator (Desktop) -->
+        <div class="hidden xl:block w-px h-8 bg-gradient-to-b from-transparent via-dark-border-default to-transparent mx-2"></div>
+
+        <!-- Search Section -->
+        <div class="w-full xl:w-auto xl:min-w-[300px] flex-shrink-0">
+          <div class="flex items-center gap-3 group relative">
+            <div class="hidden xl:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'magnifying-glass']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            </div>
+            <div class="relative flex-1">
+              <div class="absolute left-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none transition-colors xl:hidden group-focus-within:text-brand-primary-color">
+                <font-awesome :icon="['fas', 'magnifying-glass']" class="text-dark-text-tertiary text-sm"/>
+              </div>
+              <SearchInput
+                  v-model="searchQuery"
+                  placeholder="Search by game number"
+                  class="w-full"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </template>
     <template #actions="{ row }" v-if="type === 'conflicts'">
@@ -70,25 +132,26 @@
             @click.stop="() => emit('ignoreConflict', row.id)"
             class="p-1.5 text-base rounded-full hover:text-red-500 transition text-red-600 cursor-pointer"/>
         <span
-            class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+            class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
           Ignore conflicts
         </span>
       </span>
     </template>
     <template #footer>
-      <div class="flex justify-between ml-4 items-center gap-6">
+      <div class="flex flex-col sm:flex-row justify-between px-4 sm:px-6 items-start sm:items-center gap-4 py-4 border-t border-dark-border-default bg-dark-bg-primary/30">
         <div>
-          <p class="text-xs text-nowrap tracking-wider text-gray-400 font-bold">
+          <p class="text-xs text-nowrap tracking-wider text-dark-text-secondary font-medium">
             {{ currentShowCount }}
           </p>
         </div>
-        <div class="flex justify-start m-2 lg:justify-end items-center gap-6">
-          <p class="flex items-center text-nowrap gap-4">
-            Rows per page:
-            <Select :options="limitOptions" v-model:value="limit" direction="top" size="small"/>
+        <div class="flex flex-col sm:flex-row justify-start sm:justify-end items-start sm:items-center gap-4 w-full sm:w-auto">
+          <p class="flex items-center text-nowrap gap-2 sm:gap-4 text-sm text-dark-text-secondary">
+            <span class="hidden sm:inline">Rows per page:</span>
+            <span class="sm:hidden">Per page:</span>
+            <Select :options="limitOptions" v-model:value="limit" direction="top" size="small" class="w-20"/>
           </p>
           <template v-if="count > (limit.value ?? 0)">
-            <div class="my-2 mr-2">
+            <div class="w-full sm:w-auto">
               <TablePagination v-model:page="page" :page-count="pagesCount"/>
             </div>
           </template>
@@ -442,7 +505,7 @@ function handleDataClick(row: any) {
 }
 
 function getStatus(game: Game) {
-  let status = `<span  class="mx-2 bg-green-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Ok</span>`;
+  let status = `<span  class="mx-2 bg-emerald-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Ok</span>`;
   if (props.type === 'conflicts') {
     status = '';
     if (game.conflict?.startTime) {
@@ -469,29 +532,29 @@ function getStatus(game: Game) {
     if (game?.conflict?.hasCourt) {
       status += `${status.length ? '<br>' : ''} Stop Time`
     }
-    status = `<p  class="bg-yellow-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap"> ${status} </p>`
+    status = `<p  class="bg-amber-500 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md"> ${status} </p>`
   } else {
     switch (game.statusId) {
       case 1 :
-        status = `<span  class="mx-2 bg-red-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Time missing</span>`;
+        status = `<span  class="mx-2 bg-red-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Time missing</span>`;
         break;
       case 2 :
-        status = `<span  class="mx-2 bg-red-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Venue missing</span>`;
+        status = `<span  class="mx-2 bg-red-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Venue missing</span>`;
         break;
       case 3 :
-        status = `<span  class="mx-2 bg-yellow-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Must be moved</span>`;
+        status = `<span  class="mx-2 bg-yellow-500 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Must be moved</span>`;
         break;
       case 4 :
-        status = `<span  class="mx-2 bg-amber-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Moving in progress</span>`;
+        status = `<span  class="mx-2 bg-amber-500 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Moving in progress</span>`;
         break;
       case 5 :
-        status = `<span  class="mx-2 bg-amber-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Awaiting association</span>`;
+        status = `<span  class="mx-2 bg-amber-500 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Awaiting association</span>`;
         break;
       case 6 :
-        status = `<span  class="mx-2 bg-indigo-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Awaiting sync</span>`;
+        status = `<span  class="mx-2 bg-indigo-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Awaiting sync</span>`;
         break;
       case 7 :
-        status = `<span  class="mx-2 bg-green-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Ok</span>`;
+        status = `<span  class="mx-2 bg-emerald-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Ok</span>`;
         break;
     }
   }

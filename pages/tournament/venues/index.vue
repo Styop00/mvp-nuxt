@@ -10,7 +10,7 @@
           :loading="loading"
           :show-edit="isAdmin"
           :show-delete="isAdmin"
-          class="bg-white"
+          class="bg-dark-surface-default"
           :fixed-table="false"
           action-column-classes="w-40"
           @sorted="sort"
@@ -43,7 +43,7 @@
                             @click="() => navigateTo(`venues/${row.id}/games`)"
                             class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Games
               </span>
             </span>

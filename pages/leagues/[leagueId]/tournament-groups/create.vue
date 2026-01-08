@@ -1,7 +1,7 @@
 <template>
   <div class="py-2 lg:p-6">
     <Breadcrumb/>
-    <div class="bg-white rounded-2xl p-2 lg:p-8">
+    <div class="bg-dark-surface-default rounded-2xl p-2 lg:p-8">
       <p class="text-xl mb-4">Create Tournament Group</p>
       <form action="#" @submit.prevent="createTournamentGroup">
         <EditTournamentGroupForm

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-w-full shadow-lg rounded-2xl overflow-x-auto bg-white min-h-96 flex flex-col justify-between">
+  <div class="min-w-full shadow-lg rounded-2xl overflow-x-auto bg-dark-surface-default min-h-96 flex flex-col justify-between">
     <div>
       <div class="flex justify-between items-center px-2">
         <p
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="relative">
-        <table class="bg-white w-full border-t rounded-2xl"
+        <table class="bg-dark-surface-default w-full border-t rounded-2xl"
                :class="{'opacity-30': loading}">
           <thead>
           <template v-for="header in headers">
@@ -161,7 +161,7 @@
                         @click="navigateTo(`${type}/${row.id}`)"
                     />
                     <span
-                        class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                        class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
                     >
                     View
                   </span>

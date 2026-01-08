@@ -18,7 +18,7 @@
               Add
             </BaseButton>
             <BaseButton @on-click="closeForm"
-                        class="!py-1 !px-1 !text-sm bg-white !text-red-600 border -600 hover:!text-white !border-red-600 sm:text-base sm:!px-4 block">
+                        class="!py-1 !px-1 !text-sm bg-dark-surface-default !text-red-600 border -600 hover:!text-white !border-red-600 sm:text-base sm:!px-4 block">
               close
             </BaseButton>
           </div>
@@ -47,7 +47,7 @@
                 class="p-1.5 text-xs rounded-full border border-red-100 bg-red-50 -500 hover:text-white transition text-red-400 cursor-pointer"
             />
             <span
-                class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
             >
               Delete
             </span>

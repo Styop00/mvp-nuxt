@@ -1,6 +1,6 @@
 <template>
-  <div class="py-2 lg:p-6">
-    <div class="rounded-lg overflow-hidden pb-4">
+  <div class="py-2 sm:py-4 lg:p-6 px-2 sm:px-4">
+    <div class="rounded-lg overflow-hidden pb-4 animate-fade-in">
       <div>
         <Breadcrumb />
         <GameTable

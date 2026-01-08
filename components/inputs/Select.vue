@@ -1,44 +1,49 @@
 <template>
-  <div class="w-full relative text-sm">
-    <p class="font-inter-medium">
+  <div class="w-full relative text-sm" ref="selectContainer">
+    <p class="font-inter-medium text-dark-text-primary">
       {{ label }}
       <span v-if="required && label"
-            class="text-red-600"
+            class="text-red-500"
       >
         *
       </span>
     </p>
     <div
-        class="flex items-center border border-gray-300 px-3 py-2 gap-2 justify-between w-full rounded-[0.35rem] min-h-11 cursor-pointer"
+        class="flex items-center border border-dark-border-default bg-dark-bg-primary text-sm text-dark-text-primary px-3 py-2.5 gap-2 justify-between w-full rounded-lg min-h-11 cursor-pointer transition-all duration-200 hover:border-dark-border-light hover:shadow-sm focus-within:border-brand-primary-color focus-within:ring-2 focus-within:ring-brand-primary-color/20"
         :class="selectStyles"
         @click="openDropdown">
-      {{ value?.label }}
+      <span :class="!value?.label ? 'text-dark-text-tertiary' : 'text-dark-text-primary'">
+        {{ value?.label || 'Select an option' }}
+      </span>
       <template v-if="!dropdownOpened">
-        <font-awesome :icon="['fas', 'angle-down']" class="ml-auto"/>
+        <font-awesome :icon="['fas', 'angle-down']" class="ml-auto text-dark-text-tertiary transition-transform"/>
       </template>
       <template v-else>
         <font-awesome
             :icon="['fas', 'angle-up']"
             @click.stop="() => dropdownOpened = false"
-            class="cursor-pointer ml-auto"
+            class="cursor-pointer ml-auto text-brand-primary-color transition-transform"
         />
       </template>
     </div>
-    <div
-        v-if="dropdownOpened"
-        :class="direction === 'bottom' ? 'top-full' : 'bottom-11'"
-        class="absolute shadow border w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-white z-[100]"
-    >
-      <template v-for="option in selectOptions">
-        <p
-            class="p-2 border-b bg-white"
-            @click="setOption(option)"
-            :class="!option.disabled ? 'cursor-pointer hover:bg-gray-100' : '!bg-gray-200'"
-        >
-          {{ option.label }}
-        </p>
-      </template>
-    </div>
+    <Transition name="dropdown">
+      <div
+          v-if="dropdownOpened"
+          :class="direction === 'bottom' ? 'top-full' : 'bottom-11'"
+          class="absolute shadow-2xl border border-dark-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-dark-surface-elevated rounded-lg mt-1"
+          style="z-index: 99999 !important; position: absolute !important; min-width: 100%;"
+      >
+        <template v-for="(option, index) in selectOptions" :key="index">
+          <div
+              class="px-3 py-2.5 border-b border-dark-border-default last:border-b-0 text-sm text-dark-text-primary bg-dark-surface-elevated transition-all duration-200"
+              @click="setOption(option)"
+              :class="!option.disabled ? 'cursor-pointer hover:bg-dark-bg-hover hover:text-brand-primary-color' : '!bg-dark-bg-secondary opacity-50 cursor-not-allowed'"
+          >
+            {{ option.label }}
+          </div>
+        </template>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -83,6 +88,7 @@ const props = defineProps({
 const dropdownOpened = ref(false)
 const emit = defineEmits(['update:value'])
 const selectOptions = ref([] as Array<SelectOptions>)
+const selectContainer = ref<HTMLElement | null>(null)
 
 const inputValue = toRef(props.value)
 const initialValue = toRef(props.value)
@@ -97,12 +103,17 @@ watch(inputValue, (value, oldValue) => {
   }
 })
 
-watch(() => props.options, () => {
-  if (props.options?.length === 1 && !props.disableAutoSelect) {
-    setOption(props.options[0])
-    selectOptions.value = props.options;
-  } else if (props.options?.length > 1 || (props.options?.length === 1 &&  props.disableAutoSelect)) {
-    selectOptions.value = props.direction === 'top' ? props.options.toReversed() : props.options
+watch(() => props.options, (newOptions) => {
+  if (!newOptions || newOptions.length === 0) {
+    selectOptions.value = [];
+    return;
+  }
+  
+  if (newOptions.length === 1 && !props.disableAutoSelect) {
+    setOption(newOptions[0])
+    selectOptions.value = [...newOptions];
+  } else if (newOptions.length > 1 || (newOptions.length === 1 && props.disableAutoSelect)) {
+    selectOptions.value = props.direction === 'top' ? [...newOptions].reverse() : [...newOptions];
   }
 }, {
   deep: true,
@@ -146,3 +157,20 @@ defineExpose({
   closeDropdown,
 })
 </script>
+
+<style scoped>
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 200ms ease;
+}
+
+.dropdown-enter-from {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+</style>

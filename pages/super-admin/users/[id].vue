@@ -1,7 +1,7 @@
 <template>
   <div class="py-2 lg:p-6">
     <Breadcrumb />
-    <div class="rounded-lg p-6 bg-white">
+    <div class="rounded-lg p-6 bg-dark-surface-default">
       <div class="xl:w-2/3 w-full">
         <p
           class="text-base font-bold pb-4 flex items-center justify-start tracking-widest"
@@ -16,7 +16,7 @@
         >
           <div
             v-if="!response.picture"
-            class=" user-icon absolute inset-0 flex items-center justify-center bg-gray-200 opacity-50 transition-opacity duration-300 "
+            class=" user-icon absolute inset-0 flex items-center justify-center bg-dark-surface-elevated opacity-50 transition-opacity duration-300 "
           >
             <font-awesome :icon="['fas', 'user']" class="m-auto w-6 h-6" />
           </div>

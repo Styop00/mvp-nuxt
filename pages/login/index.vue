@@ -1,25 +1,25 @@
 <template>
   <div
-    class="w-full min-h-screen flex items-center justify-center bg-login-reg-bg"
+    class="w-full min-h-screen flex items-center justify-center bg-dark-bg-primary"
   >
-    <div class="w-full max-w-lg p-4 sm:p-8 md:p-12 rounded-lg">
+    <div class="w-full max-w-lg p-4 sm:p-8 md:p-12 rounded-lg animate-fade-in">
       <div class="mb-6 sm:mb-8 md:mb-12">
-        <NuxtLink class="flex justify-center items-center gap-1.5" to="/">
-          <img src="/images/logo.png" alt="#" class="w-8">
-          <span class="text-xl"> MVP 5.0 </span>
+        <NuxtLink class="flex justify-center items-center gap-1.5 group" to="/">
+          <img src="/images/logo.png" alt="#" class="w-8 transition-transform duration-300 group-hover:scale-110">
+          <span class="text-xl text-dark-text-primary font-semibold"> MVP 5.0 </span>
         </NuxtLink>
       </div>
       <div
-        class="w-full max-w-md p-4 sm:p-8 md:p-12 bg-white shadow-sm rounded-lg"
+        class="w-full max-w-md p-4 sm:p-8 md:p-12 bg-dark-surface-default border border-dark-border-default shadow-xl rounded-xl backdrop-blur-sm"
       >
         <form @submit.prevent="handleEnterKey">
           <div>
             <p
-              class="text-[20px] font-inter-medium text-center mb-2 text-gray-700"
+              class="text-[20px] font-inter-medium text-center mb-2 text-dark-text-primary"
             >
               Sign In
             </p>
-            <p class="text-text-muted text-[13px] text-center mb-4 opacity-70">
+            <p class="text-dark-text-tertiary text-[13px] text-center mb-4">
               Welcome back !
             </p>
             <p
@@ -37,7 +37,7 @@
                   placeholder="User email"
                   type="email"
                   autocomplete="email"
-                  inputClasses="w-full mt-2 text-base !px-4 !py-2 border rounded-[0.35rem] bg-white border-gray-300 outline-none focus:shadow placeholder:text-[13px]"
+                  inputClasses="w-full mt-2 text-base !px-4 !py-2 border rounded-[0.35rem] bg-dark-bg-primary border-dark-border-default text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all placeholder:text-dark-text-tertiary placeholder:text-[13px]"
                 />
                 <p v-if="emailError" class="text-red-700 text-xs mb-4">
                   {{ emailError }}
@@ -96,22 +96,22 @@
         </form>
 
         <div class="text-center mt-4">
-          <p class="text-sm text-text-muted opacity-[0.7]">
+          <p class="text-sm text-dark-text-tertiary">
             Don't have an account?
-            <NuxtLink to="/sign-up" class="text-blue-500 hover:underline">
+            <NuxtLink to="/sign-up" class="text-brand-primary-color hover:text-brand-hover transition-colors hover:underline">
               Sign Up
             </NuxtLink>
           </p>
 
           <p
             v-if="showPasswordField"
-            class="text-blue-500 opacity-[0.7] hover:underline mb-2 text font-intel text-xs cursor-pointer"
+            class="text-brand-primary-color hover:text-brand-hover transition-colors hover:underline mb-2 text font-intel text-xs cursor-pointer"
             @click="() => showConfirmModal = true"
           >
             Forget password?
           </p>
         </div>
-        <div class="separator mx-4 my-6 text-gray-700 text-[13px]">OR</div>
+        <div class="separator mx-4 my-6 text-dark-text-tertiary text-[13px]">OR</div>
         <div class="flex justify-center space-x-3">
           <GoogleSignIn />
         </div>
@@ -242,7 +242,7 @@ async function visibleResetPasswordModal(email: string) {
 .separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid rgb(229, 222, 222);
+  border-bottom: 1px solid #334155;
   opacity: 0.5;
 }
 

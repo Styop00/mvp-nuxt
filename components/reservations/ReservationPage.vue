@@ -9,7 +9,7 @@
             :clickable="false"
             :data="reservations"
             title="Reservations"
-            class="bg-white"
+            class="bg-dark-surface-default"
             :show-edit="timeSlot.expiration ? moment().isSameOrBefore(moment(timeSlot.expiration).endOf('day')) : moment().isSameOrBefore(moment(timeSlot.date).endOf('day'))"
             :show-delete="true"
             @sorted="sort"

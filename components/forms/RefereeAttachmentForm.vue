@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 xl:w-1/2 md:w-2/3 w-full max-w-4xl bg-white shadow-lg rounded-lg">
+  <div class="p-6 xl:w-1/2 md:w-2/3 w-full max-w-4xl bg-dark-surface-default shadow-lg rounded-lg">
     <form @submit.prevent.stop class="space-y-6">
       <!-- Title -->
       <p class="text-lg font-bold flex items-center gap-3">
@@ -26,7 +26,7 @@
 
         <div>
           <p class="text-sm font-medium">Current Judge</p>
-          <p v-html="currentRefText" class="text-gray-700"></p>
+          <p v-html="currentRefText" class="text-dark-text-primary"></p>
           <div v-if="!canApproveRef" class="space-y-3">
             <BaseButton
               v-if="canRejectRef"

@@ -2,7 +2,7 @@
  
   <div class="py-2 lg:p-6">
     <Breadcrumb />
-    <div class="rounded-lg p-6 bg-white">
+    <div class="rounded-lg p-6 bg-dark-surface-default">
       <div class="xl:w-2/3 w-full">
         <p
           class="text-base font-bold pb-4 flex items-center justify-start tracking-widest"

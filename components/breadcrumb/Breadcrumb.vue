@@ -4,7 +4,7 @@
       <li>
         <nuxt-link
           to="/"
-          class="text-gray-500 cursor-pointer hover:text-brand-primary-color"
+          class="text-dark-text-secondary cursor-pointer hover:text-brand-primary-color"
         >
           <span property="name">Home</span>
         </nuxt-link>
@@ -14,11 +14,11 @@
         <nuxt-link
           v-if="index < breadcrumbs.length - 1"
           :to="crumb.path"
-          class="text-gray-500 hover:text-brand-primary-color"
+          class="text-dark-text-secondary hover:text-brand-primary-color"
         >
           <span property="name">{{ crumb.label }}</span>
         </nuxt-link>
-        <span v-else class="text-gray-900">
+        <span v-else class="text-dark-text-primary">
           {{ crumb.label }}
         </span>
       </li>
@@ -94,7 +94,7 @@ li {
 
 li:after {
   content: '  »  ';
-  color: #aaa;
+  color: #94A3B8;
   padding: 0 8px;
 }
 

@@ -5,11 +5,11 @@
         <div>
           <Breadcrumb/>
 
-          <h2 class="text-[30px] text-gray-600 font-medium tracking-wider flex items-center gap-3">
+          <h2 class="text-[30px] text-dark-text-primary font-medium tracking-wider flex items-center gap-3">
             Match #{{ game?.number }} in {{ game?.tournament?.alias }} <span class="text-base" v-html="gameStatus"/>
           </h2>
-          <div class="bg-white mt-4 border border-gray-200 rounded-2xl overflow-hidden">
-            <p class="border-b text-lg p-4 flex items-center font-medium">
+          <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl overflow-hidden">
+            <p class="border-b border-dark-border-default text-lg p-4 flex items-center font-medium text-dark-text-primary">
               <span
                   class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
               />
@@ -28,14 +28,14 @@
               </p>
               <div class="flex items-center gap-4 my-3">
                 <BaseButton
-                    class="bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 !px-4 !py-2 rounded-md text-sm"
+                    class="bg-red-500 border border-red-500 hover:bg-dark-surface-default hover:text-red-500 !px-4 !py-2 rounded-md text-sm"
                     @onClick="() => showConfirmPostponeModal = true"
                     v-if="userStore.isAdmin"
                 >
                   Postpone the match
                 </BaseButton>
                 <BaseButton
-                    class="bg-red-500 border border-red-500 hover:bg-white hover:text-red-500 !px-4 !py-2 rounded-md text-sm"
+                    class="bg-red-500 border border-red-500 hover:bg-dark-surface-default hover:text-red-500 !px-4 !py-2 rounded-md text-sm"
                     @onClick="deleteMatch"
                     v-if="userStore.isAdmin"
                 >

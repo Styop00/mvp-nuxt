@@ -10,7 +10,7 @@
             :show-edit="isAdmin"
             :show-delete="isAdmin"
             title="Leagues"
-            class="bg-white"
+            class="bg-dark-surface-default"
             :loading="loading"
             @sorted="sort"
             @edit-icon-clicked="editLeague"
@@ -26,7 +26,7 @@
                     class="p-1.5 text-base rounded-full hover:text-blue-300 transition text-blue-400 cursor-pointer"
                 />
                 <span
-                    class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                    class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
                 >
                   Edit
                 </span>
@@ -40,7 +40,7 @@
                     class="p-1.5 text-base rounded-full hover:text-red-300 transition text-red-400 cursor-pointer"
                 />
                 <span
-                    class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                    class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
                 >
                   Delete
                 </span>
@@ -51,7 +51,7 @@
                             @click="() => navigateTo(`leagues/${row.id}/tournament-groups`)"
                             class="p-1.5 text-base rounded-full hover:text-purple-400 transition text-purple-500 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Groups
               </span>
             </span>

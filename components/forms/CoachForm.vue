@@ -31,9 +31,10 @@
             :required="true"
           />
           <div
-            class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
             @click.stop
             v-if="showDateCalendar"
+            style="z-index: 99999 !important; position: absolute !important;"
           >
             <DatePicker v-model:model-value="course.date" color="blue" />
           </div>
@@ -88,7 +89,7 @@
         id="divImport"
         class="mt-6 w-full md:w-1/2"
       >
-        <table class="table-auto w-full border border border-gray-200">
+        <table class="table-auto w-full border border border-dark-border-default">
           <thead>
             <tr>
               <th class="text-start border px-4 py-2 text-xs">Name</th>

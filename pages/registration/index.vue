@@ -8,7 +8,7 @@
           :clickable="false"
           :data="tableData"
           title="Registrations"
-          class="bg-white"
+          class="bg-dark-surface-default"
           :show-edit="isAdmin"
           @sorted="sort"
           :loading="loading"

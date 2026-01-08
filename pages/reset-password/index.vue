@@ -10,18 +10,18 @@
         </NuxtLink>
       </div>
       <div
-        class="w-full max-w-md p-4 sm:p-8 md:p-12 bg-white shadow-sm rounded-lg"
+        class="w-full max-w-md p-4 sm:p-8 md:p-12 bg-dark-surface-default shadow-sm rounded-lg"
       >
         <div class="mb-8">
           <p
             v-if="!notification"
-            class="text-[20px] font-inter-medium text-center mb-2 text-gray-700"
+            class="text-[20px] font-inter-medium text-center mb-2 text-dark-text-primary"
           >
             Reset Password
           </p>
           <p
             v-if="notification"
-            class="text-[20px] font-inter-medium text-center mb-2 text-gray-700"
+            class="text-[20px] font-inter-medium text-center mb-2 text-dark-text-primary"
           >
             Reset Password Failed
           </p>

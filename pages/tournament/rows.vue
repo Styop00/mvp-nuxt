@@ -8,7 +8,7 @@
             @rowClicked="openEditModal"
             :data="tableData"
             title="Rows"
-            class="bg-white"
+            class="bg-dark-surface-default"
         >
           <template #header>
             <div class="flex justify-end items-center gap-6 mr-3">

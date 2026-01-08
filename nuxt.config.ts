@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  plugins: ["~/plugins/loading.client.ts"],
+  plugins: ["~/plugins/loading.client.ts", "~/plugins/theme.client.ts"],
   ssr: false,
   devtools: { enabled: true },
   modules: [
@@ -78,6 +78,9 @@ export default defineNuxtConfig({
         "paper-plane",
         "up-right-from-square",
         "shirt",
+        "inbox",
+        "camera",
+        "key",
       ],
       regular: ["user", "circle-user", "clock", "comments", "paper-plane", "note-sticky"],
       brands: ["google"],
@@ -88,6 +91,28 @@ export default defineNuxtConfig({
     head: {
       title: "MVPApp",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+      htmlAttrs: {
+        class: "dark",
+      },
+      style: [
+        {
+          children: `
+            html { background-color: #0F172A !important; }
+            body { background-color: #0F172A !important; color: #F8FAFC !important; }
+            * { transition: background-color 0.2s ease, color 0.2s ease; }
+          `,
+        },
+      ],
+    },
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+      duration: 200,
+    },
+    layoutTransition: {
+      name: "layout",
+      mode: "out-in",
+      duration: 200,
     },
   },
   runtimeConfig: {

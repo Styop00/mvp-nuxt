@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex flex-col w-full h-fit xl:w-1/2 pt-4 border-t  border-gray-300"
+    class="flex flex-col w-full h-fit xl:w-1/2 pt-4 border-t  border-dark-border-default"
   >
-    <div class="flex pb-4 border-b border-gray-300 text-[18px] font-bold">
+    <div class="flex pb-4 border-b border-dark-border-default text-[18px] font-bold">
       <div class="flex-[1] text-start ">Court</div>
       <div class="flex-[2] text-start text-nowrap">Battle types</div>
       <div
@@ -17,7 +17,7 @@
       <div
         v-for="(court, index) in pseudoCourtTableData.value"
         :key="index"
-        class="flex py-2 border-b border-gray-300"
+        class="flex py-2 border-b border-dark-border-default"
       >
         <div class="flex-[1] text-start">
           <span class="inline-block pr-6 break-all">{{ court.name }}</span>

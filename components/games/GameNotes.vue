@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white mt-4 border border-gray-200 rounded-2xl max-w-[900px]">
-    <p class="text-lg border-b p-4 font-medium tracking-wide">
+  <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl max-w-[900px]">
+    <p class="text-lg border-b border-dark-border-default p-4 font-medium tracking-wide text-dark-text-primary">
       <font-awesome
           :icon="['far', 'note-sticky']"
           class="text-xl mr-3"
@@ -13,7 +13,7 @@
       >
         <div class="w-full relative group/message">
           <p
-              class="rounded-lg p-3 px-4 quill-message-style bg-gray-100"
+              class="rounded-lg p-3 px-4 quill-message-style bg-dark-surface-elevated text-dark-text-primary"
               v-html="note"
               v-if="note && note !== '<p></p>'"
           />
@@ -25,7 +25,7 @@
                   @click="() => editNote()"
               />
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
                 Edit
               </span>
             </span>
@@ -36,7 +36,7 @@
                   @click="() => showDeleteModal = true"
               />
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
                 Delete
               </span>
             </span>
@@ -56,7 +56,7 @@
               @click="() => addNote()"
           />
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
             Send
           </span>
         </span>

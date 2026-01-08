@@ -17,9 +17,10 @@
                 :prevent-input="true"
                 :required="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
-                 v-if="showDateCalendar">
+                 v-if="showDateCalendar"
+                 style="z-index: 99999 !important; position: absolute !important;">
               <DatePicker v-model:model-value="date" color="blue" :min-date="minDate"/>
             </div>
           </div>

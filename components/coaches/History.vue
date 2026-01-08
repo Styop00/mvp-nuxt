@@ -4,7 +4,7 @@
     :clickable="true"
     :data="data"
     title="Former Teams"
-    class="bg-white "
+    class="bg-dark-surface-default "
   >
   </TableStriped>
 </template>

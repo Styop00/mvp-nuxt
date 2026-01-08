@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="referees && referees.length"
-    class="bg-white min-h-96 flex flex-col gap-4 p-4 items-center w-full rounded-lg"
+    class="bg-dark-surface-default min-h-96 flex flex-col gap-4 p-4 items-center w-full rounded-lg"
   >
     <div class="flex w-full items-start px-2">
       <p
@@ -15,8 +15,8 @@
     </div>
     <!-- Scrollable table container -->
     <div class="overflow-auto w-full text-[12px]">
-      <table class="table-auto w-full border border-gray-300">
-        <thead class="bg-gray-200">
+      <table class="table-auto w-full border border-dark-border-default">
+        <thead class="bg-dark-surface-elevated">
           <tr>
             <th class="px-4 py-2">License</th>
             <th class="px-4 py-2">Name</th>
@@ -81,7 +81,7 @@ function formatDay(day: any) {
 }
 
 function getDayClass(day: any) {
-  if (!day || day.available === null) return "bg-gray-100 text-gray-500";
+  if (!day || day.available === null) return "bg-gray-100 text-dark-text-secondary";
   if (!day.available) return "bg-red-100 text-red-500";
   if (day.games && day.games.length > 0) return "bg-yellow-100 text-yellow-500";
   return "bg-green-100 text-green-500";

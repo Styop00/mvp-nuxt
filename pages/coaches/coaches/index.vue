@@ -10,7 +10,7 @@
           :loading="loading"
           :show-edit="isAdmin"
           :show-delete="isAdmin"
-          class="bg-white min-h-[60vh]"
+          class="bg-dark-surface-default min-h-[60vh]"
           @sorted="sort"
           @editIconClicked="editCoach"
           @deleteIconClicked="showDeleteConfirmation"

@@ -1,19 +1,19 @@
 <template>
   <div
       @click="navigate"
-      class="hover:-translate-y-px h-[135px] w-full no-underline bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+      class="hover:-translate-y-1 h-[135px] w-full no-underline bg-dark-surface-default border border-dark-border-default rounded-xl p-6 shadow-md hover:shadow-lg hover:shadow-brand-primary-color/20 transition-all duration-300 ease-in-out card-hover"
       :class="props.to ? 'cursor-pointer' : ''"
   >
-    <div class="flex  sm:flex-row gap-6 relative h-full">
+    <div class="flex sm:flex-row gap-6 relative h-full">
       <font-awesome :icon="['fas', icon]" class="text-3xl" :class="color"/>
       <div class="content flex w-full">
         <div>
           <span
-              class="text-muted text-sm text-center mb-4 opacity-70 whitespace-nowrap"
+              class="text-dark-text-tertiary text-sm text-center mb-4 whitespace-nowrap"
           >
             {{ text }}
           </span>
-          <p class="text-2xl">
+          <p class="text-2xl text-dark-text-primary font-semibold">
             <template v-if="loading">
               <font-awesome
                   :icon="['fas', 'spinner']"
@@ -27,13 +27,13 @@
         </div>
         <p
             v-if="!!to"
-            class="text-xs absolute bottom-0 right-0 mt-4"
+            class="text-xs absolute bottom-0 right-0 mt-4 font-medium transition-all duration-300 hover:translate-x-1"
             :class="color"
         >
           View all
           <font-awesome
               :icon="['fas', 'arrow-right']"
-              class="text-sm"
+              class="text-sm inline-block ml-1"
               :class="color"
           />
         </p>

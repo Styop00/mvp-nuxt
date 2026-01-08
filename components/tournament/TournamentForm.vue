@@ -23,8 +23,9 @@
               :prevent-input="true"
               :required="true"
           />
-          <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow" @click.stop
-               v-if="showStartDateCalendar">
+          <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow" @click.stop
+               v-if="showStartDateCalendar"
+               style="z-index: 99999 !important; position: absolute !important;"
             <DatePicker v-model:model-value="tournament.startDate"
                         :min-date="tournamentGroup?.startDate ?? moment()"
                         :max-date="tournamentGroup?.endDate ?? null"
@@ -41,8 +42,9 @@
               :prevent-input="true"
               :required="true"
           />
-          <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow" @click.stop
-               v-if="showEndDateCalendar">
+          <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow" @click.stop
+               v-if="showEndDateCalendar"
+               style="z-index: 99999 !important; position: absolute !important;"
             <DatePicker v-model:model-value="tournament.endDate"
                         :min-date="tournament.startDate ?? ''"
                         :max-date="tournamentGroup?.endDate ?? null"
@@ -142,7 +144,7 @@
           </BaseButton>
           <template v-if="!tournament.startDate || !tournament.endDate">
           <span
-              class="absolute bottom-full mb-1 text-xs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
             Start Date and End Date fields are required
           </span>
           </template>

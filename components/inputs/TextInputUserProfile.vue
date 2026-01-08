@@ -11,7 +11,7 @@
     <input
       :type="props.type"
       :placeholder="props.placeholder"
-      class="px-3 py-2 border rounded-[0.35rem] bg-white border-gray-300 outline-none focus:shadow w-2/3"
+      class="px-3 py-2.5 border min-h-11 rounded-lg bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm w-2/3"
       :class="props.inputClasses"
       v-model="inputValue"
       :name="name"

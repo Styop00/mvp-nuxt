@@ -9,7 +9,7 @@
             :data="tableData"
             :loading="loading"
             title="Tournament Groups"
-            class="bg-white"
+            class="bg-dark-surface-default"
             :show-edit="canEdit"
             :show-delete="canEdit"
             @sorted="sort"
@@ -25,7 +25,7 @@
                             @click="() => {selectedGroupToShowTeams=row.id; showGroupsTeams = true}"
                             class="p-1.5 text-base rounded-full hover:text-orange-300 transition text-orange-400 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Teams
               </span>
             </span>
@@ -34,7 +34,7 @@
                             @click="() => navigateTo(`tournament-groups/${row.id}/tournaments`)"
                             class="p-1.5 text-base rounded-full hover:text-purple-400 transition text-purple-500 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Tournaments
               </span>
             </span>
@@ -43,7 +43,7 @@
                             @click="() => navigateTo(`tournament-groups/${row.id}/games`)"
                             class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Games
               </span>
             </span>

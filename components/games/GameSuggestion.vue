@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white mt-4 border border-gray-200 rounded-2xl overflow-hidden">
+  <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl overflow-hidden">
     <p class="text-lg p-4 font-medium border-b tracking-wide flex items-center px-2">
       <span
           class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
@@ -31,14 +31,14 @@
       <div class="flex gap-3 items-center mt-6">
         <BaseButton
             v-if="canAccept"
-            class="text-white text-sm !py-2 !px-4 rounded-md border hover:text-brand-secondary-color hover:bg-white bg-brand-secondary-color border-brand-secondary-color"
+            class="text-white text-sm !py-2 !px-4 rounded-md border hover:text-brand-secondary-color hover:bg-dark-surface-default bg-brand-secondary-color border-brand-secondary-color"
             type="button"
             @on-click="() => showAcceptConfirmation = true"
         >
           Accept
         </BaseButton>
         <BaseButton
-            class="text-sm !py-2 !px-4 rounded-md bg-white border border-sky-400 !text-sky-500 hover:!text-white hover:bg-sky-400"
+            class="text-sm !py-2 !px-4 rounded-md bg-dark-surface-default border border-sky-400 !text-sky-500 hover:!text-white hover:bg-sky-400"
             type="button"
             @on-click="checkSuggestion"
         >
@@ -46,7 +46,7 @@
         </BaseButton>
         <BaseButton
             v-if="canReject"
-            class="text-white text-sm !py-2 !px-4 rounded-md border bg-red-500 border-red-500 hover:bg-white hover:text-red-500"
+            class="text-white text-sm !py-2 !px-4 rounded-md border bg-red-500 border-red-500 hover:bg-dark-surface-default hover:text-red-500"
             type="button"
             @on-click="() => showRejectConfirmation = true"
         >

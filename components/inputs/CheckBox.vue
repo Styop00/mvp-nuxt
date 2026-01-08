@@ -61,10 +61,10 @@ watch(inputValue, (value, oldValue) => {
 
 <style scoped>
 .form-check-input {
-  --bs-form-check-bg: #fff;
+  --bs-form-check-bg: #1E293B;
   flex-shrink: 0;
-  width: 1em;
-  height: 1em;
+  width: 1.125em;
+  height: 1.125em;
   margin-block-start: 0.25em;
   vertical-align: top;
   -webkit-appearance: none;
@@ -74,23 +74,56 @@ watch(inputValue, (value, oldValue) => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  border: 1px solid gray;
+  background-color: #1E293B;
+  border: 2px solid #334155;
+  border-radius: 0.375rem;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
   cursor: pointer;
+  transition: all 200ms;
+}
+
+.form-check-input:hover {
+  border-color: #475569;
+  background-color: #334155;
+}
+
+.form-check-input:focus {
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  outline: none;
 }
 
 .form-check-input[type=checkbox] {
-  border-radius: 0.25em;
+  border-radius: 0.375rem;
 }
 
 .form-check-input:checked {
-  background-color: #111c43;
-  border-color: #0d6efd;
+  background-color: #6366F1;
+  border-color: #6366F1;
+}
+
+.form-check-input:checked:hover {
+  background-color: #818CF8;
+  border-color: #818CF8;
 }
 
 .form-check-input:checked[type=checkbox] {
   --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+.form-check-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #1E293B;
+  border-color: #334155;
+}
+
+label {
+  color: #F1F5F9;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
 }
 
 </style>

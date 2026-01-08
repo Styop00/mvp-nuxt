@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 xl:w-2/3 w-full bg-white ">
+  <div class="p-6 xl:w-2/3 w-full bg-dark-surface-default ">
     <form @submit.prevent.stop class="space-y-6  w-full">
       <p
         class="text-base font-bold pb-4 flex items-center justify-start tracking-widest"

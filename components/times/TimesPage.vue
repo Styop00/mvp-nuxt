@@ -9,7 +9,7 @@
             :clickable="false"
             :data="timeSlotsData"
             title="Times"
-            class="bg-white min-h-96 flex flex-col justify-between"
+            class="bg-dark-surface-default min-h-96 flex flex-col justify-between"
             :show-edit="true"
             :show-delete="true"
             @sorted="sort"
@@ -48,9 +48,10 @@
                         :required="true"
                         class="min-w-52"
                     />
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                          @click.stop
-                         v-if="showRangeCalendar">
+                         v-if="showRangeCalendar"
+                         style="z-index: 99999 !important; position: absolute !important;"
                       <BaseButton
                           class="!py-1 !px-1 mx-auto mt-2 text-xs sm:text-base sm:!px-8 block"
                           @click="() => {range = []; showRangeCalendar = false}"
@@ -78,7 +79,7 @@
                             @click="() => navigateTo(`times/${row.id}/reservations`)"
                             class="p-1.5 text-base rounded-full hover:text-lime-400 transition text-lime-500 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
                 Reservations
               </span>
             </span>

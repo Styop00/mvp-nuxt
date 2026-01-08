@@ -24,9 +24,10 @@
                     :prevent-input="true"
                     :required="true"
                 />
-                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                      @click.stop
-                     v-if="showRangeCalendar">
+                     v-if="showRangeCalendar"
+                     style="z-index: 99999 !important; position: absolute !important;">
                   <RangePicker
                       @close="showRangeCalendar = false"
                       v-model:model-value="range"
@@ -67,14 +68,14 @@
           </div>
           <div class="mt-4 flex w-full flex-wrap items-center gap-4">
             <template v-for="(group, index) in groups">
-              <div class="px-2 py-1 bg-gray-200 flex items-center gap-2 rounded-xl">
+              <div class="px-2 py-1 bg-dark-surface-elevated flex items-center gap-2 rounded-xl">
                 <p class="text-sm">
                   {{ group.name }}
                 </p>
                 <font-awesome
                     :icon="['fas', 'xmark']"
                     @click="() => unSelect(index)"
-                    class="text-gray-400 hover:text-black cursor-pointer"
+                    class="text-dark-text-tertiary hover:text-red-400 cursor-pointer transition-colors duration-200"
                 />
               </div>
             </template>

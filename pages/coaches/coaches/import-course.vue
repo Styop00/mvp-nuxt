@@ -1,7 +1,7 @@
 <template>
   <div class="py-2 lg:p-6 ">
     <Breadcrumb />
-    <div class="rounded-lg overflow-hidden p-6 xl:w-2/3 w-full bg-white">
+    <div class="rounded-lg overflow-hidden p-6 xl:w-2/3 w-full bg-dark-surface-default">
       <div>
         <CoachForm
           @unsavedChanges="handleUnsavedChanges"

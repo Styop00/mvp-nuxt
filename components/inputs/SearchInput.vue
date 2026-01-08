@@ -1,14 +1,10 @@
 <template>
-  <div class="relative my-3 mr-2 ">
+  <div class="relative">
     <input
       v-model="searchQuery"
       type="text"
       :placeholder="placeholder"
-      class="p-2 pl-10 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-    <font-awesome
-      :icon="['fas', 'magnifying-glass']"
-      class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+      class="px-3 py-2.5 pl-10 border min-h-11 border-dark-border-default bg-dark-bg-primary text-sm text-dark-text-primary rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-brand-primary-color focus:border-brand-primary-color transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm"
     />
   </div>
 </template>

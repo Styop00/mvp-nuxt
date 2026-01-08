@@ -46,9 +46,10 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                 @click.stop
                 v-if="showDateCalendarStart"
+                style="z-index: 99999 !important; position: absolute !important;"
               >
                 <DatePicker v-model:model-value="coach.start" color="blue" />
               </div>
@@ -69,7 +70,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarEnd"
               >
@@ -93,7 +94,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarMStart"
               >
@@ -116,7 +117,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarMEnd"
               >
@@ -140,9 +141,10 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                 @click.stop
                 v-if="showDateCalendarBStart"
+                style="z-index: 99999 !important; position: absolute !important;"
               >
                 <DatePicker v-model:model-value="bLicenseStart" color="blue" />
               </div>
@@ -163,7 +165,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarBEnd"
               >
@@ -187,7 +189,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarTStart"
               >
@@ -210,7 +212,7 @@
                 <font-awesome :icon="['fas', 'x']" />
               </button>
               <div
-                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+                class="absolute bottom-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
                 @click.stop
                 v-if="showDateCalendarTEnd"
               >

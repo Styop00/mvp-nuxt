@@ -1,8 +1,8 @@
 <template>
   <div
-    class="flex flex-col w-full  h-fit xl:w-1/2 pt-4 border-t  border-gray-300"
+    class="flex flex-col w-full  h-fit xl:w-1/2 pt-4 border-t  border-dark-border-default"
   >
-    <div class="flex pb-4  text-[18px] border-b border-gray-300 font-bold">
+    <div class="flex pb-4  text-[18px] border-b border-dark-border-default font-bold">
       <div class="flex-[2] text-start ">Club</div>
       <div class="flex-[0.5] text-start">License</div>
       <div
@@ -16,7 +16,7 @@
       <div
         v-for="(clubVenue, index) in pseudoClubTableData"
         :key="index"
-        class="flex py-2 border-b border-gray-300"
+        class="flex py-2 border-b border-dark-border-default"
       >
         <div class="flex-[2] text-start">
           <span class="inline-block pr-6">{{ clubVenue.club.name }}</span>

@@ -2,9 +2,9 @@
   <button
       :disabled="!isReady"
       @click="() => login()"
-      class="flex justify-center items-center bg-gray-100 h-[32px] w-[32px] rounded-sm hover:bg-gray-200 transition-colors duration-200 ease-in-out delay-15"
+      class="flex justify-center items-center bg-dark-surface-elevated border border-dark-border-default h-[32px] w-[32px] rounded-sm hover:bg-dark-bg-hover transition-colors duration-200 ease-in-out delay-15"
   >
-    <font-awesome :icon="['fab', 'google']" class="text-gray-500 text-sm"/>
+    <font-awesome :icon="['fab', 'google']" class="text-dark-text-secondary text-sm"/>
   </button>
 </template>
 

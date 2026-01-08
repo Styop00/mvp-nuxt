@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-6">
-    <p class="text-[32px] font-bold mb-6 pl-6">{{ $t('dashboard') }}</p>
+  <div class="mt-6 animate-fade-in">
+    <p class="text-[32px] font-bold mb-6 pl-6 text-dark-text-primary">{{ $t('dashboard') }}</p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 items-center justify-center gap-6 px-6">
       <DashboardItem

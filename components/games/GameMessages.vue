@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white mt-4 border border-gray-200 rounded-2xl max-w-[900px]">
-    <p class="text-lg border-b p-4 font-medium tracking-wide">
+  <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl max-w-[900px]">
+    <p class="text-lg border-b border-dark-border-default p-4 font-medium tracking-wide text-dark-text-primary">
       <font-awesome :icon="['far', 'comments']" class="text-xl mr-3"/>
       Messages
     </p>
@@ -12,7 +12,7 @@
             :class="isFromGuestTeam(message.writer) ? 'flex-row-reverse' : ''"
         >
           <div
-              class="w-12 rounded-full flex items-center justify-center overflow-hidden h-12 bg-gray-200"
+              class="w-12 rounded-full flex items-center justify-center overflow-hidden h-12 bg-dark-surface-elevated"
           >
             <img
                 v-if="message.writer?.picture"
@@ -33,7 +33,7 @@
                   class="rounded-lg p-2 px-4 quill-message-style"
                   v-html="message.html"
                   v-if="message.html && message.html !== '<p></p>'"
-                  :class="isFromGuestTeam(message.writer) ? 'bg-teal-100' : isFromHomeTeam(message.writer) ? 'bg-green-100' : 'bg-gray-100'"
+                  :class="isFromGuestTeam(message.writer) ? 'bg-teal-900/30 text-teal-100' : isFromHomeTeam(message.writer) ? 'bg-green-900/30 text-green-100' : 'bg-dark-surface-elevated text-dark-text-primary'"
               />
               <div class="flex flex-wrap gap-4 mt-2" v-if="message.attachments?.length">
                 <template v-for="attachment in message.attachments">
@@ -42,7 +42,7 @@
                     <img :src="apiUrl + attachment.filePath" alt="#" class="h-16 rounded-md group-hover:opacity-40">
                     <font-awesome
                         :icon="['fas', 'magnifying-glass-plus']"
-                        class="text-xl cursor-pointer absolute text-gray-500 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 invisible group-hover:visible"
+                        class="text-xl cursor-pointer absolute text-dark-text-secondary left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 invisible group-hover:visible"
                     />
                   </div>
                 </template>
@@ -79,7 +79,7 @@
               @click="addMessage"
           />
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
             Send
           </span>
         </span>
@@ -97,7 +97,7 @@
             />
             <font-awesome
                 :icon="['fas', 'trash-can']"
-                class="text-xl cursor-pointer absolute text-gray-500 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 invisible group-hover:visible"
+                class="text-xl cursor-pointer absolute text-dark-text-secondary left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 invisible group-hover:visible"
             />
           </div>
         </template>

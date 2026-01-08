@@ -1,5 +1,5 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" @close="handleModalClose">
+  <BaseModalComponent v-model:visible="modal" :position="'top'" @close="handleModalClose">
     <div class="p-3 relative">
       <font-awesome
         :icon="['fas', 'xmark']"

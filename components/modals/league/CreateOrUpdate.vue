@@ -20,9 +20,10 @@
                 :prevent-input="true"
                 :required="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
-                 v-if="showStartDateCalendar">
+                 v-if="showStartDateCalendar"
+                 style="z-index: 99999 !important; position: absolute !important;"
               <DatePicker v-model:model-value="startDate" color="blue"/>
             </div>
           </div>
@@ -35,9 +36,10 @@
                 :prevent-input="true"
                 :required="true"
             />
-            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
-                 v-if="showEndDateCalendar">
+                 v-if="showEndDateCalendar"
+                 style="z-index: 99999 !important; position: absolute !important;"
               <DatePicker v-model:model-value="endDate" color="blue" :min-date="startDate"/>
             </div>
           </div>

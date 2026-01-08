@@ -10,7 +10,7 @@
         :loading="loading"
         :show-edit="isAdmin"
         :show-delete="isAdmin"
-        class="bg-white"
+        class="bg-dark-surface-default"
         @sorted="sort"
         @editIconClicked="editFederation"
         @deleteIconClicked="showDeleteConfirmation"

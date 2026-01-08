@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-10">
     <div
-      class="p-6 bg-white w-full border-t rounded-2xl grid grid-cols-1 gap-y-2"
+      class="p-6 bg-dark-surface-default w-full border-t rounded-2xl grid grid-cols-1 gap-y-2"
     >
       <div class="flex gap-3 items-center">
         <span>Master Data</span>
@@ -21,7 +21,7 @@
             v-if="isEditingName"
             v-model="editedName"
             type="text"
-            class="border border-gray-300 p-2 rounded w-[300px]"
+            class="border border-dark-border-default p-2 rounded w-[300px]"
           />
           <span v-else @click="enableEditing" class="cursor-pointer">
             {{ coach.person ? coach.person.name : 'Loading...' }}

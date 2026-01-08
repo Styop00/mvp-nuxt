@@ -1,16 +1,16 @@
 <template>
   <div class="flex items-center justify-between gap-2">
     <div @click="() => setPage(page - 1)"
-         :class="page === 1 ? 'opacity-50 bg-gray-200 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-200'"
-         class="px-2 py-1 rounded-lg border flex items-center justify-center">
+         :class="page === 1 ? 'opacity-50 bg-dark-surface-elevated cursor-not-allowed' : 'cursor-pointer hover:bg-dark-surface-elevated'"
+         class="px-2 py-1 rounded-lg border border-dark-border-default flex items-center justify-center text-dark-text-primary transition-colors duration-200">
       <font-awesome :icon="['fas', 'chevron-left']" class="text-xs"/>
     </div>
     <template v-for="num in pageCount">
       <template v-if="showPagePagination(num)">
         <div @click="() => setPage(num)"
              :key="num"
-             class="px-2 py-1 rounded-lg cursor-pointer border flex items-center justify-center text-sm"
-             :class="num === page ? 'text-white bg-black' : 'hover:bg-gray-200'"
+             class="px-2 py-1 rounded-lg cursor-pointer border border-dark-border-default flex items-center justify-center text-sm transition-colors duration-200"
+             :class="num === page ? 'text-dark-text-primary bg-brand-primary-color' : 'hover:bg-dark-surface-elevated text-dark-text-primary'"
         >
           {{ num }}
         </div>
@@ -24,8 +24,8 @@
       </template>
     </template>
     <div @click="() => setPage(page + 1)"
-         :class="page === pageCount ? 'opacity-50 bg-gray-200 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-200'"
-         class="px-2 py-1 rounded-lg border flex items-center justify-center">
+         :class="page === pageCount ? 'opacity-50 bg-dark-surface-elevated cursor-not-allowed' : 'cursor-pointer hover:bg-dark-surface-elevated'"
+         class="px-2 py-1 rounded-lg border border-dark-border-default flex items-center justify-center text-dark-text-primary transition-colors duration-200">
       <font-awesome :icon="['fas', 'chevron-right']" class="text-xs"/>
     </div>
   </div>

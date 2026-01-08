@@ -6,106 +6,106 @@
       </h3>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <label class="block text-sm font-medium text-dark-text-primary">Email</label>
           <input
             v-model="email"
             type="email"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             required
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Name</label>
+          <label class="block text-sm font-medium text-dark-text-primary">Name</label>
           <input
             v-model="name"
             type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Picture URL</label
           >
           <input
             v-model="picture"
             type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Disable Emails</label
           >
           <input
             v-model="disableEmails"
             type="checkbox"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">License</label>
+          <label class="block text-sm font-medium text-dark-text-primary">License</label>
           <input
             v-model="license"
             type="number"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700">Gender</label>
+          <label class="block text-sm font-medium text-dark-text-primary">Gender</label>
           <input
             v-model="gender"
             type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Birth Year</label
           >
           <input
             v-model="birthYear"
             type="number"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Birth Month</label
           >
           <input
             v-model="birthMonth"
             type="number"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Birth Day</label
           >
           <input
             v-model="birthDay"
             type="number"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Nationality</label
           >
           <input
             v-model="nationality"
             type="text"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700"
+          <label class="block text-sm font-medium text-dark-text-primary"
             >Is Verified</label
           >
           <input
             v-model="isVerified"
             type="checkbox"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            class="mt-1 block w-full rounded-md border-dark-border-default shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </div>
         <div class="flex justify-end">

@@ -1,150 +1,206 @@
 <template>
-  <div class="p-6">
-    <Breadcrumb />
-    <div class="flex gap-8 flex-wrap lg:flex-nowrap">
-      <div class="rounded-lg bg-white p-6 xl:w-2/3 w-full">
-        <p
-          class="text-base p-4 font-bold flex items-center justify-start tracking-widest"
-        >
-          <span
-            class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
-          />
-          Profile
-        </p>
-        <div class="p-4">
-          <div class="flex items-center">
-            <div
-              class="relative rounded-full w-[85px] h-[85px] overflow-hidden hover:bg-gray-100 bg-gray-100 some"
-            >
-              <input
-                type="file"
-                class="hidden"
-                ref="fileInput"
-                @click.stop
-                @change="onChangeFile"
-                accept="image/png, image/jpeg, image/jpg"
-              />
+  <div class="py-2 sm:py-4 lg:p-6 px-2 sm:px-4">
+    <div class="animate-fade-in">
+      <Breadcrumb />
+      <div class="flex flex-col xl:flex-row gap-6 lg:gap-8 mt-4">
+        <!-- Profile Information Card -->
+        <div class="rounded-2xl bg-dark-surface-default shadow-xl border border-dark-border-default xl:w-2/3 w-full">
+          <!-- Header -->
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-dark-border-default bg-gradient-to-r from-dark-surface-default/50 to-dark-bg-primary/30 rounded-t-2xl">
+            <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-dark-text-primary">
+              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
+              Profile Information
+            </p>
+          </div>
 
-              <button
-                class="absolute inset-0 flex items-center justify-center bg-gray-200 opacity-0 hover:opacity-50 transition-opacity duration-300 "
-              >
-                <font-awesome
-                  :icon="['fas', 'upload']"
-                  class="w-6 h-6 text-gray-900 "
+          <!-- Avatar Section -->
+          <div class="p-6 border-b border-dark-border-default bg-gradient-to-br from-dark-bg-primary/30 to-dark-surface-default/30 overflow-hidden rounded-t-2xl">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              <div class="relative group">
+                <div
+                  class="relative rounded-full w-24 h-24 sm:w-28 sm:h-28 overflow-hidden border-4 border-dark-border-default hover:border-brand-primary-color transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl hover:shadow-brand-primary-color/20"
                   @click="selectFiles"
-                />
-              </button>
+                >
+                  <input
+                    type="file"
+                    class="hidden"
+                    ref="fileInput"
+                    @click.stop
+                    @change="onChangeFile"
+                    accept="image/png, image/jpeg, image/jpg"
+                  />
 
-              <div
-                v-if="!user.picture"
-                class="user-icon absolute inset-0 flex items-center justify-center bg-gray-200 opacity-50 hover:opacity-0 transition-opacity duration-300 "
-              >
-                <font-awesome :icon="['fas', 'user']" class="m-auto w-6 h-6" />
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-dark-surface-elevated/90 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm z-10"
+                  >
+                    <div class="flex flex-col items-center gap-2">
+                      <font-awesome
+                        :icon="['fas', 'upload']"
+                        class="w-6 h-6 text-brand-primary-color"
+                      />
+                      <span class="text-xs font-semibold text-dark-text-primary">Upload</span>
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="!user.picture"
+                    class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-dark-surface-elevated to-dark-bg-secondary"
+                  >
+                    <font-awesome :icon="['fas', 'user']" class="w-10 h-10 sm:w-12 sm:h-12 text-dark-text-tertiary" />
+                  </div>
+
+                  <img
+                    v-if="user.picture"
+                    :src="`${apiUrl}${userData.picture}`"
+                    alt="User's profile picture"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-brand-primary-color rounded-full border-4 border-dark-surface-default flex items-center justify-center shadow-lg">
+                  <font-awesome :icon="['fas', 'camera']" class="text-white text-xs"/>
+                </div>
               </div>
 
-              <img
-                v-if="user.picture"
-                :src="`${apiUrl}${userData.picture}`"
-                alt="User's profile picture"
-                class="w-full h-full object-cover hover:opacity-0 transition-opacity duration-300"
-              />
+              <div class="flex flex-col items-center sm:items-start flex-1 text-center sm:text-left">
+                <h2 class="text-2xl sm:text-3xl font-bold text-dark-text-primary mb-2">
+                  {{ user.name ? user.name : "User" }}
+                </h2>
+                <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                  <span
+                    v-for="(role, index) in user.roles"
+                    :key="index"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary-color/10 text-brand-primary-color border border-brand-primary-color/20"
+                  >
+                    {{ role.description }}
+                  </span>
+                </div>
+                <p class="text-sm text-dark-text-secondary mt-3 flex items-center gap-2">
+                  <font-awesome :icon="['fas', 'envelope']" class="text-xs"/>
+                  {{ user.email }}
+                </p>
+              </div>
             </div>
+          </div>
 
-            <div class="flex flex-col pl-5 w-2/3">
-              <p class="text-nowrap text-black text-[24px] ">
-                {{ user.name ? user.name : "" }}
-              </p>
-              <p
-                class="text-wrap text-black text-sm "
-                v-html="user.roles.map((role: any) => `<span>${role.description}</span>`).join(', ')"
-              ></p>
+          <!-- Error Messages -->
+          <div class="px-6 pt-4 space-y-2">
+            <div
+              v-if="errorMessageInvalidTypeOfPicture"
+              class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm"
+            >
+              <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+              <span>Only .png, .jpg and .jpeg format allowed!</span>
             </div>
+            <div
+              v-if="errorMessageInvalidSize"
+              class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm"
+            >
+              <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+              <span>The file size exceeds 2MB. Please choose a different file.</span>
+            </div>
+          </div>
+
+          <!-- User Form -->
+          <div class="p-6">
+            <UserForm :userId="user.id" :showDisableEmails="showDisableEmails" />
           </div>
         </div>
-        <p
-          v-if="errorMessageInvalidTypeOfPicture"
-          class="ml-4 text-red-600 bg-red-100 text-[10px] border border-red-400 p-2 rounded-lg font-bold w-[190px]"
-        >
-          Only .png, .jpg and .jpeg format allowed!
-        </p>
-        <p
-          v-if="errorMessageInvalidSize"
-          class="ml-4 text-red-600 bg-red-100 text-[10px] border border-red-400 p-2 rounded-lg font-bold w-[190px]"
-        >
-          'The file size exceeds 2MB. Please choose a different file.'
-        </p>
 
-        <UserForm :userId="user.id" :showDisableEmails="showDisableEmails" />
-      </div>
-      <div class="rounded-lg bg-white p-6 xl:w-1/3 sm:w-1/2 w-full">
-        <p
-          class="text-base p-4 font-bold flex items-center justify-start tracking-widest"
-        >
-          <span
-            class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
-          />
-          Change password
-        </p>
-        <form @submit.prevent="changePassword" class="p-4">
-          <div class="mb-5">
-            <label
-              for="signup-password"
-              class="block mb-2 font-inter-medium font-intel text-xs"
-              >Current Password</label
-            >
-            <PasswordInput
-              v-model="currentPassword"
-              type="password"
-              name="psw"
-              id="signup-password"
-              placeholder="Password"
-              required
-            />
+        <!-- Change Password Card -->
+        <div class="rounded-2xl bg-dark-surface-default shadow-xl border border-dark-border-default xl:w-1/3 w-full">
+          <!-- Header -->
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-dark-border-default bg-gradient-to-r from-dark-surface-default/50 to-dark-bg-primary/30 rounded-t-2xl">
+            <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-dark-text-primary">
+              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
+              Change Password
+            </p>
           </div>
-          <div class="mb-5">
-            <label
-              for="signup-password"
-              class="block mb-2 font-inter-medium font-intel text-xs"
-              >New Password</label
-            >
-            <PasswordInput
-              v-model="password"
-              type="password"
-              name="psw"
-              id="signup-password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div class="mb-5">
-            <label
-              for="signup-confirm-password"
-              class="block mb-2 font-inter-medium font-intel text-xs"
-              >Confirm Password</label
-            >
-            <PasswordInput
-              v-model="confirmPassword"
-              type="password"
-              name="confirmPsw"
-              id="signup-confirm-password"
-              placeholder="Confirm Password"
-              required
-            />
-          </div>
-          <p v-if="!isCorrectCurrentPassword" class="text-red-500 text-xs my-2">
-            Incorrect current password
-          </p>
-         
-          <p v-if="errorMessage" class="text-red-500 text-xs my-2">
-            {{ errorMessage }}
-          </p>
-          <BaseButton
-            type="submit"
-            class="flex items-center justify-center w-full p-3 mb-4"
-          >
-            <p class="text-white">Change</p>
-          </BaseButton>
-        </form>
+
+          <!-- Password Form -->
+          <form @submit.prevent="changePassword" class="p-6">
+            <div class="space-y-5">
+              <div>
+                <label
+                  for="current-password"
+                  class="block mb-2 text-sm font-semibold text-dark-text-primary"
+                >
+                  Current Password
+                </label>
+                <PasswordInput
+                  v-model="currentPassword"
+                  type="password"
+                  name="currentPsw"
+                  id="current-password"
+                  placeholder="Enter current password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="new-password"
+                  class="block mb-2 text-sm font-semibold text-dark-text-primary"
+                >
+                  New Password
+                </label>
+                <PasswordInput
+                  v-model="password"
+                  type="password"
+                  name="newPsw"
+                  id="new-password"
+                  placeholder="Enter new password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  for="confirm-password"
+                  class="block mb-2 text-sm font-semibold text-dark-text-primary"
+                >
+                  Confirm Password
+                </label>
+                <PasswordInput
+                  v-model="confirmPassword"
+                  type="password"
+                  name="confirmPsw"
+                  id="confirm-password"
+                  placeholder="Confirm new password"
+                  required
+                />
+              </div>
+
+              <!-- Error Messages -->
+              <div class="space-y-2">
+                <div
+                  v-if="!isCorrectCurrentPassword"
+                  class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm"
+                >
+                  <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+                  <span>Incorrect current password</span>
+                </div>
+                <div
+                  v-if="errorMessage"
+                  class="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/50 text-red-400 text-sm"
+                >
+                  <font-awesome :icon="['fas', 'triangle-exclamation']" class="text-red-400"/>
+                  <span>{{ errorMessage }}</span>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <BaseButton
+                type="submit"
+                class="w-full py-3 mt-2 font-semibold"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <font-awesome :icon="['fas', 'key']" class="text-sm"/>
+                  Change Password
+                </span>
+              </BaseButton>
+            </div>
+          </form>
+        </div>
       </div>
 
       <SuccessAlert
@@ -269,7 +325,8 @@ errorMessage.value = ""
 </script>
 
 <style scoped>
-.some:hover .user-icon {
+/* Avatar hover effects */
+.group:hover .user-icon {
   display: none;
 }
 </style>

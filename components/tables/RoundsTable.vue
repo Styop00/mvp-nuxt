@@ -7,7 +7,7 @@
       <p class="text-center">Not Playable</p>
     </div>
     <template v-for="round in rounds">
-      <div class="grid grid-cols-4 hover:bg-gray-200 px-2 items-center rounded-sm gap-4 text-xs">
+      <div class="grid grid-cols-4 hover:bg-dark-surface-elevated px-2 items-center rounded-sm gap-4 text-xs">
         <span class="text-center">
           {{round.number ? round.type === 2 ? `${round.number} + ${round.number + 1}` : round.number : "--"}}
         </span>

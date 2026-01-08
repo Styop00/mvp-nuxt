@@ -10,7 +10,7 @@
           :loading="loading"
           :show-edit="true"
           :show-delete="true"
-          class="bg-white"
+          class="bg-dark-surface-default"
           :fixed-table="true"
           action-column-classes="w-40"
           @sorted="sort"
@@ -56,14 +56,14 @@
               </div>
               <div class="flex flex-wrap w-2/3 my-4 items-center gap-4" v-if="selectedRoles.length">
                 <template v-for="(role, index) in selectedRoles">
-                  <div class="px-2 py-1 bg-gray-200 flex items-center gap-2 rounded-xl">
+                  <div class="px-2 py-1 bg-dark-surface-elevated flex items-center gap-2 rounded-xl">
                     <p class="text-sm text-nowrap">
                       {{ role.label }}
                     </p>
                     <font-awesome
                         :icon="['fas', 'xmark']"
                         @click="() => unSelect(index)"
-                        class="text-gray-400 hover:text-black cursor-pointer"
+                        class="text-dark-text-tertiary hover:text-red-500 cursor-pointer transition-colors duration-200"
                     />
                   </div>
                 </template>
@@ -84,7 +84,7 @@
                 class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"
             />
             <span
-                class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
               Games
             </span>
           </span>
@@ -95,7 +95,7 @@
                   @click="navigateTo(`users/${row.coach_id}/coach`)"
               />
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-white p-px shadow-2xl px-3 right-0 border"
+                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default p-px shadow-2xl px-3 right-0 border"
               >
               View
             </span>

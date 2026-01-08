@@ -18,9 +18,10 @@
                   :prevent-input="true"
                   :required="true"
               />
-              <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow"
+              <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                    @click.stop
-                   v-if="showStartDateCalendar">
+                   v-if="showStartDateCalendar"
+                   style="z-index: 99999 !important; position: absolute !important;"
                 <DatePicker
                     v-model:model-value="tournamentGroup.startDate"
                     :min-date="league ? league.startDate : null"
@@ -46,8 +47,9 @@
                   :prevent-input="true"
                   :required="true"
               />
-              <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow" @click.stop
-                   v-if="showEndDateCalendar">
+              <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow" @click.stop
+                   v-if="showEndDateCalendar"
+                   style="z-index: 99999 !important; position: absolute !important;"
                 <DatePicker v-model:model-value="tournamentGroup.endDate"
                             :min-date="tournamentGroup.startDate ?? ''"
                             color="blue"

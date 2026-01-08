@@ -4,7 +4,7 @@
       <div>
         <Breadcrumb/>
         <div
-            class="bg-white min-h-96 flex flex-col gap-10 p-4 items-center w-full rounded-lg"
+            class="bg-dark-surface-default min-h-96 flex flex-col gap-10 p-4 items-center w-full rounded-lg"
         >
           <div class="flex w-full items-start px-2">
             <p
@@ -70,13 +70,13 @@
             >
           </div>
           <template v-if="games.length > 0">
-            <div class="border border-gray-200 w-full">
+            <div class="border border-dark-border-default w-full">
               <div
                   v-for="(row, index) in [...games]"
                   :key="index"
-                  class="table-row grid grid-cols-[2fr_0.3fr_1.5fr_1.5fr_1.5fr_0.5fr] h-[120px] border-b border-gray-200"
+                  class="table-row grid grid-cols-[2fr_0.3fr_1.5fr_1.5fr_1.5fr_0.5fr] h-[120px] border-b border-dark-border-default"
               >
-                <div class="table-cell text-xs p-2 border-r border-gray-200">
+                <div class="table-cell text-xs p-2 border-r border-dark-border-default">
                   <span class="text-sm">
                     {{ getDayOfWeek(row.date ? row.date : '') }} {{ row.date }}
                     {{ row.time }}
@@ -94,7 +94,7 @@
                     row.starRating || 0
                   }}/{{ row.tournament.tournamentGroup.tournamentConfig.refPrio || 0 }}
                 </div>
-                <div class="table-cell text-xs p-2 border-r border-gray-200">
+                <div class="table-cell text-xs p-2 border-r border-dark-border-default">
                   <font-awesome
                       :icon="['fas', 'arrow-down-wide-short']"
                       class="cursor-pointer w-full"
@@ -103,7 +103,7 @@
                 <div
                     v-for="(gamePlan, pos) in getProcessedGamePlans(row.id)"
                     :key="`gamePlan_${gamePlan.id}_${pos}`"
-                    class="table-cell flex items-center text-xs justify-center p-2 border-r border-gray-200"
+                    class="table-cell flex items-center text-xs justify-center p-2 border-r border-dark-border-default"
                     :class="['table-cell', 'card', 'flex', 'flex-col', 'items-center', 'justify-center', getBgColor(gamePlan.gameRoleId, row.tournament.tournamentGroup.tournamentConfig.refsPerGame, gamePlan.statusId, gamePlan.userId), getColor(gamePlan.gameRoleId, row.tournament.tournamentGroup.tournamentConfig.refsPerGame, gamePlan.statusId, gamePlan.userId)]"
                     @click="refBoxClick(row.id, gamePlan.user?.referee?.id || 0, gamePlan.gameRoleId)"
                 >
@@ -293,7 +293,7 @@ function getBgColor(roleId: number, refsPerGame: number, statusId: number, userI
     if (roleId <= refsPerGame) {
       return "bg-red-100"
     } else {
-      return "bg-white";
+      return "bg-dark-surface-default";
     }
   } else if (String(userId) == "-2") {
     return "bg-yellow-300"

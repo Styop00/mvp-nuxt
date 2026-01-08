@@ -10,13 +10,13 @@
           <div class="flex gap-4 items-center justify-center ">
             <BaseButton
                 @on-click="() => selectedComponent = AddPlayerForm"
-                class="!border-brand-primary-color border !py-3 !px-6 hover:bg-white hover:!text-brand-primary-color"
+                class="!border-brand-primary-color border !py-3 !px-6 hover:bg-dark-surface-default hover:!text-brand-primary-color"
             >
               Add Player
             </BaseButton>
             <BaseButton
                 @on-click="() => selectedComponent = AddMvpUserForm"
-                class="bg-white border hover:!bg-brand-primary-color !py-3 !px-6 border-brand-primary-color !text-brand-primary-color hover:!text-white">
+                class="bg-dark-surface-default border hover:!bg-brand-primary-color !py-3 !px-6 border-brand-primary-color !text-brand-primary-color hover:!text-white">
               Add MVP User
             </BaseButton>
           </div>

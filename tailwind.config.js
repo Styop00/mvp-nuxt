@@ -2,7 +2,7 @@
 export default {
   content: [],
   presets: [],
-  darkMode: "media", // or 'class'
+  darkMode: "class", // Enable class-based dark mode
   theme: {
     accentColor: ({ theme }) => ({
       ...theme("colors"),
@@ -14,6 +14,14 @@ export default {
       ping: "ping 1s cubic-bezier(0, 0, 0.2, 1) infinite",
       pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       bounce: "bounce 1s infinite",
+      "fade-in": "fade-in 0.2s ease-out",
+      "fade-out": "fade-out 0.2s ease-in",
+      "slide-in-right": "slide-in-right 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "slide-in-left": "slide-in-left 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "slide-out-right": "slide-out-right 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "slide-out-left": "slide-out-left 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "scale-in": "scale-in 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      "scale-out": "scale-out 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
     },
     aria: {
       busy: 'busy="true"',
@@ -111,13 +119,15 @@ export default {
       8: "8px",
     },
     boxShadow: {
-      sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-      DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-      md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-      lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-      xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
-      "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
-      inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
+      sm: "0 1px 2px 0 rgb(0 0 0 / 0.3)",
+      DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3)",
+      md: "0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3)",
+      lg: "0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4)",
+      xl: "0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.4)",
+      "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.7)",
+      inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.3)",
+      glow: "0 0 20px rgba(99, 102, 241, 0.3)",
+      "glow-lg": "0 0 30px rgba(99, 102, 241, 0.4)",
       none: "none",
     },
     boxShadowColor: ({ theme }) => theme("colors"),
@@ -162,25 +172,51 @@ export default {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
-      "brand-blue-200": "#a3aed1",
-      "brand-blue-300": "#3d68ff",
-      "brand-blue-400": "#1947ee",
-      "brand-primary-color": "#4A5357",
+      // Dark Theme Colors
+      dark: {
+        bg: {
+          primary: "#0F172A",
+          secondary: "#1E293B",
+          tertiary: "#334155",
+          hover: "#475569",
+        },
+        surface: {
+          default: "#1E293B",
+          elevated: "#334155",
+        },
+        text: {
+          primary: "#F8FAFC",
+          secondary: "#CBD5E1",
+          tertiary: "#94A3B8",
+          disabled: "#64748B",
+        },
+        border: {
+          default: "#334155",
+          light: "#475569",
+          dark: "#1E293B",
+          focus: "#6366F1",
+        },
+      },
+      // Legacy brand colors (updated for dark theme)
+      "brand-blue-200": "#818CF8",
+      "brand-blue-300": "#6366F1",
+      "brand-blue-400": "#4F46E5",
+      "brand-primary-color": "#6366F1",
       "brand-secondary-color": "#00D9C0",
-      "brand-blue-hover": "#27335e",
-      "brand-blue-900": "#0f172a",
-      "brand-green": "#26bf94",
-      "body-gray": "#f0f1f7",
-      "gray-700": "#333335",
-      "input-border": "#e9edf6",
-      "login-reg-bg": "#f3f6f8",
-      "custom-blue": "#23B7E5",
-      "purple-500": "#845adf",
-      "custom-yellow": "#F5B849",
-      "text-muted": "#8c9097",
-      "disabled-gray": '#EFEFEF',
-      "black": '#111111',
-      "brand-gray": '#595959',
+      "brand-blue-hover": "#4F46E5",
+      "brand-blue-900": "#0F172A",
+      "brand-green": "#10B981",
+      "body-gray": "#0F172A",
+      "gray-700": "#334155",
+      "input-border": "#334155",
+      "login-reg-bg": "#0F172A",
+      "custom-blue": "#3B82F6",
+      "purple-500": "#8B5CF6",
+      "custom-yellow": "#F59E0B",
+      "text-muted": "#94A3B8",
+      "disabled-gray": "#1E293B",
+      "black": "#0F172A",
+      "brand-gray": "#64748B",
     }),
     columns: {
       auto: "auto",
@@ -628,6 +664,82 @@ export default {
         "50%": {
           transform: "none",
           animationTimingFunction: "cubic-bezier(0,0,0.2,1)",
+        },
+      },
+      "fade-in": {
+        "0%": {
+          opacity: "0",
+        },
+        "100%": {
+          opacity: "1",
+        },
+      },
+      "fade-out": {
+        "0%": {
+          opacity: "1",
+        },
+        "100%": {
+          opacity: "0",
+        },
+      },
+      "slide-in-right": {
+        "0%": {
+          transform: "translateX(100%)",
+          opacity: "0",
+        },
+        "100%": {
+          transform: "translateX(0)",
+          opacity: "1",
+        },
+      },
+      "slide-in-left": {
+        "0%": {
+          transform: "translateX(-100%)",
+          opacity: "0",
+        },
+        "100%": {
+          transform: "translateX(0)",
+          opacity: "1",
+        },
+      },
+      "slide-out-right": {
+        "0%": {
+          transform: "translateX(0)",
+          opacity: "1",
+        },
+        "100%": {
+          transform: "translateX(100%)",
+          opacity: "0",
+        },
+      },
+      "slide-out-left": {
+        "0%": {
+          transform: "translateX(0)",
+          opacity: "1",
+        },
+        "100%": {
+          transform: "translateX(-100%)",
+          opacity: "0",
+        },
+      },
+      "scale-in": {
+        "0%": {
+          transform: "scale(0.95)",
+          opacity: "0",
+        },
+        "100%": {
+          transform: "scale(1)",
+          opacity: "1",
+        },
+      },
+      "scale-out": {
+        "0%": {
+          transform: "scale(1)",
+          opacity: "1",
+        },
+        "100%": {
+          transform: "scale(0.95)",
+          opacity: "0",
         },
       },
     },

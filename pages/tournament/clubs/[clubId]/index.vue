@@ -1,7 +1,7 @@
 <template>
   <div class="py-2 lg:p-6">
     <Breadcrumb />
-    <div class="rounded-lg overflow-hidden p-6 bg-white">
+    <div class="rounded-lg overflow-hidden p-6 bg-dark-surface-default">
       <div>
         <p
           class="text-base font-bold pb-4 flex items-center justify-start tracking-widest"
