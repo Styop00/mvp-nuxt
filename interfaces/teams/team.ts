@@ -6,23 +6,23 @@ import type UserRole from "~/interfaces/users/userRole";
 
 export default interface Team {
     id: number,
-    clubId: Number | null;
-    localName: String | null;
+    club_id: Number | null;
+    local_name: String | null;
     deleted: boolean;
-    ancestorId: Number | null;
-    calKey: String | null;
+    ancestor_id: Number | null;
+    cal_key: String | null;
     license: Number | null;
-    tournamentName: String | null;
+    tournament_name: String | null;
     gender: String | null;
-    clubRank: Number | null;
-    teamStaff: Array<Users> | []
-    tournamentGroups: Array<TournamentGroup> | []
+    club_rank: Number | null;
+    team_staff: Array<Users> | []
+    tournament_groups: Array<TournamentGroup> | []
     tournaments?: Array<Tournament> | []
     TeamTournament?: Array<any>
-    teamTournamentGroups?: Array<any> | []
-    ageGroup: String | null;
-    officialTypeId: Number;
-    officialTeamId: Number;
+    team_tournament_groups?: Array<any> | []
+    age_group: String | null;
+    official_type_id: Number;
+    official_team_id: Number;
     club?: Clubs;
     user_roles?: UserRole;
 }

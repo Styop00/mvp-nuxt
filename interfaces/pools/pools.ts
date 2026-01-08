@@ -1,8 +1,8 @@
 export default interface Pools {
     id: Number,
     name: String,
-    tournamentId: Number,
-    gamesBetween: Number,
-    teamsCount: Number,
+    tournament_id: Number,
+    games_between: Number,
+    teams_count: Number,
     deleted: Boolean,
 }

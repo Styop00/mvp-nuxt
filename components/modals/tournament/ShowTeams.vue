@@ -35,7 +35,7 @@
       <template v-for="team in teams">
         <div class="grid grid-cols-3 gap-6 items-center justify-between mb-2 text-center">
           <span class="text-start">
-            {{ team.tournamentName }}
+            {{ team.tournament_name }}
           </span>
           <span>
             {{ pools.find((tournamentPool) => tournamentPool.value === team.TeamTournament?.poolId)?.label }}
@@ -116,7 +116,7 @@ watch(() => modal.value, () => {
 
 async function deleteTeamFromTournament(id: number) {
   const team = await fetchTeamById(id)
-  const teamTournament = team.tournaments.find(tournament => tournament.id === props.tournamentId)?.TeamTournament
+  const teamTournament = team?.tournaments?.find(tournament => tournament.id === props.tournamentId)?.pivot
   if (teamTournament) {
     const response = await removeTeamFromTournament(+teamTournament.id)
     if (response) {
@@ -155,7 +155,7 @@ async function fetchTeams() {
   possibleTeams.value = res
   teamOptions.value = res.map(team => {
     return {
-      label: team.tournamentName,
+      label: team.tournament_name,
       value: team.id,
       disabled: false
     } as SelectOptions

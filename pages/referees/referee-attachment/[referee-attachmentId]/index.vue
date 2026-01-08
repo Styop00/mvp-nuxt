@@ -15,6 +15,5 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 const refId = Number(route.query.refId)
 const pos = Number(route.query.pos)
-console.log(refId,"refIdrefIdrefIdrefIdrefId");
 const gameId = Number(route.params.refereeattachmentId)
 </script>

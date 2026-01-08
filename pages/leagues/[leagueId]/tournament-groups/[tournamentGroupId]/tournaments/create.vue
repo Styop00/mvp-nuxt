@@ -46,7 +46,6 @@ import type Rounds from "~/interfaces/rounds/rounds";
 import {usePoolsFetch} from "~/composables/usePoolsFetch/usePoolsFetch";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
-
 const route = useRoute()
 const loading = ref(false)
 const errors = ref({})
@@ -56,23 +55,23 @@ const rounds = ref([] as Array<Rounds>)
 const tournament = ref({
   id: 0,
   alias: '',
-  shortName: '',
-  poolCount: 0,
-  crossPoolGameCount: 0,
-  crossStandingGroupGameCount: 0,
+  short_name: '',
+  pool_count: 0,
+  cross_pool_game_count: 0,
+  cross_standing_group_game_count: 0,
   deleted: false,
-  endDate: '',
+  end_date: '',
   information: '',
-  regionId: null,
-  roundType: 0,
-  standingGroupCount: 0,
-  startDate: '',
-  teamCount: 0,
+  region_id: null,
+  round_type: 0,
+  standing_group_count: 0,
+  start_date: '',
+  team_count: 0,
   pools: [],
   rounds: [],
   region: 0,
-  tournamentGroupId: +route.params.tournamentGroupId,
-  tournamentProgramId: 0,
+  tournament_group_id: +route.params.tournamentGroupId,
+  tournament_program_id: 0,
 } as Tournament)
 const hasUnsavedChanges = ref(false);
 const showUnsavedChangesModal = ref(false);
@@ -105,7 +104,7 @@ async function create(): Promise<void> {
     }
     if (pools.value.length) {
       pools.value = pools.value.map(pool => {
-        pool.tournamentId = res.id
+        pool.tournament_id = res.id
         return pool;
       })
       await createPools(pools.value)
@@ -122,9 +121,9 @@ async function create(): Promise<void> {
 
 async function calculateRounds() {
   rounds.value = await createRounds({
-    tournamentId: tournament.value.id,
-    startDate: tournament.value.startDate,
-    endDate: tournament.value.endDate
+    tournament_id: tournament.value.id,
+    start_date: tournament.value.start_date,
+    end_date: tournament.value.end_date
   })
 }
 
@@ -132,7 +131,7 @@ async function attachRounds() {
   const data = rounds.value.map(round => {
     return {
       ...round,
-      tournamentId: tournament.value.id
+      tournament_id: tournament.value.id
     }
   })
   await attachRoundsToTournaments(data)

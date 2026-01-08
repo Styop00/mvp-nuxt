@@ -197,10 +197,10 @@ async function fetch() {
     leagues.value.push({
       id: data.id,
       name: data.name,
-      start: data.startDate,
-      end: data.endDate,
-      organizer: !data.clubId ? 'federation' : data.club.name,
-      clubId: data.clubId,
+      start: data.start_date,
+      end: data.end_date,
+      organizer: !data.club_id ? 'federation' : data.club.name,
+      clubId: data.club_id,
     })
   })
   loading.value = false
@@ -224,10 +224,10 @@ function editLeague(id: number) {
     editData.value = {
       id: id as number,
       name: league.name as string,
-      startDate: moment(league.startDate).format('YYYY-MM-DD'),
-      endDate: moment(league.endDate).format('YYYY-MM-DD'),
+      startDate: moment(league.start_date).format('YYYY-MM-DD'),
+      endDate: moment(league.end_date).format('YYYY-MM-DD'),
       information: league.information as string,
-      isActive: league.isActive as boolean,
+      isActive: league.is_active as boolean,
     }
     showCreateModal.value = true
   }

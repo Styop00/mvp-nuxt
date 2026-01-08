@@ -115,7 +115,7 @@ watch([selectedTournamentConfig, selectExistingTournamentConfig], () => {
 })
 
 watch(() => tournamentConfig.value, () => {
-  if (tournamentConfig.value && tournamentConfig.value.id !== tournamentGroup.value.tournamentConfigsId) {
+  if (tournamentConfig.value && tournamentConfig.value.id !== tournamentGroup.value.tournament_configs_id) {
     hasUnsavedChanges.value = true
   }
 })
@@ -141,10 +141,10 @@ async function fetchTournamentGroup() {
   const response = await fetchTournamentGroupById(+id)
   if (response) {
     tournamentGroup.value = response as TournamentGroup
-    tournamentGroup.value.startDate = moment(tournamentGroup.value.startDate as string).format('YYYY-MM-DD')
-    tournamentGroup.value.endDate = moment(tournamentGroup.value.endDate as string).format('YYYY-MM-DD')
-    if (tournamentGroup.value.tournamentConfig) {
-      tournamentConfig.value = {...tournamentGroup.value.tournamentConfig}
+    tournamentGroup.value.start_date = moment(tournamentGroup.value.start_date as string).format('YYYY-MM-DD')
+    tournamentGroup.value.end_date = moment(tournamentGroup.value.end_date as string).format('YYYY-MM-DD')
+    if (tournamentGroup.value.tournament_config) {
+      tournamentConfig.value = {...tournamentGroup.value.tournament_config}
     } else {
       selectExistingTournamentConfig.value = false
     }
@@ -154,7 +154,7 @@ async function fetchTournamentGroup() {
 
 async function fetchTournamentConfigs() {
   const response = await fetchTournamentConfigNames({
-    seasonSportId: userStore.seasonSportId,
+    season_sport_id: userStore.seasonSportId,
     deleted: false,
   }) as Array<TournamentConfigs>
 
@@ -167,7 +167,7 @@ async function fetchTournamentConfigs() {
       }
     })
     let alreadySelected = tournamentConfigs.value.find((tournamentConfig: any) => {
-      return tournamentConfig.value === tournamentGroup.value.tournamentConfigsId
+      return tournamentConfig.value === tournamentGroup.value.tournament_configs_id
     }) as SelectOptions
 
     if (alreadySelected) {
@@ -190,7 +190,7 @@ async function updateTournamentGroupData() {
     leagueId: +leagueId
   }
 
-  if (requestData.maxTeams && requestData.maxTeams < requestData?.minTeams) {
+  if (requestData.max_teams && requestData.max_teams < (requestData?.min_teams || 0)) {
     errors.value.maxTeams = 'Max Teams count should be larger than Min Teams count.'
     return
   }
@@ -202,9 +202,9 @@ async function updateTournamentGroupData() {
   }
 
   loading.value = true
-  if (selectExistingTournamentConfig.value && selectedTournamentConfig.value.value !== tournamentGroup.value.tournamentConfigsId) {
-    requestData.tournamentConfigsId = selectedTournamentConfig.value.value as number
-    tournamentGroup.value.tournamentConfigsId = selectedTournamentConfig.value.value as number
+  if (selectExistingTournamentConfig.value && selectedTournamentConfig.value.value !== tournamentGroup.value.tournament_configs_id) {
+    requestData.tournament_configs_id = selectedTournamentConfig.value.value as number
+    tournamentGroup.value.tournament_configs_id = selectedTournamentConfig.value.value as number
   } else if (!selectExistingTournamentConfig.value) {
     let newConfig = await createTournamentConfig({
       ...editTournamentConfigRef.value?.editData,
@@ -216,9 +216,9 @@ async function updateTournamentGroupData() {
       return
     }
 
-    requestData.tournamentConfigsId = newConfig.id as number
+    requestData.tournament_configs_id = newConfig.id as number
     tournamentConfig.value = {...newConfig}
-    tournamentGroup.value.tournamentConfigsId = newConfig.id as number
+    tournamentGroup.value.tournament_configs_id = newConfig.id as number
   }
 
   const res = await updateTournamentGroup(+id, requestData)

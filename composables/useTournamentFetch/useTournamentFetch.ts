@@ -15,12 +15,12 @@ export const useTournamentFetch = () => {
         const response = await useApiV5Fetch('tournaments',
             {
                 query: {
-                    tournamentGroupId: tournamentGroupId,
-                    orderBy: orderBy,
-                    orderDirection: orderDirection,
+                    tournament_group_id: tournamentGroupId,
+                    order_by: orderBy,
+                    order_direction: orderDirection,
                     page: page,
                     limit: limit,
-                    searchTerm: searchQuery,
+                    search_term: searchQuery,
                 }
             })
 

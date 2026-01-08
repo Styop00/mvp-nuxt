@@ -30,7 +30,7 @@ export const useRoundsFetch = () => {
         const response = await useApiV5Fetch(`rounds/delete-generated`, {
             method: 'DELETE',
             query: {
-                tournamentId: tournamentId
+                tournament_id: tournamentId
             }
         })
         if (response.data?.value) {

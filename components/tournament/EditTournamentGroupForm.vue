@@ -11,7 +11,7 @@
             />
             <div class="relative">
               <TextInput
-                  v-model:value="tournamentGroup.startDate"
+                  v-model:value="tournamentGroup.start_date"
                   label="Start Date"
                   placeholder="Start Date"
                   @click.stop.prevent="() => {closeCalendars(); showStartDateCalendar = true}"
@@ -22,24 +22,24 @@
                    @click.stop
                    v-if="showStartDateCalendar">
                 <DatePicker
-                    v-model:model-value="tournamentGroup.startDate"
-                    :min-date="league ? league.startDate : null"
+                    v-model:model-value="tournamentGroup.start_date"
+                    :min-date="league ? league.start_date : null"
                     color="blue"
-                    :max-date="league ? league.endDate : null"
+                    :max-date="league ? league.end_date : null"
                 />
               </div>
             </div>
             <TextInput v-model:value="tournamentGroup.levels" label="Levels" type="number"/>
           </div>
           <div class="flex flex-col gap-4">
-            <TextInput v-model:value="tournamentGroup.shortName as string"
+            <TextInput v-model:value="tournamentGroup.short_name as string"
                        label="Short Name"
                        :required="true"
                        placeholder="Short Name"
             />
             <div class="relative">
               <TextInput
-                  :value="tournamentGroup.endDate"
+                  :value="tournamentGroup.end_date"
                   label="End Date"
                   placeholder="End Date"
                   @click.stop.prevent="() => {closeCalendars(); showEndDateCalendar = true}"
@@ -48,10 +48,10 @@
               />
               <div class="absolute top-full left-1/2 -translate-x-1/2 bg-white z-[100] shadow" @click.stop
                    v-if="showEndDateCalendar">
-                <DatePicker v-model:model-value="tournamentGroup.endDate"
-                            :min-date="tournamentGroup.startDate ?? ''"
+                <DatePicker v-model:model-value="tournamentGroup.end_date"
+                            :min-date="tournamentGroup.start_date ?? ''"
                             color="blue"
-                            :max-date="league ? league.endDate : null"
+                            :max-date="league ? league.end_date : null"
                 />
               </div>
 
@@ -62,16 +62,16 @@
         <Select :options="structures" v-model:value="structure" label="Structure"/>
         <Select :options="tournamentTypes" v-model:value="tournamentType" label="Tournament Type"/>
         <div class="flex gap-4 flex-wrap items-top justify-start">
-          <TextInput v-model:value="tournamentGroup.minTeams" label="Min Teams" :required="true" type="number"/>
+          <TextInput v-model:value="tournamentGroup.min_teams" label="Min Teams" :required="true" type="number"/>
           <div>
-            <TextInput v-model:value="tournamentGroup.maxTeams" label="Max Teams" type="number"/>
+            <TextInput v-model:value="tournamentGroup.max_teams" label="Max Teams" type="number"/>
             <span v-if="errors?.maxTeams" class="text-xs text-red-600">
               {{ errors?.maxTeams }}
             </span>
           </div>
         </div>
         <CheckBox
-            v-model:value="tournamentGroup.showBirthInScoreSheet"
+            v-model:value="tournamentGroup.show_birth_in_score_sheet"
             label="Show mm-yy in protocol"
             name="show_birth_in_scoreSheet"
             class="mt-6"/>
@@ -99,7 +99,7 @@
       </div>
       <div class="flex flex-col gap-4 items-top justify-start">
         <TextInput
-            v-model:value="tournamentGroup.starRating"
+            v-model:value="tournamentGroup.star_rating"
             label="Star Rating"
             type="number"
         />
@@ -501,9 +501,9 @@ const registrationTypes = computed(() => {
   return []
 })
 
-watch(() => tournamentGroup.value.startDate, () => {
-  if (tournamentGroup.value.endDate && moment(tournamentGroup.value.endDate.toString()).isBefore(moment(tournamentGroup.value.startDate?.toString()))) {
-    tournamentGroup.value.endDate = ''
+watch(() => tournamentGroup.value.start_date, () => {
+  if (tournamentGroup.value.end_date && moment(tournamentGroup.value.end_date.toString()).isBefore(moment(tournamentGroup.value.start_date?.toString()))) {
+    tournamentGroup.value.end_date = ''
   }
 }, {
   deep: true,
@@ -514,7 +514,7 @@ watch(() => structures.value, () => {
   if (!structures.value.length) {
     structuresStore.fetchTournamentStructures()
   } else if (props.tournamentGroup) {
-    structure.value = structures.value.find(structure => structure.value === props.tournamentGroup?.tournamentStructureId) as SelectOptions
+    structure.value = structures.value.find(structure => structure.value === props.tournamentGroup?.tournament_structure_id) as SelectOptions
   }
 }, {
   deep: true,
@@ -524,14 +524,14 @@ watch(() => structures.value, () => {
 watch(() => tournamentTypes.value, () => {
   if (!tournamentTypes.value.length) {
     tournamentTypesStore.fetchTournamentTypes()
-  } else if (props.tournamentGroup?.tournamentTypeId !== undefined) {
-    const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournamentTypeId) as SelectOptions
+  } else if (props.tournamentGroup?.tournament_type_id !== undefined) {
+    const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournament_type_id) as SelectOptions
     if (type) {
       tournamentType.value = type
     } else {
       tournamentType.value = {
         label: '',
-        value: props.tournamentGroup?.tournamentTypeId,
+        value: props.tournamentGroup?.tournament_type_id,
         disabled: false
       }
     }
@@ -545,7 +545,7 @@ watch(() => registrationTypes.value, () => {
   if (!registrationTypes.value.length) {
     registrationTypesStore.fetchTournamentRegistrationTypes()
   } else if (props.tournamentGroup) {
-    registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === props.tournamentGroup?.tournamentRegistrationTypeId) as SelectOptions
+    registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === props.tournamentGroup?.tournament_registration_type_id) as SelectOptions
   }
 }, {
   deep: true,
@@ -560,23 +560,23 @@ watch(() => props.tournamentGroup, () => {
   tournamentGroup.value = {...props.tournamentGroup}
 
   gender.value = genders.find(gender => gender.value === tournamentGroup.value.gender) as SelectOptions
-  ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === tournamentGroup.value.ageGroup) as SelectOptions
-  structure.value = structures.value.find(structure => structure.value === tournamentGroup.value.tournamentStructureId) as SelectOptions
-  registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === tournamentGroup.value.tournamentRegistrationTypeId) as SelectOptions
-  refereeAttachment.value = refereeAttachments.find(refereeAttachment => refereeAttachment.value === tournamentGroup.value.refNominationId) as SelectOptions
-  matchTime.value = matchTimes.find(matchTime => matchTime.value == tournamentGroup.value.setGameStrategyId) as SelectOptions
-  combatMove.value = combatMoves.find(combatMove => combatMove.value === tournamentGroup.value.movingStrategyId) as SelectOptions
-  refereeBoard.value = refereeBoards.find(refereeBoard => refereeBoard.value === tournamentGroup.value.officialsTypeId) as SelectOptions
-  scoreSheetType.value = scoreSheetTypes.find(scoreSheetType => scoreSheetType.value === tournamentGroup.value.scoreSheetTypeId) as SelectOptions
-  playerLicenseType.value = playerLicenseTypes.find(playerLicenseType => playerLicenseType.value === tournamentGroup.value.playerLicenseTypeId) as SelectOptions
-  penaltyType.value = penaltyTypes.find(penaltyType => penaltyType.value === tournamentGroup.value.penaltyTypeId) as SelectOptions
-  const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournamentTypeId) as SelectOptions
+  ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === tournamentGroup.value.age_group) as SelectOptions
+  structure.value = structures.value.find(structure => structure.value === tournamentGroup.value.tournament_structure_id) as SelectOptions
+  registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === tournamentGroup.value.tournament_registration_type_id) as SelectOptions
+  refereeAttachment.value = refereeAttachments.find(refereeAttachment => refereeAttachment.value === tournamentGroup.value.ref_nomination_id) as SelectOptions
+  matchTime.value = matchTimes.find(matchTime => matchTime.value == tournamentGroup.value.set_game_strategy_id) as SelectOptions
+  combatMove.value = combatMoves.find(combatMove => combatMove.value === tournamentGroup.value.moving_strategy_id) as SelectOptions
+  refereeBoard.value = refereeBoards.find(refereeBoard => refereeBoard.value === tournamentGroup.value.officials_type_id) as SelectOptions
+  scoreSheetType.value = scoreSheetTypes.find(scoreSheetType => scoreSheetType.value === tournamentGroup.value.score_sheet_type_id) as SelectOptions
+  playerLicenseType.value = playerLicenseTypes.find(playerLicenseType => playerLicenseType.value === tournamentGroup.value.player_license_type_id) as SelectOptions
+  penaltyType.value = penaltyTypes.find(penaltyType => penaltyType.value === tournamentGroup.value.penalty_type_id) as SelectOptions
+  const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournament_type_id) as SelectOptions
   if (type) {
     tournamentType.value = type
-  } else if (props.tournamentGroup?.tournamentTypeId !== undefined) {
+  } else if (props.tournamentGroup?.tournament_type_id !== undefined) {
     tournamentType.value = {
       label: '',
-      value: props.tournamentGroup?.tournamentTypeId,
+      value: props.tournamentGroup?.tournament_type_id,
       disabled: false
     }
   }
@@ -593,10 +593,10 @@ function closeCalendars() {
 const editData = computed(() => {
   return {
     ...tournamentGroup.value,
-    tournamentRegistrationTypeId: registrationType.value?.value ? registrationType.value?.value : null,
+    tournament_registration_type_id: registrationType.value?.value ? registrationType.value?.value : null,
     gender: gender.value?.value ? gender.value?.value : null,
     ageGroup: ageGroup.value?.value ? ageGroup.value?.value : null,
-    tournamentStructureId: structure.value?.value ? structure.value?.value : null,
+    tournament_structure_id: structure.value?.value ? structure.value?.value : null,
     refNominationId: refereeAttachment.value?.value ? refereeAttachment.value?.value : null,
     setGameStrategyId: matchTime.value?.value ? matchTime.value?.value : 0,
     movingStrategyId: combatMove.value?.value ? combatMove.value?.value : null,
@@ -604,7 +604,7 @@ const editData = computed(() => {
     scoreSheetTypeId: scoreSheetType.value?.value ? scoreSheetType.value?.value : null,
     playerLicenseTypeId: playerLicenseType.value?.value ? playerLicenseType.value?.value : null,
     penaltyTypeId: penaltyType.value?.value ? penaltyType.value?.value : null,
-    tournamentTypeId: tournamentType.value?.value !== undefined ? tournamentType.value?.value : null,
+    tournament_type_id: tournamentType.value?.value !== undefined ? tournamentType.value?.value : null,
   }
 })
 
