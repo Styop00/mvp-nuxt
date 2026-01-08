@@ -7,7 +7,7 @@
                    :required="true"
                    placeholder="Name"
         />
-        <TextInput v-model:value="tournament.shortName"
+        <TextInput v-model:value="tournament.short_name"
                    label="Short Name"
                    :required="true"
                    placeholder="Short name"
@@ -16,7 +16,7 @@
       <div class="grid md:grid-cols-2 gap-6 mt-4">
         <div class="relative">
           <TextInput
-              :value="tournament.startDate"
+              :value="tournament.start_date"
               label="Start Date"
               placeholder="Start Date"
               @click.stop.prevent="() => {closeCalendars(); showStartDateCalendar = true}"
@@ -25,17 +25,17 @@
           />
           <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow" @click.stop
                v-if="showStartDateCalendar"
-               style="z-index: 99999 !important; position: absolute !important;"
-            <DatePicker v-model:model-value="tournament.startDate"
-                        :min-date="tournamentGroup?.startDate ?? moment()"
-                        :max-date="tournamentGroup?.endDate ?? null"
+               style="z-index: 99999 !important; position: absolute !important;">
+            <DatePicker v-model:model-value="tournament.start_date"
+                        :min-date="tournamentGroup?.start_date ?? moment()"
+                        :max-date="tournamentGroup?.end_date ?? null"
                         color="blue"/>
           </div>
 
         </div>
         <div class="relative">
           <TextInput
-              :value="tournament.endDate"
+              :value="tournament.end_date"
               label="End Date"
               placeholder="End Date"
               @click.stop="() => {closeCalendars(); showEndDateCalendar = true}"
@@ -44,10 +44,10 @@
           />
           <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow" @click.stop
                v-if="showEndDateCalendar"
-               style="z-index: 99999 !important; position: absolute !important;"
-            <DatePicker v-model:model-value="tournament.endDate"
-                        :min-date="tournament.startDate ?? ''"
-                        :max-date="tournamentGroup?.endDate ?? null"
+               style="z-index: 99999 !important; position: absolute !important;">
+            <DatePicker v-model:model-value="tournament.end_date"
+                        :min-date="tournament.start_date ?? ''"
+                        :max-date="tournamentGroup?.end_date ?? null"
                         color="blue"/>
           </div>
 
@@ -55,14 +55,14 @@
       </div>
       <div class="mt-4 grid grid-cols-2 gap-4">
         <TextInput
-            v-model:value="tournament.poolCount"
+            v-model:value="tournament.pool_count"
             label="Pools"
             type="number"
             :min="0"
             placeholder="Pools"
         />
         <TextInput
-            v-model:value="tournament.standingGroupCount"
+            v-model:value="tournament.standing_group_count"
             label="Position Groups"
             type="number"
             :min="0"
@@ -71,7 +71,7 @@
       </div>
       <div class="mt-4 grid grid-cols-2 gap-4">
         <TextInput
-            v-model:value="tournament.teamCount"
+            v-model:value="tournament.team_count"
             label="Number of Teams"
             type="number"
             :min="0"
@@ -98,9 +98,9 @@
         <template v-for="pool in pools">
           <div class="grid grid-cols-3 gap-4 mb-4">
             <TextInput v-model:value="pool.name" :required="true" placeholder="Name"/>
-            <TextInput v-model:value="pool.teamsCount" type="number" :required="true" placeholder="Teams count"
-                       :min="0" :max="tournament.teamCount"/>
-            <TextInput v-model:value="pool.gamesBetween" type="number" :required="true" placeholder="Games between"
+            <TextInput v-model:value="pool.teams_count" type="number" :required="true" placeholder="Teams count"
+                       :min="0" :max="tournament.team_count"/>
+            <TextInput v-model:value="pool.games_between" type="number" :required="true" placeholder="Games between"
                        :min="0"/>
           </div>
         </template>
@@ -109,13 +109,13 @@
 
     <div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 sm:mt-0">
-        <TextInput v-model:value="tournament.crossPoolGameCount"
+        <TextInput v-model:value="tournament.cross_pool_game_count"
                    label="Matches Between Pools"
                    placeholder="Matches between pools"
                    type="number"
                    :min="0"
         />
-        <TextInput v-model:value="tournament.crossStandingGroupGameCount"
+        <TextInput v-model:value="tournament.cross_standing_group_game_count"
                    label="Intermatches Across Position Groups"
                    placeholder="Intermatches across position groups"
                    type="number"
@@ -137,12 +137,12 @@
       <p class="relative group text-nowrap w-fit mt-4">
         <template v-if="!rounds.length">
           <BaseButton class="!py-2 !px-2 text-sm sm:text-base sm:!px-8 block"
-                      :class="!tournament.startDate || !tournament.endDate ? 'bg-brand-primary-color/20 hover:!bg-brand-primary-color/20' : ''"
-                      :type="!tournament.startDate || !tournament.endDate ? 'submit' : 'button'"
+                      :class="!tournament.start_date || !tournament.end_date ? 'bg-brand-primary-color/20 hover:!bg-brand-primary-color/20' : ''"
+                      :type="!tournament.start_date || !tournament.end_date ? 'submit' : 'button'"
                       @onClick="() => emitCalculateRounds()">
             Calculate Rounds
           </BaseButton>
-          <template v-if="!tournament.startDate || !tournament.endDate">
+          <template v-if="!tournament.start_date || !tournament.end_date">
           <span
               class="absolute bottom-full mb-1 text-xs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
             Start Date and End Date fields are required
@@ -279,13 +279,13 @@ const regions = computed(() => {
 
 watch(() => props.tournament, () => {
   tournament.value = JSON.parse(JSON.stringify(props.tournament))
-  if (tournament.value.tournamentProgramId) {
-    program.value = programs.value.find(program => program.value === tournament.value.tournamentProgramId) as SelectOptions
+  if (tournament.value.tournament_program_id) {
+    program.value = programs.value.find(program => program.value === tournament.value.tournament_program_id) as SelectOptions
   } else {
     program.value = programs.value[0]
   }
-  region.value = regions.value.find(region => region.value === tournament.value.regionId) as SelectOptions
-  roundType.value = roundTypes.find(type => type.value === tournament.value.roundType) as SelectOptions
+  region.value = regions.value.find(region => region.value === tournament.value.region_id) as SelectOptions
+  roundType.value = roundTypes.find(type => type.value === tournament.value.round_type) as SelectOptions
 }, {
   deep: true,
   immediate: true
@@ -300,9 +300,9 @@ watch(() => tournament.value, () => {
   immediate: true
 })
 
-watch(() => tournament.value.startDate, () => {
-  if (tournament.value.endDate && moment(tournament.value.endDate.toString()).isBefore(moment(tournament.value.startDate.toString()))) {
-    tournament.value.endDate = ''
+watch(() => tournament.value.start_date, () => {
+  if (tournament.value.end_date && moment(tournament.value.end_date.toString()).isBefore(moment(tournament.value.start_date.toString()))) {
+    tournament.value.end_date = ''
   }
 }, {
   deep: true,
@@ -342,20 +342,20 @@ watch(() => props.pools, () => {
 })
 
 watch(() => program.value, () => {
-  tournament.value.tournamentProgramId = +program.value?.value
+  tournament.value.tournament_program_id = +program.value?.value
 }, {
   deep: true,
   immediate: true
 })
 
 watch(() => roundType.value, () => {
-  tournament.value.roundType = +roundType.value?.value
+  tournament.value.round_type = +roundType.value?.value
 }, {
   deep: true,
   immediate: true
 })
 
-watch(() => tournament.value.poolCount, (value, oldValue) => {
+watch(() => tournament.value.pool_count, (value, oldValue) => {
   if (!value) {
     value = 0
   }
@@ -371,9 +371,9 @@ watch(() => tournament.value.poolCount, (value, oldValue) => {
         pools.value.push({
           id: 0,
           name: `Pool ${pools.value.length + 1}`,
-          tournamentId: tournament.value.id,
-          gamesBetween: 2,
-          teamsCount: 0,
+          tournament_id: tournament.value.id,
+          games_between: 2,
+          teams_count: 0,
           deleted: false,
         })
       }
@@ -408,7 +408,7 @@ function closeCalendars() {
 }
 
 function emitCalculateRounds() {
-  if (!tournament.value.startDate || !tournament.value.endDate) {
+  if (!tournament.value.start_date || !tournament.value.end_date) {
     return
   }
 

@@ -27,24 +27,24 @@ export const useTeamsFetch = () => {
         requestData?: object | null
     ) {
         const data = {
-            clubId: clubId,
-            orderBy: orderBy,
-            orderDirection: orderDirection,
+            club_id: clubId,
+            order_by: orderBy,
+            order_direction: orderDirection,
             limit: limit,
             page: page,
-            searchTerm: searchQuery,
+            search_term: searchQuery,
         }
 
         if (!clubId) {
-            delete data.clubId;
+            delete data.club_id;
         }
 
         if (!orderBy) {
-            delete data.orderBy;
+            delete data.order_by;
         }
 
         if (!orderDirection) {
-            delete data.orderDirection;
+            delete data.order_direction;
         }
 
         if (!limit) {
@@ -56,13 +56,13 @@ export const useTeamsFetch = () => {
         }
 
         if (!searchQuery) {
-            delete data.searchTerm;
+            delete data.search_term;
         }
         const response = await useApiV5Fetch(`teams`, {
             query: {
-                deleted: false,
+                deleted: 0,
                 ...data,
-                seasonSportId: userStore.seasonSportId,
+                season_sport_id: userStore.seasonSportId,
                 ...requestData
             },
         })
@@ -81,9 +81,9 @@ export const useTeamsFetch = () => {
         const response = await useApiV5Fetch(`teams/names`, {
             query: {
                 deleted: false,
-                orderBy: orderBy,
-                orderDirection: orderDirection,
-                seasonSportId: userStore.seasonSportId,
+                order_by: orderBy,
+                order_direction: orderDirection,
+                season_sport_id: userStore.seasonSportId,
                 ...(data ?? {})
             },
         })
@@ -165,7 +165,7 @@ export const useTeamsFetch = () => {
         const response = await useApiV5Fetch(`teams/${id}/users`, {
             query: {
                 ...data,
-                seasonSportId: userStore.seasonSportId,
+                season_sport_id: userStore.seasonSportId,
             },
         });
 

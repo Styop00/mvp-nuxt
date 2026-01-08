@@ -17,12 +17,12 @@ export function useTournamentGroupFetch() {
     ) {
         const response = await useApiV5Fetch("tournament-group", {
             query: {
-                leagueId: leagueId,
-                orderBy: orderBy,
-                orderDirection: orderDirection,
+                league_id: leagueId,
+                order_by: orderBy,
+                order_direction: orderDirection,
                 page: page,
                 limit: limit,
-                searchTerm: searchQuery,
+                search_term: searchQuery,
             },
         });
 
@@ -49,14 +49,14 @@ export function useTournamentGroupFetch() {
 
         const response = await useApiV5Fetch("tournament-group", {
             query: {
-                tournamentRegistrationTypeId: 2,
-                registrationDeadLine: registrationDeadLine,
-                seasonSportId: userStore.seasonSportId,
-                orderBy: orderBy,
-                orderDirection: orderDirection,
+                tournament_registration_type_id: 2,
+                registration_dead_line: registrationDeadLine,
+                season_sport_id: userStore.seasonSportId,
+                order_by: orderBy,
+                order_direction: orderDirection,
                 page: page,
                 limit: limit,
-                searchTerm: searchQuery,
+                search_term: searchQuery,
             },
         });
 

@@ -1,12 +1,12 @@
 export default interface Rounds {
     id: Number,
     number: number;
-    tournamentId: Number;
-    fromDate: Date | String;
-    toDate: Date | String;
+    tournament_id: Number;
+    from_date: Date | String;
+    to_date: Date | String;
     week: Number;
     year: Number;
     type: number;
-    forceCross: Boolean;
+    force_cross: Boolean;
     deleted: Boolean;
 }

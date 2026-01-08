@@ -276,11 +276,11 @@ async function fetchTeamData() {
 
   teams.value.forEach(team => {
 
-    const coaches = team.teamStaff.map(user => {
+    const coaches = team.team_staff.map(user => {
       return `
       <p>
         <span class="font-bold mr-2 text-xs">
-          ${rolesStore.roles.find(role => role.id === user.user_roles.roleId)?.description}
+          ${rolesStore.roles.find(role => role.id === user.user_roles.role_id)?.description}
         </span>
         <span class="text-xs">${user.name}</span>
       </p>`
@@ -289,8 +289,8 @@ async function fetchTeamData() {
       id: team.id,
       name: team.club?.name ? team.club?.name : '',
       license: '' + team.license,
-      localName: team.localName,
-      enough: team.tournamentGroups.map(group => group.name).join(', '),
+      localName: team.local_name,
+      enough: team.tournament_groups.map(group => group.name).join(', '),
       coaches: coaches.join('')
     })
   })

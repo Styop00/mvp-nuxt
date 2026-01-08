@@ -79,6 +79,7 @@ import type TournamentConfigsErrors from "~/interfaces/tournament/config/tournam
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 import type League from "~/interfaces/league/leagues";
+import {camelToSnake} from "~/utils/camelToSnake";
 
 const route = useRoute()
 const leagueId = route.params.leagueId
@@ -161,7 +162,7 @@ async function fetchSelectedTournamentConfigs() {
 async function fetchTournamentConfigs() {
   const response = await useApiV5Fetch(`tournament-configs/names`, {
     query: {
-      seasonSportId: userStore.seasonSportId,
+      season_sport_id: userStore.seasonSportId,
       deleted: false,
     }
   })
@@ -223,7 +224,7 @@ async function createTournamentGroup() {
   }
   let response = await useApiV5Fetch(`tournament-group`, {
     method: 'POST',
-    body: requestData,
+    body: camelToSnake(requestData),
   })
 
   if (response.status.value === 'success') {

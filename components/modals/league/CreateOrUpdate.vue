@@ -221,11 +221,11 @@ async function createOrUpdate() {
       method: 'PUT',
       body: {
         name: name.value,
-        startDate: moment(startDate.value).format("YYYY-MM-DD"),
-        endDate: moment(endDate.value).format("YYYY-MM-DD"),
+        start_date: moment(startDate.value).format("YYYY-MM-DD"),
+        end_date: moment(endDate.value).format("YYYY-MM-DD"),
         information: information.value,
-        clubId: organizer.value.value,
-        isActive: isActive.value
+        club_id: organizer.value.value,
+        is_active: isActive.value
       }
     })
 
@@ -237,12 +237,12 @@ async function createOrUpdate() {
       method: 'POST',
       body: {
         name: name.value,
-        startDate: moment(startDate.value).format("YYYY-MM-DD"),
-        endDate: moment(endDate.value).format("YYYY-MM-DD"),
+        start_date: moment(startDate.value).format("YYYY-MM-DD"),
+        end_date: moment(endDate.value).format("YYYY-MM-DD"),
         information: information.value,
-        seasonSportId: userStore.seasonSportId,
-        clubId: organizer.value.value,
-        isActive: isActive.value,
+        season_sport_id: userStore.seasonSportId,
+        club_id: organizer.value.value,
+        is_active: isActive.value,
       }
     })
 

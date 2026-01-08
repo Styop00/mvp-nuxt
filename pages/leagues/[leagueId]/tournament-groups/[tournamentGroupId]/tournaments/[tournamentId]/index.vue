@@ -114,7 +114,7 @@ async function updateTournamentData(): Promise<void> {
     }
     if (pools.value.length) {
       pools.value = pools.value.map(pool => {
-        pool.tournamentId = tournament.value.id
+        pool.tournament_id = tournament.value.id
         return pool;
       })
       await createOrUpdatePools(+tournamentId, pools.value)
@@ -140,8 +140,8 @@ async function deleteCalculatedRounds() {
 async function calculateRounds() {
   rounds.value = await createRounds({
     tournamentId: tournament.value.id,
-    startDate: tournament.value.startDate,
-    endDate: tournament.value.endDate
+    start_date: tournament.value.start_date,
+    end_date: tournament.value.end_date
   })
 }
 

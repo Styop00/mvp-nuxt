@@ -3,10 +3,6 @@ import type TournamentConfigs from "~/interfaces/tournament/config/tournamentCon
 
 export function useTournamentConfigFetch() {
 
-    async function fetchTournamentConfigs(queryObject: object) {
-
-    }
-
     async function fetchTournamentConfigNames(queryObject: object = {}) {
         const response = await useApiV5Fetch(`tournament-configs/names`, {
             query: queryObject
@@ -42,7 +38,6 @@ export function useTournamentConfigFetch() {
     }
 
     return {
-        fetchTournamentConfigs,
         fetchTournamentConfigNames,
         fetchTournamentConfigById,
         createTournamentConfig,
