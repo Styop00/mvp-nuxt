@@ -6,13 +6,13 @@
       <form action="#" @submit.prevent="updateTeamData">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <TextInput
-              v-model:value="team.localName"
+              v-model:value="team.local_name"
               label="Local Name"
               :required="true"
           />
           <template v-if="userStore.isAdmin">
             <TextInput
-                v-model:value="team.clubRank"
+                v-model:value="team.club_rank"
                 type="number"
                 :min="0"
                 label="Club ranking (1-xxx)"
@@ -181,10 +181,10 @@ const tournamentGroupOptions = computed(() => {
 async function getTeamById() {
   team.value = await fetchTeamById(+teamId)
 
-  ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === team.value.ageGroup) as SelectOptions
+  ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === team.value.age_group) as SelectOptions
   gender.value = genders.find(gender => gender.value === team.value.gender) as SelectOptions
-  officialType.value = officialTypes.find(type => type.value === team.value.officialTypeId) as SelectOptions
-  officialTeam.value = officialTeams.value.find(type => type.value === team.value.officialTeamId) as SelectOptions
+  officialType.value = officialTypes.find(type => type.value === team.value.official_type_id) as SelectOptions
+  officialTeam.value = officialTeams.value.find(type => type.value === team.value.official_team_id) as SelectOptions
 
   if (!team.value.id) {
     navigateTo('../teams')
@@ -193,8 +193,8 @@ async function getTeamById() {
 
 async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
-    seasonSportId: userStore.seasonSportId,
-    isActive: true,
+    season_sport_id: userStore.seasonSportId,
+    is_active: true,
   }) as Array<TournamentGroup>
 
   if (response.length) {
@@ -211,7 +211,7 @@ async function fetchTournamentGroups() {
       disabled: false,
     } as SelectOptions)
 
-    team.value.tournamentGroups.map((group, index) => {
+    team.value.tournament_groups.map((group, index) => {
       selectedGroups.value.push(tournamentGroups.value.find(tournamentGroup => tournamentGroup.value === group.id) as SelectOptions)
     })
 
@@ -229,12 +229,12 @@ async function fetchClubTeams() {
   officialTeams.value = []
   res.forEach((team) => {
     officialTeams.value.push({
-      label: team.localName,
+      label: team.local_name,
       value: team.id,
       disabled: false
     } as SelectOptions)
   })
-  officialTeam.value = officialTeams.value.find(type => type.value === team.value.officialTeamId) as SelectOptions
+  officialTeam.value = officialTeams.value.find(type => type.value === team.value.official_team_id) as SelectOptions
 }
 
 async function updateTeamData() {
@@ -264,19 +264,19 @@ async function updateTeamData() {
     loading.value = true
 
     await updateTeam(+teamId, {
-      clubId: team.value.clubId,
-      localName: team.value.localName,
-      tournamentName: team.value.tournamentName ? team.value.tournamentName : team.value.localName,
-      clubRank: team.value.clubRank,
+      club_id: team.value.club_id,
+      local_name: team.value.local_name,
+      tournament_name: team.value.tournament_name ? team.value.tournament_name : team.value.local_name,
+      club_rank: team.value.club_rank,
       gender: gender.value.value,
-      ageGroup: ageGroup.value.value,
-      officialTypeId: officialType.value.value,
-      officialTeamId: officialType.value.value === 2 ? officialTeam.value.value : null,
-      seasonSportId: userStore.seasonSportId,
+      age_group: ageGroup.value.value,
+      official_type_id: officialType.value.value,
+      official_team_id: officialType.value.value === 2 ? officialTeam.value.value : null,
+      season_sport_id: userStore.seasonSportId,
     })
   } else {
     await updateTeam(+teamId, {
-      localName: team.value.localName,
+      localName: team.value.local_name,
     })
   }
 
@@ -332,6 +332,19 @@ onBeforeRouteLeave((to, from, next) => {
     next();
   }
 });
+
+// Watch for route param changes
+watch(() => route.params.teamId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    team.value = {} as Team
+    selectedGroups.value = []
+    getTeamById()
+    fetchTournamentGroups()
+    if (clubId) {
+      fetchClubTeams()
+    }
+  }
+}, { immediate: false })
 
 onMounted(async () => {
   await getTeamById()

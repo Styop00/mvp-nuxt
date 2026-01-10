@@ -13,7 +13,7 @@
         <div class="flex gap-3 w-full">
           <TextInput
             label="Abbreviation"
-            v-model:value="club.shortName"
+            v-model:value="club.short_name"
             placeholder="Enter club name"
             type="text"
             class="w-full "
@@ -33,25 +33,25 @@
         />
         <TextInput
           label="City"
-          v-model:value="club.postalCity"
+          v-model:value="club.postal_city"
           placeholder="City"
           type="text"
           class="w-full"
-          :input-classes="(showRedBorders && !club.postalCity) ? '!border-red-500' : ''"
+          :input-classes="(showRedBorders && !club.postal_city) ? '!border-red-500' : ''"
         />
       </div>
       <div class="flex gap-4 w-full xl:w-2/3 flex-wrap md:flex-nowrap">
         <TextInput
           label="Address Line 1"
-          v-model:value="club.addressLine1"
+          v-model:value="club.address_line1"
           placeholder="Address Line 1"
           type="text"
           class="w-full"
-          :input-classes="(showRedBorders && !club.addressLine1) ? '!border-red-500' : ''"
+          :input-classes="(showRedBorders && !club.address_line1) ? '!border-red-500' : ''"
         />
         <TextInput
           label="Address Line 2"
-          v-model:value="club.addressLine2"
+          v-model:value="club.address_line2"
           placeholder="Address Line 2"
           type="text"
           class="w-full"
@@ -67,18 +67,18 @@
         />
         <TextInput
           label="Postal Code"
-          v-model:value="club.postalCode"
+          v-model:value="club.postal_code"
           placeholder="Postal Code"
           type="text"
           class="w-full"
-          :input-classes="(showRedBorders && !club.postalCode) ? '!border-red-500' : ''"
+          :input-classes="(showRedBorders && !club.postal_code) ? '!border-red-500' : ''"
         />
       </div>
       <div class="flex gap-4 w-full xl:w-2/3 flex-wrap md:flex-nowrap">
         <div class="flex flex-col w-full">
           <TextInput
             label="Phone Number 1"
-            v-model:value="club.phoneNumber1"
+            v-model:value="club.phone_number1"
             placeholder="Phone Number 1"
             type="text"
             class="w-full"
@@ -90,7 +90,7 @@
         <div class="flex flex-col w-full">
           <TextInput
             label="Phone Number 2"
-            v-model:value="club.phoneNumber2"
+            v-model:value="club.phone_number2"
             placeholder="Phone Number 2"
             type="text"
             class="w-full"
@@ -110,7 +110,7 @@
         />
         <TextInput
           label="Web Address"
-          v-model:value="club.webAddress"
+          v-model:value="club.web_address"
           placeholder="Web address"
           type="text"
           class="w-full"
@@ -120,16 +120,16 @@
         v-if="clubId"
         class="flex flex-col xl:flex-row gap-4 w-full md:w-2/3"
       >
-        <CheckBox v-model:value="club.isActive" label="Active" name="Active" />
+        <CheckBox v-model:value="club.is_active" label="Active" name="Active" />
       </div>
       <div class="flex flex-col gap-4 w-full xl:w-2/3 flex-wrap md:flex-nowrap">
         <TextArea
-          v-model:value="club.publicNotes"
+          v-model:value="club.public_notes"
           label="Public info"
           class=""
         />
         <TextArea
-          v-model:value="club.internalNotes"
+          v-model:value="club.internal_notes"
           label="Internal note"
           class=""
         />
@@ -190,10 +190,10 @@ const club = ref<Partial<Clubs>>({});
 const addressValidationError = ref('');
 
 function validateAddressFields() {
-  const { addressLine1, postalCode, postalCity, country } = club.value;
+  const { address_line1, postal_code, postal_city, country } = club.value;
   if (
-    (addressLine1 || postalCode || postalCity || country) &&
-    (!addressLine1 || !postalCode || !postalCity || !country)
+    (address_line1 || postal_code || postal_city || country) &&
+    (!address_line1 || !postal_code || !postal_city || !country)
   ) {
     addressValidationError.value = 'Please fill all address-related fields (Address Line 1, Postal Code, Postal City, Country).';
     return false;
@@ -204,7 +204,7 @@ function validateAddressFields() {
 }
 
 const showRedBorders = computed(() => {
-  return !!(club.value.addressLine1 || club.value.postalCity || club.value.country || club.value.postalCode);
+  return !!(club.value.address_line1 || club.value.postal_city || club.value.country || club.value.postal_code);
 })
 
 const phoneValidationError1 = ref('');
@@ -212,18 +212,18 @@ const phoneValidationError2 = ref('');
 
 function validatePhoneNumber() {
   const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 format
-  const { phoneNumber1, phoneNumber2 } = club.value;
+  const { phone_number1, phone_number2 } = club.value;
 
   let isValid = true;
 
-  if (phoneNumber1 && !phoneRegex.test(phoneNumber1)) {
+  if (phone_number1 && !phoneRegex.test(phone_number1)) {
     phoneValidationError1.value = 'Please enter a valid phone number in E.164 format (e.g., +123456789012345).';
     isValid = false;
   } else {
     phoneValidationError1.value = '';
   }
 
-  if (phoneNumber2 && !phoneRegex.test(phoneNumber2)) {
+  if (phone_number2 && !phoneRegex.test(phone_number2)) {
     phoneValidationError2.value = 'Please enter a valid phone number in E.164 format (e.g., +123456789012345).';
     isValid = false;
   } else {
@@ -279,11 +279,11 @@ async function saveClub() {
 
 const some = ref(true)
 
-watch(() => club.value.phoneNumber1, debounce((newValue) => {
+watch(() => club.value.phone_number1, debounce((newValue) => {
   validatePhoneNumber();
 }, 500));
 
-watch(() => club.value.phoneNumber2, debounce((newValue) => {
+watch(() => club.value.phone_number2, debounce((newValue) => {
   validatePhoneNumber();
 }, 500));
 
@@ -309,6 +309,14 @@ watch(() => club.value, (newVal, oldVal) => {
 
 }, { deep: true });
 
+
+// Watch for prop changes (e.g., navigating from club 1 to club 2)
+watch(() => props.clubId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    club.value = {} as Clubs
+    fetchClub(newId);
+  }
+}, { immediate: false })
 
 onMounted(() => {
   if (props.clubId) {

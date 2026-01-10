@@ -13,15 +13,15 @@
       <div class="flex flex-col md:flex-row gap-4 w-full md:w-2/3">
         <TextInput
           label="Address Line 1"
-          v-model:value="venue.value.addressLine1"
+          v-model:value="venue.value.address_line1"
           placeholder="Address Line 1"
           type="text"
           class="w-full"
-          :input-classes="(showRedBorders && !venue.value.addressLine1) ? '!border-red-500' : ''"
+          :input-classes="(showRedBorders && !venue.value.address_line1) ? '!border-red-500' : ''"
         />
         <TextInput
           label="Address Line 2"
-          v-model:value="venue.value.addressLine2"
+          v-model:value="venue.value.address_line2"
           placeholder="Address Line 2"
           type="text"
           class="w-full"
@@ -32,11 +32,11 @@
         <div class="flex flex-col w-full">
           <TextInput
             label="Postal Code"
-            v-model:value="venue.value.postalCode"
+            v-model:value="venue.value.postal_code"
             placeholder="Postal Code"
             type="text"
             class="w-full"
-            :input-classes="(showRedBorders && !venue.value.postalCode) ? '!border-red-500' : ''"
+            :input-classes="(showRedBorders && !venue.value.postal_code) ? '!border-red-500' : ''"
           />
           <p v-if="postalCodeValidationError" class="text-red-700 text-xs mt-2">
             {{ postalCodeValidationError }}
@@ -44,11 +44,11 @@
         </div>
         <TextInput
           label="Postal City"
-          v-model:value="venue.value.postalCity"
+          v-model:value="venue.value.city"
           placeholder="Postal City"
           type="text"
           class="w-full"
-          :input-classes="(showRedBorders && !venue.value.postalCity) ? '!border-red-500' : ''"
+          :input-classes="(showRedBorders && !venue.value.city) ? '!border-red-500' : ''"
         />
       </div>
 
@@ -64,7 +64,7 @@
         <div class="flex flex-col w-full">
           <TextInput
             label="Phone Number"
-            v-model:value="venue.value.phoneNumber"
+            v-model:value="venue.value.phone_number"
             placeholder="Phone Number"
             type="tel"
             class="w-full"
@@ -113,7 +113,7 @@
         class="flex flex-col md:flex-row gap-4 w-full md:w-2/3"
       >
         <CheckBox
-          v-model:value="venue.value.inActive"
+          v-model:value="venue.value.is_active"
           label="Active"
           name="Active"
         />
@@ -127,7 +127,7 @@
         <template v-if="venue.value?.id">
           <ClubVenue
             v-model:venue="venue.value"
-            v-model:clubs="venue.value.clubVenues"
+            v-model:clubs="venue.value.clubs"
             ref="clubVenueRef"
           />
           <CourtVenue
@@ -197,7 +197,7 @@ const venue = reactive({value: {} as Venues});
 const addressValidationError = ref('');
 
 function validateAddressFields() {
-  const { addressLine1, postalCode, postalCity, country } = venue.value;
+  const { address_line1: addressLine1, postal_code: postalCode, city: postalCity, country } = venue.value;
 
   if (
     (addressLine1 || postalCode || postalCity || country) &&
@@ -214,14 +214,14 @@ function validateAddressFields() {
 const postalCodeValidationError = ref("")
 
 const showRedBorders = computed(() => {
-  return !!(venue.value.addressLine1 || venue.value.postalCity || venue.value.country || venue.value.postalCode);
+  return !!(venue.value.address_line1 || venue.value.city || venue.value.country || venue.value.postal_code);
 })
 
 const phoneValidationError = ref('');
 
 function validatePhoneNumber() {
   const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-  const phoneNumber = venue.value.phoneNumber;
+  const phoneNumber = venue.value.phone_number;
 
   if (!phoneNumber) {
     phoneValidationError.value = '';
@@ -267,19 +267,23 @@ async function saveVenue() {
     if (props.venueId) {
       const additionalData: Record<string, any> = {};
         if (clubVenueRef.value?.deletedLicenseNumbers?.length > 0) {
-          additionalData.deletedLicenseNumbers = clubVenueRef.value.deletedLicenseNumbers;
+          additionalData.deleted_license_numbers = clubVenueRef.value.deletedLicenseNumbers;
         }
-        if (clubVenueRef.value?.clubLicenseNumbers?.length > 0) {
-          additionalData.clubLicenseNumbers = clubVenueRef.value?.clubLicenseNumbers;
+        if (clubVenueRef.value?.clubTeamNames?.length > 0) {
+          additionalData.club_team_names = clubVenueRef.value?.clubTeamNames;
+        }
+        // Keep license numbers for backward compatibility if team names not provided
+        if (clubVenueRef.value?.clubLicenseNumbers?.length > 0 && (!clubVenueRef.value?.clubTeamNames || clubVenueRef.value?.clubTeamNames?.length === 0)) {
+          additionalData.club_license_numbers = clubVenueRef.value?.clubLicenseNumbers;
         }
       if (courtVenueRef.value?.courtsCreate) {
-        additionalData.courtsCreate = courtVenueRef.value?.courtsCreate;
+        additionalData.courts_create = courtVenueRef.value?.courtsCreate;
       }
       if (courtVenueRef.value?.courtsUpdate ) {
-        additionalData.courtsUpdate = courtVenueRef.value?.courtsUpdate.value;
+        additionalData.courts_update = courtVenueRef.value?.courtsUpdate.value;
       }
       if (courtVenueRef.value?.deleteCourts ) {
-        additionalData.deleteCourts = courtVenueRef.value?.deleteCourts;
+        additionalData.delete_courts = courtVenueRef.value?.deleteCourts;
       }
       const response = await updateVenue(props.venueId, {...venue.value, ...additionalData});
       if (response) {
@@ -288,6 +292,7 @@ async function saveVenue() {
         if (clubVenueRef) {
           clubVenueRef.value.deletedLicenseNumbers = []
           clubVenueRef.value.clubLicenseNumbers = []
+          clubVenueRef.value.clubTeamNames = []
         }
 
         if (courtVenueRef.value) {
@@ -323,7 +328,7 @@ async function refreshData() {
     await fetchVenue(props.venueId);
   }
 }
-watch(() => venue.value.phoneNumber, debounce((newValue) => {
+watch(() => venue.value.phone_number, debounce(() => {
   validatePhoneNumber();
 }, 500));
 
@@ -340,6 +345,15 @@ watch(() => venue.value, (newVal, oldVal) => {
   }
 
 }, { deep: true, immediate: true });
+
+// Watch for prop changes (e.g., navigating from venue 1 to venue 2)
+watch(() => props.venueId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    venue.value = { value: {} as Venues }
+    initialVenue.value = { value: {} as Venues }
+    fetchVenue(newId);
+  }
+}, { immediate: false })
 
 onMounted(() => {
   if (props.venueId) {

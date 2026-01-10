@@ -15,7 +15,7 @@ const {fetchAllClubs} = useClubsFetch()
 async function fetchClubData() {
   if (userStore.getUserRoleNames().includes('Club Manager')) {
     const clubIds = userStore.user.user_roles.map(role => role.clubId)
-    clubs.value = await fetchAllClubs({clubIds: clubIds, seasonSportId: userStore.seasonSportId})
+    clubs.value = await fetchAllClubs({clubIds: clubIds, season_sport_id: userStore.seasonSportId})
   } else if (userStore.getUserRoleNames().includes('Team Manager')) {
     teamIds.value = userStore.user.user_roles.map(role => role.teamId)
   }

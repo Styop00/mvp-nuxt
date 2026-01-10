@@ -12,7 +12,7 @@
           <p class="text-dark-text-primary">Automatic</p>
           <p class="text-dark-text-primary">Points</p>
           <p class="text-dark-text-primary">Bonus</p>
-          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.homeTeam.tournamentName }}</p>
+          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.home_team.tournament_name }}</p>
           <TextInput
               type="number"
               v-model:value="homeTeamScore"/>
@@ -32,7 +32,7 @@
               :disabled="homeTeamSetAutomatic"
               :input-classes="homeTeamSetAutomatic ? '!cursor-not-allowed !opacity-40' : ''"
           />
-          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.guestTeam.tournamentName }}</p>
+          <p class="col-span-3 flex items-center text-dark-text-primary">{{ game.guest_team.tournament_name }}</p>
           <TextInput
               type="number"
               v-model:value="guestTeamScore"/>
@@ -124,14 +124,14 @@ const emit = defineEmits([
 
 watch(() => props.visible, async () => {
   if (props.visible) {
-    homeTeamScore.value = props.game.pointsHome ?? 0
-    guestTeamScore.value = props.game.pointsAway ?? 0
-    homeTeamPoints.value = props.game.pointsHome ?? 1
-    guestTeamPoints.value = props.game.pointsAway ?? 1
-    homeTeamBonus.value = !!props.game.poolBonusFixedHome
-    guestTeamBonus.value = !!props.game.poolBonusFixedAway
-    homeTeamSetAutomatic.value = (props.game?.pointsHome ? props.game?.pointsHome : 0) > -100
-    guestTeamSetAutomatic.value = (props.game?.pointsAway ? props.game?.pointsAway : 0) > -100
+    homeTeamScore.value = props.game.points_home ?? 0
+    guestTeamScore.value = props.game.points_away ?? 0
+    homeTeamPoints.value = props.game.points_home ?? 1
+    guestTeamPoints.value = props.game.points_away ?? 1
+    homeTeamBonus.value = !!props.game.pool_bonus_fixed_home
+    guestTeamBonus.value = !!props.game.pool_bonus_fixed_away
+    homeTeamSetAutomatic.value = (props.game?.points_home ? props.game?.points_home : 0) > -100
+    guestTeamSetAutomatic.value = (props.game?.points_away ? props.game?.points_away : 0) > -100
   }
 
   modal.value = props.visible

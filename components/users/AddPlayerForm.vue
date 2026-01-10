@@ -111,7 +111,7 @@ async function fetchTeams() {
 
   teams.value = res.map((team) => {
     return {
-      label: team.localName,
+      label: team.local_name,
       value: team.id,
       disabled: false
     } as SelectOptions
@@ -159,11 +159,11 @@ async function confirm() {
 
   if (error.value.type) return
 
-  await addUserToTeam(+selectedTeam.value?.value, {
+  await addUserToTeam(+(selectedTeam.value?.value ?? 0), {
     email: email.value,
     number: jerseyNumber.value,
     name: name.value,
-    seasonSportId: userStore.seasonSportId
+    season_sport_id: userStore.seasonSportId
   })
 
   emit('added')

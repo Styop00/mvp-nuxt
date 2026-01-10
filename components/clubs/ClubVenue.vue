@@ -14,20 +14,20 @@
     </div>
     <div v-if="pseudoClubTableData && pseudoClubTableData.length">
       <div
-        v-for="(clubVenue, index) in pseudoClubTableData"
+        v-for="(club, index) in pseudoClubTableData"
         :key="index"
         class="flex py-2 border-b border-dark-border-default"
       >
         <div class="flex-[2] text-start">
-          <span class="inline-block pr-6">{{ clubVenue.club.name }}</span>
+          <span class="inline-block pr-6">{{ club.name }}</span>
         </div>
         <div class="flex-[0.5] text-start">
-          {{ clubVenue.club.license }}
+          {{ club.license }}
         </div>
         <div class="flex-[0.5] text-end ">
           <button
             type="button"
-            @click="isShowConfirmDeleteModalClub(clubVenue.club)"
+            @click="isShowConfirmDeleteModalClub(club)"
           >
             <font-awesome
               :icon="['fas', 'trash-can']"
@@ -68,6 +68,7 @@ const clubLicense = ref()
 const pseudoClubTableData = ref<any[]>([])
 const deletedLicenseNumbers = ref<number[]>([])
 const clubLicenseNumbers = ref<number[]>([])
+const clubTeamNames = ref<string[]>([])
 
 const isClubSearchModalOpen = ref(false);
 const showErrorAlert = ref(false);
@@ -80,7 +81,7 @@ const props = defineProps({
     required: true
   },
   clubs: {
-    type: Object as PropType<Clubs>,
+    type: Object as PropType<Clubs[]>,
     required: true
   }
 });
@@ -133,9 +134,9 @@ function removeClub() {
 
 }
 
-async function associateClub(clubLicense: number, club: {}) {
+async function associateClub(teamName: string, club: Clubs) {
   const indexss = pseudoClubTableData.value.findIndex(item => {
-    return item.club.license === clubLicense})
+    return item.club?.license === club?.license})
     errorMessage1.value = ""
     if(indexss === -1) {
       pseudoClubTableData.value.push({
@@ -144,10 +145,11 @@ async function associateClub(clubLicense: number, club: {}) {
           license: club?.license
         }
       })
-      clubLicenseNumbers.value.push(clubLicense)
+      // Add team name instead of license number
+      clubTeamNames.value.push(teamName)
       isClubSearchModalOpen.value = false
     } else {
-      errorMessage1.value = "Club license has already been added."
+      errorMessage1.value = "This club has already been added."
     }
   }
 
@@ -162,6 +164,7 @@ defineExpose({
   pseudoClubTableData,
   deletedLicenseNumbers,
   clubLicenseNumbers,
+  clubTeamNames,
 
 })
 </script>

@@ -69,6 +69,18 @@ const {fetchTournamentById, updateTournament} = useTournamentFetch()
 const {recreate, deleteGeneratedRounds, createRounds} = useRoundsFetch()
 const {createOrUpdatePools} = usePoolsFetch()
 
+// Watch for route param changes (e.g., navigating from tournament 1 to tournament 2)
+watch(() => route.params.tournamentId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    dataFetched.value = false
+    tournament.value = {} as Tournament
+    pools.value = []
+    rounds.value = []
+    fetchTournament()
+  }
+}, { immediate: false })
+
+// Initial fetch
 if (tournamentId) {
   fetchTournament()
 }
@@ -139,7 +151,7 @@ async function deleteCalculatedRounds() {
 
 async function calculateRounds() {
   rounds.value = await createRounds({
-    tournamentId: tournament.value.id,
+    tournament_id: tournament.value.id,
     start_date: tournament.value.start_date,
     end_date: tournament.value.end_date
   })

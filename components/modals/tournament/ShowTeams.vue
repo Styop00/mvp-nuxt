@@ -38,7 +38,7 @@
             {{ team.tournament_name }}
           </span>
           <span>
-            {{ pools.find((tournamentPool) => tournamentPool.value === team.TeamTournament?.poolId)?.label }}
+            {{ pools.find((tournamentPool) => tournamentPool.value === team.pivot?.pool_id)?.label }}
           </span>
           <span class="relative group text-nowrap">
             <font-awesome
@@ -186,9 +186,15 @@ function closeForm() {
 }
 
 async function addTeam() {
-  const team = possibleTeams.value.find(team => team.id === selectedTeam.value.value) as Team
+  const teamId = selectedTeam.value?.value
+  
+  if (!teamId) {
+    console.error('No team selected')
+    return
+  }
+
   const response = await attachTournamentToTeam(
-      team?.id,
+      teamId,
       props.tournamentId,
       {
         poolId: pool.value?.value,

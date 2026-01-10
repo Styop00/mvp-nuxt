@@ -38,7 +38,7 @@
         v-model:visible="showGenerateModal"
         @confirmed="generateGames"
         :width="3"
-        :modal-body="'Are you sure you want to generate tournament matches?'+ (errorMessage ? `<br><span class='mt-4 inline-block text-red-700 text-xs'>${errorMessage}</span>` : '')"
+        :modal-body="errorMessage ? `<div class='mb-4'><p class='text-red-600'>${errorMessage}</p></div><p>Please fix the issue and try again.</p>` : 'Are you sure you want to generate tournament matches?'"
     />
   </div>
 </template>
@@ -70,15 +70,25 @@ const errorMessage = ref('')
 async function fetchGames(data?: any) {
   loading.value = true
   const res = await getGames({
-    tournamentId: tournamentId,
-    orderBy: orderBy.value,
-    orderDirection: orderDirection.value,
+    tournament_id: tournamentId,
+    order_by: orderBy.value,
+    order_direction: orderDirection.value,
     ...(data ? data : {limit: 10, page: 1})
   })
   games.value = res.rows
   count.value = res.count as Number
   loading.value = false
 }
+
+// Watch for route param changes
+watch(() => route.params.tournamentId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    games.value = []
+    previousGames.value = []
+    count.value = 0
+    fetchGames()
+  }
+}, { immediate: false })
 
 function sort(data: any) {
   if (orderBy.value === data.column) {
@@ -98,12 +108,25 @@ async function generateGames() {
   errorMessage.value = ''
   const res = await generateAllGames(+tournamentId, userStore.seasonSportId)
 
-  if (res?.name === 'Error') {
-    errorMessage.value = res?.message
+  // Check if response has validation error
+  if (res && typeof res === 'object' && 'error' in res && res.error) {
+    errorMessage.value = res.message || 'An error occurred while generating games'
     games.value = JSON.parse(JSON.stringify(previousGames.value))
-  } else if (res.length) {
+    showGenerateModal.value = true // Keep modal open to show error
+  } else if (res && Array.isArray(res) && res.length) {
+    // Success - games were generated
     showGenerateModal.value = false
+    errorMessage.value = ''
     await fetchGames()
+  } else if (res && Array.isArray(res) && res.length === 0) {
+    // No games generated but no error
+    showGenerateModal.value = false
+    errorMessage.value = ''
+    await fetchGames()
+  } else {
+    // Unknown response format
+    errorMessage.value = 'Unexpected response from server'
+    games.value = JSON.parse(JSON.stringify(previousGames.value))
   }
   loading.value = false
 }

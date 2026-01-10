@@ -192,11 +192,11 @@ function isUserAdmin(user: any) {
 }
 
 function isFromHomeTeam(user: any) {
-  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.homeTeam.id || userRole.clubId === props.homeTeam.clubId)
+  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.homeTeam.id || userRole.club_id === props.homeTeam.club_id)
 }
 
 function isFromGuestTeam(user: any) {
-  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.guestTeam.id || userRole.clubId === props.guestTeam.clubId)
+  return !!user.user_roles.find((userRole: any) => userRole.teamId === props.guestTeam.id || userRole.club_id === props.guestTeam.club_id)
 }
 
 function showMessage(message: Message) {
@@ -205,13 +205,13 @@ function showMessage(message: Message) {
   } else if (message.restriction === 1) {
     return props.isHomeCMOrCoach || props.isGuestCMOrCoach || userStore.isAdmin
   } else if (message.restriction === 2) {
-    return userStore.isAdmin || !!userStore.user.user_roles.find((userRole: any) => userRole.roleId === 1 && (userRole.clubId === props.homeTeam?.clubId || userRole.clubId === props.guestTeam?.clubId))
+    return userStore.isAdmin || !!userStore.user.user_roles.find((userRole: any) => userRole.roleId === 1 && (userRole.club_id === props.homeTeam?.club_id || userRole.club_id === props.guestTeam?.club_id))
   } else if (message.restriction === 3) {
     const user_roles = message.writer?.user_roles?.filter((userRole: any) => [1, 5, 6, 7].includes(userRole.roleId))
     if (user_roles) {
-      if (user_roles.find((userRole: any) => userRole.clubId === props.homeTeam.clubId)) {
+      if (user_roles.find((userRole: any) => userRole.club_id === props.homeTeam.club_id)) {
         return props.isHomeCMOrCoach
-      } else if (user_roles.find((userRole: any) => userRole.clubId === props.guestTeam.clubId)) {
+      } else if (user_roles.find((userRole: any) => userRole.club_id === props.guestTeam.club_id)) {
         return props.isGuestCMOrCoach
       }
     }
@@ -224,7 +224,7 @@ function showMessage(message: Message) {
         (userRole: any) =>
             (
                 ((userRole.roleId === 5 || userRole.roleId === 6 || userRole.roleId === 7) &&
-                    (userRole.clubId === props.homeTeam?.clubId || userRole.clubId === props.guestTeam?.clubId))
+                    (userRole.club_id === props.homeTeam?.club_id || userRole.club_id === props.guestTeam?.club_id))
                 ||
                 (userRole.roleId === 7 && (userRole.teamId === props.homeTeam?.id || userRole.teamId === props.guestTeam?.id)))
     )

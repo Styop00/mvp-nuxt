@@ -10,7 +10,7 @@
             :loading="loading"
             :data-count="count"
             :show-conflicts-filter="false"
-            type="moved"
+            type="moves"
         />
       </div>
     </div>
@@ -35,8 +35,8 @@ async function fetchGames(data?: any) {
   loading.value = true
   const res = await getMovedGames(
       {
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
+        order_by: orderBy.value,
+        order_direction: orderDirection.value,
         ...(data ? data : {limit: 10, page: 1}),
       }
   )

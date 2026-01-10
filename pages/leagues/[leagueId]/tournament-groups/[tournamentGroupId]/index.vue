@@ -101,6 +101,18 @@ const userStore = useUserStore()
 const {fetchTournamentGroupById, updateTournamentGroup} = useTournamentGroupFetch()
 const {fetchTournamentConfigNames, fetchTournamentConfigById, createTournamentConfig} = useTournamentConfigFetch()
 
+// Watch for route param changes
+watch(() => route.params.tournamentGroupId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    loading.value = true
+    tournamentGroup.value = {} as TournamentGroup
+    tournamentConfig.value = {} as TournamentConfigs
+    selectedTournamentConfig.value = {} as SelectOptions
+    fetchTournamentGroup()
+    fetchTournamentConfigs()
+  }
+}, { immediate: false })
+
 onMounted(async () => {
   document.body.addEventListener('click', closeCalendars)
   await fetchTournamentGroup()
@@ -208,7 +220,7 @@ async function updateTournamentGroupData() {
   } else if (!selectExistingTournamentConfig.value) {
     let newConfig = await createTournamentConfig({
       ...editTournamentConfigRef.value?.editData,
-      seasonSportId: userStore.seasonSportId,
+      season_sport_id: userStore.seasonSportId,
     })
 
     if (!newConfig || !newConfig.id) {

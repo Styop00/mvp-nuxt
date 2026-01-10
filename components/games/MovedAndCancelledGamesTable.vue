@@ -8,7 +8,7 @@
         <span
             class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
         />
-          {{ type === 'moved' ? 'Moves' : 'Cancellation / No-shows' }}
+          {{ type === 'moves' ? 'Moves' : 'Cancellation / No-shows' }}
         </p>
       </div>
       <div class="w-full flex justify-between">
@@ -284,12 +284,12 @@ const penaltyStatusOptions = [
   },
   {
     label: 'Open only',
-    value: (props.type === 'moved' ? 0 : 1),
+    value: (props.type === 'moves' ? 0 : 1),
     disabled: false,
   },
   {
     label: 'Processed only',
-    value: (props.type === 'moved' ? 1 : 2),
+    value: (props.type === 'moves' ? 1 : 2),
     disabled: false,
   },
 ] as SelectOptions[]
@@ -437,10 +437,10 @@ watch(() => props.games, () => {
       day: moment(game.date).format('ddd'),
       dateTime: game.date + ' ' + moment(game.time, 'HH:mm').format('HH:mm'),
       number: game.number,
-      match: `${game.homeTeam.tournamentName}-${game.guestTeam.tournamentName} ${game.tournament?.shortName}`,
+      match: `${game.home_team.tournament_name}-${game.guest_team.tournament_name} ${game.tournament?.short_name}`,
       homePenalty1: homePenalty1,
       awayPenalty1: awayPenalty1,
-      penaltyStatus: !!game.penaltyStatusId,
+      penaltyStatus: !!game.penalty_status_id,
       view: '',
     } as GamesEditableTable
   })

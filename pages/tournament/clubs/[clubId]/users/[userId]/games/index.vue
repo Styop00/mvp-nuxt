@@ -35,10 +35,10 @@ async function fetchGames(data?: any) {
   loading.value = true
   const res = await getGames(
       {
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
+        order_by: orderBy.value,
+        order_direction: orderDirection.value,
         ...(data ? data : {limit: 10, page: 1}),
-        userId: +userId,
+        user_id: +userId,
       }
   )
   games.value = res.rows

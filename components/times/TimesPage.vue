@@ -52,6 +52,7 @@
                          @click.stop
                          v-if="showRangeCalendar"
                          style="z-index: 99999 !important; position: absolute !important;"
+                         >
                       <BaseButton
                           class="!py-1 !px-1 mx-auto mt-2 text-xs sm:text-base sm:!px-8 block"
                           @click="() => {range = []; showRangeCalendar = false}"
@@ -296,10 +297,10 @@ watch(() => props.timeSlots, () => {
     let reservationText = ''
 
     timeSlot.reservations.forEach(reservation => {
-      if (reservation.typeId === 3) {
-        reservationText += `<p class="text-wrap">${moment(reservation.startTime, 'HH:mm').format('HH:mm')}-${moment(reservation.endTime, 'HH:mm').format('HH:mm')} GP / Mini </p>`
+      if (reservation.type_id === 3) {
+        reservationText += `<p class="text-wrap">${moment(reservation.start_time, 'HH:mm').format('HH:mm')}-${moment(reservation.end_time, 'HH:mm').format('HH:mm')} GP / Mini </p>`
       } else {
-        reservationText += `<p class="text-wrap">${moment(reservation.startTime, 'HH:mm').format('HH:mm')}-${moment(reservation.endTime, 'HH:mm').format('HH:mm')} ${reservation.text} </p>`
+        reservationText += `<p class="text-wrap">${moment(reservation.start_time, 'HH:mm').format('HH:mm')}-${moment(reservation.end_time, 'HH:mm').format('HH:mm')} ${reservation.text} </p>`
       }
     })
     return {
@@ -308,15 +309,15 @@ watch(() => props.timeSlots, () => {
       day: moment(timeSlot.date.toString()).format('ddd'),
       expiration: timeSlot.expiration,
       date: timeSlot.date + ' ' +
-          moment(timeSlot.startTime.toString(), 'HH:mm').format('HH:mm') +
-          '-' + moment(timeSlot.endTime.toString(), 'HH:mm').format('HH:mm'),
+          moment(timeSlot.start_time.toString(), 'HH:mm').format('HH:mm') +
+          '-' + moment(timeSlot.end_time.toString(), 'HH:mm').format('HH:mm'),
       ...(userStore.isAdmin ? {
         status: timeSlot.reservations.length ?
             '<span class="bg-yellow-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Partly available</span>'
             :
             '<span class="bg-green-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Available</span>'
       } : {
-        club: timeSlot.club.shortName
+        club: timeSlot.club.short_name
       }),
       reservations: reservationText
     } as TimeSlotsTable
@@ -386,19 +387,19 @@ function showEditTimeSlot(id: number) {
 
 function emitFetchTimeSlots() {
   emit('fetchTimeSlots', {
-    orderBy: orderBy.value,
-    orderDirection: orderDirection.value,
+    order_by: orderBy.value,
+    order_direction: orderDirection.value,
     page: +page.value,
     limit: +(limit.value.value ?? 10),
-    searchTerm: searchQuery.value,
+    search_term: searchQuery.value,
     ...(range.value.length ? {
       period: range.value,
     } : {}),
     ...(selectedCourt.value.value ? {
-      courtId: selectedCourt.value.value
+      court_id: selectedCourt.value.value
     } : {}),
     ...(selectedVenue.value.value ? {
-      venueId: selectedVenue.value.value
+      venue_id: selectedVenue.value.value
     } : {}),
   })
 }
@@ -433,7 +434,7 @@ async function fetchCourts() {
 async function fetchVenues() {
   if (!userStore.seasonSportId) return
 
-  const res = await fetchAllVenues({seasonSportId: userStore.seasonSportId})
+  const res = await fetchAllVenues({season_sport_id: userStore.seasonSportId})
 
   venues.value.push({
     label: '--- All Venues ---',

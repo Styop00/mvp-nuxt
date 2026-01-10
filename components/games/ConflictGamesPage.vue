@@ -49,8 +49,8 @@ async function fetchGames(data?: any) {
   loading.value = true
   const res = await getGames(
       {
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
+        order_by: orderBy.value,
+        order_direction: orderDirection.value,
         ...(data ? data : {limit: 10, page: 1}),
         type: 'conflicts',
       }
@@ -75,10 +75,10 @@ async function deleteConflict() {
     await updateConflictById(selectedGame.value.conflict?.id, {ignoreAssociations: true})
   } else if (userStore.isCoach || userStore.isClubManager) {
     const user_roles = userStore.user.user_roles.filter((role: any) => [1, 5, 6, 7].includes(role.roleId))
-    if (user_roles.find((role: any) => (role.clubId === selectedGame.value.homeTeam?.clubId || role.teamId === selectedGame.value.homeTeam?.id))) {
-      await updateConflictById(selectedGame.value.conflict?.id, {ignoreHome: true})
+    if (user_roles.find((role: any) => (role.clubId === selectedGame.value.home_team?.clubId || role.teamId === selectedGame.value.home_team?.id))) {
+      await updateConflictById(selectedGame.value.conflict?.id, {ignore_home: true})
     } else {
-      await updateConflictById(selectedGame.value.conflict?.id, {ignoreAway: true})
+      await updateConflictById(selectedGame.value.conflict?.id, {ignore_away: true})
     }
   }
   showConfirmDeleteModal.value = false

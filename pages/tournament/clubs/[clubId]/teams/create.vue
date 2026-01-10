@@ -1,31 +1,31 @@
 <template>
   <div class="py-2 lg:p-6">
-    <Breadcrumb />
+    <Breadcrumb/>
     <div class="bg-dark-surface-default rounded-2xl p-2 lg:p-8">
       <p class="text-xl mb-4">Create Team</p>
       <form action="#" @submit.prevent="create">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <TextInput
-            v-model:value="team.localName"
-            label="Local Name"
-            :required="true"
+              v-model:value="team.local_name"
+              label="Local Name"
+              :required="true"
           />
           <TextInput
-            v-model:value="team.clubRank"
-            type="number"
-            :min="0"
-            label="Club ranking (1-xxx)"
+              v-model:value="team.club_rank"
+              type="number"
+              :min="0"
+              label="Club ranking (1-xxx)"
           />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
               <Select
-                :options="ageGroups"
-                class="w-72"
-                v-model:value="ageGroup"
-                :required="true"
-                label="Age Group"
+                  :options="ageGroups"
+                  class="w-72"
+                  v-model:value="ageGroup"
+                  :required="true"
+                  label="Age Group"
               />
               <p v-if="ageGroupError" class="text-sm text-red-600">
                 {{ ageGroupError }}
@@ -33,11 +33,11 @@
             </div>
             <div>
               <Select
-                :options="genders"
-                class="w-72"
-                :required="true"
-                v-model:value="gender"
-                label="Gender"
+                  :options="genders"
+                  class="w-72"
+                  :required="true"
+                  v-model:value="gender"
+                  label="Gender"
               />
               <p v-if="genderError" class="text-sm text-red-600">
                 {{ genderError }}
@@ -46,11 +46,11 @@
           </div>
           <div>
             <Select
-              :options="officialTypes"
-              class="w-72"
-              v-model:value="officialType"
-              :required="true"
-              label="Officials Table Set Type"
+                :options="officialTypes"
+                class="w-72"
+                v-model:value="officialType"
+                :required="true"
+                label="Officials Table Set Type"
             />
             <p v-if="officialTypeError" class="text-sm text-red-600">
               {{ officialTypeError }}
@@ -58,12 +58,12 @@
           </div>
           <div>
             <Select
-              :options="officialTeams"
-              class="w-72"
-              v-model:value="officialTeam"
-              :required="true"
-              v-if="officialType?.value === 2"
-              label="Official Team"
+                :options="officialTeams"
+                class="w-72"
+                v-model:value="officialTeam"
+                :required="true"
+                v-if="officialType?.value === 2"
+                label="Official Team"
             />
             <p v-if="officialTeamError" class="text-sm text-red-600">
               {{ officialTeamError }}
@@ -76,31 +76,31 @@
             <template v-for="i in selectedGroups.length">
               <template v-if="i !== tournamentGroups.length">
                 <Select
-                  class="!w-96 !max-w-full mt-4"
-                  :options="tournamentGroupOptions"
-                  :disable-auto-select="true"
-                  v-model:value="selectedGroups[i-1]"
+                    class="!w-96 !max-w-full mt-4"
+                    :options="tournamentGroupOptions"
+                    :disable-auto-select="true"
+                    v-model:value="selectedGroups[i-1]"
                 />
               </template>
             </template>
           </div>
         </div>
         <BaseButton
-          class="!py-2 block mt-3 mx-auto"
-          :class="loading ? 'opacity-40 cursor-not-allowed' : ''"
+            class="!py-2 block mt-3 mx-auto"
+            :class="loading ? 'opacity-40 cursor-not-allowed' : ''"
         >
           Create
         </BaseButton>
       </form>
     </div>
     <SuccessAlert
-      v-model:visible="showSuccessAlert"
-      text="The Team successfully created."
+        v-model:visible="showSuccessAlert"
+        text="The Team successfully created."
     />
     <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
+        v-model:visible="showUnsavedChangesModal"
+        @confirm="confirmLeavePage"
+        @cancel="cancelLeavePage"
     />
   </div>
 </template>
@@ -134,21 +134,20 @@ const showSuccessAlert = ref(false)
 const loading = ref(false)
 const team = ref({
   id: 0,
-  clubId: +clubId,
-  localName: '',
+  club_id: +clubId,
+  local_name: '',
   deleted: false,
-  ancestorId: 0,
-  calKey: '',
+  ancestor_id: 0,
+  cal_key: '',
   license: 0,
-  tournamentName: '',
+  tournament_name: '',
   gender: '',
-  clubRank: 0,
-  teamStaff: [],
-  tournamentGroups: [],
-  ageGroup: '',
-  officialTypeId: 0,
-  officialTeamId: 0,
-} as Team)
+  club_rank: 0,
+  team_staff: [],
+  age_group: '',
+  official_type_id: 0,
+  official_team_id: 0,
+} as unknown as Team)
 const tournamentGroups = ref([] as Array<SelectOptions>)
 const selectedGroups = ref([] as Array<SelectOptions>)
 const ageGroup = ref({} as SelectOptions)
@@ -178,7 +177,7 @@ watch(() => selectedGroups.value, () => {
   if (JSON.stringify(groups) !== JSON.stringify(selectedGroups.value)) {
     selectedGroups.value = groups
   }
-}, { 
+}, {
   deep: true,
   immediate: true
 })
@@ -191,8 +190,8 @@ const tournamentGroupOptions = computed(() => {
 
 async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
-    seasonSportId: userStore.seasonSportId,
-    isActive: true,
+    season_sport_id: userStore.seasonSportId,
+    is_active: true,
   }) as Array<TournamentGroup>
 
   if (response.length) {
@@ -222,7 +221,7 @@ async function fetchClubTeams() {
   officialTeams.value = []
   res.forEach((team) => {
     officialTeams.value.push({
-      label: team.localName,
+      label: team.local_name,
       value: team.id,
       disabled: false
     } as SelectOptions)
@@ -254,25 +253,25 @@ async function create() {
     return officialTeamError.value = error
   }
 
-  loading.value=true
+  loading.value = true
 
   const res = await createTeam({
-    clubId: team.value.clubId,
-    localName: team.value.localName,
-    tournamentName: team.value.tournamentName ? team.value.tournamentName : team.value.localName,
-    clubRank: team.value.clubRank,
+    club_id: team.value.club_id,
+    local_name: team.value.local_name,
+    tournament_name: team.value.tournament_name ? team.value.tournament_name : team.value.local_name,
+    club_rank: team.value.club_rank,
     gender: gender.value.value,
-    ageGroup: ageGroup.value.value,
-    officialTypeId: officialType.value.value,
-    officialTeamId: officialType.value.value === 2 ? officialTeam.value.value : null,
-    seasonSportId: userStore.seasonSportId,
+    age_group: ageGroup.value.value,
+    official_type_id: officialType.value.value,
+    official_team_id: officialType.value.value === 2 ? officialTeam.value.value : null,
+    season_sport_id: userStore.seasonSportId,
   })
 
   const attachedGroups = selectedGroups.value.filter(group => !!group.value).map(group => group.value)
   const response = await attachGroupsToTeam(res.id, attachedGroups)
-  loading.value=false
+  loading.value = false
   if (response) {
-    loading.value=true
+    loading.value = true
     showSuccessAlert.value = true
     hasUnsavedChanges.value = false
     setTimeout(() => {
@@ -283,7 +282,7 @@ async function create() {
 
 const hasUnsavedChanges = ref(false);
 const showUnsavedChangesModal = ref(false);
-let routeNext: any = null; 
+let routeNext: any = null;
 
 function handleUnsavedChanges(value: any) {
   hasUnsavedChanges.value = value;
@@ -298,34 +297,34 @@ function confirmLeavePage() {
 
 function cancelLeavePage() {
   showUnsavedChangesModal.value = false;
-  routeNext = null; 
+  routeNext = null;
 }
 
 watch(() => team.value, (newVal, oldVal) => {
 
-if (oldVal.id === undefined && newVal.id === team.value.id ) {
-  return;
-}
+  if (oldVal.id === undefined && newVal.id === team.value.id) {
+    return;
+  }
 
-if (oldVal && newVal) {
-  hasUnsavedChanges.value = true
-  
-  return;
-}
+  if (oldVal && newVal) {
+    hasUnsavedChanges.value = true
 
-if (newVal) {
-  hasUnsavedChanges.value = true
+    return;
+  }
 
-}
+  if (newVal) {
+    hasUnsavedChanges.value = true
 
-}, { deep: true });
+  }
+
+}, {deep: true});
 
 onBeforeRouteLeave((to, from, next) => {
   if (hasUnsavedChanges.value) {
     showUnsavedChangesModal.value = true;
-    routeNext = next; 
+    routeNext = next;
   } else {
-    next(); 
+    next();
   }
 });
 

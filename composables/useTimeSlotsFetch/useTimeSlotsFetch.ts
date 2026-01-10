@@ -22,8 +22,8 @@ export const useTimeSlotsFetch = () => {
     ) {
         const response = await useApiV5Fetch(`time-slots`, {
             query: {
-                seasonSportId: userStore.seasonSportId,
-                isDeleted: false,
+                season_sport_id: userStore.seasonSportId,
+                is_deleted: false,
                 ...requestData
             },
         })

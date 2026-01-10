@@ -109,7 +109,7 @@ async function fetchAvailableClubs() {
     }
   })
 
-  const organizerClub = clubOptions.value.find(option => option.value === props.game.organizerClubId)
+  const organizerClub = clubOptions.value.find(option => option.value === props.game.organizer_club_id)
 
   if (organizerClub) {
     selectedClub.value = organizerClub as SelectOptions

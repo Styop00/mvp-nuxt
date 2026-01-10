@@ -340,11 +340,11 @@ async function fetchTimeSlot() {
   const res = await fetchTimeSlotById(props.timeSlotId)
   date.value = moment(res.date as string).format('YYYY-MM-DD');
   expiredAt.value = moment(res.expiration as string).format('YYYY-MM-DD');
-  startTime.value = moment(res.startTime as string, 'HH:mm').format('HH:mm');
-  endTime.value = moment(res.endTime as string, 'HH:mm').format('HH:mm');
+  startTime.value = moment(res.start_time as string, 'HH:mm').format('HH:mm');
+  endTime.value = moment(res.end_time as string, 'HH:mm').format('HH:mm');
   let courtData;
   if (userStore.isAdmin) {
-    const venue = venues.value.find(venue => venue.id === res.court.venueId)
+    const venue = venues.value.find(venue => venue.id === res.court.venue_id)
     if (venue) {
       selectedVenue.value = {
         label: venue.name,
@@ -366,7 +366,7 @@ async function fetchTimeSlot() {
         disabled: true
       })
 
-      const court = courts.value.find(court => court.value === res.courtId)
+      const court = courts.value.find(court => court.value === res.court_id)
       if (court) {
         setTimeout(() => {
           selectedCourt.value = court
@@ -374,12 +374,12 @@ async function fetchTimeSlot() {
       }
     }
   } else {
-    courtData = courts.value.find(court => court.value === res.courtId)
+    courtData = courts.value.find(court => court.value === res.court_id)
   }
   if (courtData) {
     selectedCourt.value = courtData
   }
-  selectedClub.value = clubs.value.find(club => club.value === res.clubId) as SelectOptions
+  selectedClub.value = clubs.value.find(club => club.value === res.club_id) as SelectOptions
 }
 
 async function createOrUpdate() {
@@ -421,14 +421,14 @@ async function createOrUpdate() {
   } else {
     const res = await createTimeSlot({
       date: date.value,
-      startTime: startTime.value,
-      endTime: endTime.value,
-      clubId: selectedClub.value?.value ? selectedClub.value.value : null,
-      courtId: selectedCourt.value.value,
-      createWeekly: createWeekly.value,
-      seasonSportId: userStore.seasonSportId,
+      start_time: startTime.value,
+      end_time: endTime.value,
+      club_id: selectedClub.value?.value ? selectedClub.value.value : null,
+      court_id: selectedCourt.value.value,
+      create_weekly: createWeekly.value,
+      season_sport_id: userStore.seasonSportId,
       expiration: expiredAt.value,
-      ...(createWeekly.value ? {useDifferent: fixDatesDifferent.value} : {}),
+      ...(createWeekly.value ? {use_different: fixDatesDifferent.value} : {}),
     })
 
     if (res) {

@@ -76,7 +76,7 @@ export const useGamesFetch = () => {
   async function getGames(data: any) {
     const response = await useApiV5Fetch(`games`, {
       query: {
-        isDeleted: false,
+        is_deleted: false,
         ...data,
       },
     });
@@ -89,7 +89,7 @@ export const useGamesFetch = () => {
   async function getMovedGames(data: any) {
     const response = await useApiV5Fetch(`games/moved`, {
       query: {
-        isDeleted: false,
+        is_deleted: false,
         ...data,
       },
     });
@@ -121,19 +121,34 @@ export const useGamesFetch = () => {
   }
 
   async function generateAllGames(tournamentId: number, seasonSportId: number) {
-    const response = await useApiV5Fetch(`games/tournaments/${tournamentId}`, {
-      method: "POST",
-      query: {
-        seasonSportId,
-      },
-    });
+    try {
+      const response = await useApiV5Fetch(`games/tournaments/${tournamentId}`, {
+        method: "POST",
+        query: {
+          season_sport_id: seasonSportId,
+        },
+      });
 
-    if (response.data?.value) {
-      return response.data.value as
-        | Array<Game>
-        | { name: String; message: String };
+      // Check if response has error status (422 for validation errors)
+      if (response.status?.value === 'error') {
+        const errorMessage = response.error.value?.data?.message || 'Validation error occurred';
+        return {
+          error: true,
+          message: errorMessage,
+        };
+      }
+
+      if (response.data?.value) {
+        return response.data.value as Array<Game>;
+      }
+      return [] as Array<Game>;
+    } catch (error: any) {
+      // Handle any other errors
+      return {
+        error: true,
+        message: error?.data?.message || error?.message || 'An error occurred while generating games',
+      };
     }
-    return [] as Array<Game> | { name: String; message: String };
   }
 
   async function deleteAllGames(tournamentId: number) {
@@ -281,6 +296,18 @@ export const useGamesFetch = () => {
     }
   }
 
+  async function saveGameResult(gameId: number, data: any) {
+    const response = await useApiV5Fetch(`games/${gameId}/set-result`, {
+      method: 'POST',
+      body: data
+    })
+
+    if (response.data?.value) {
+      return response.data.value
+    }
+    return null
+  }
+
   return {
     fetchGameById,
     updateGame,
@@ -301,5 +328,6 @@ export const useGamesFetch = () => {
     getCancelledGames,
     getGamesCount,
     getGameById,
+    saveGameResult
   };
 };

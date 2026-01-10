@@ -308,8 +308,8 @@ function showCalendar() {
 
 async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
-    seasonSportId: userStore.seasonSportId,
-    isActive: true,
+    season_sport_id: userStore.seasonSportId,
+    is_active: true,
   }) as Array<TournamentConfigs>
 
   if (response.length) {

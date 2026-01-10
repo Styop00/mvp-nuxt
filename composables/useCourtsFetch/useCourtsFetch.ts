@@ -92,7 +92,7 @@ export function useCourtsFetch() {
   async function fetchAllCourts(seasonSportId: number) {
     const response = await useApiV5Fetch(`courts/all`, {
       query: {
-        seasonSportId: seasonSportId
+        season_sport_id: seasonSportId
       }
     });
 
@@ -102,7 +102,7 @@ export function useCourtsFetch() {
   async function fetchCourtsForClubs(clubIds: Array<number>) {
     const response = await useApiV5Fetch(`courts/for-clubs`, {
       query: {
-        clubIds: clubIds
+        club_ids: clubIds
       }
     });
 

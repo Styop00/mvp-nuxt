@@ -74,11 +74,11 @@ export function useClubsFetch() {
             .join(", ");
         return {
           id: data.id,
-          name: `${data.name} (${data.shortName})`,
+          name: `${data.name} (${data.short_name})`,
           managers: managers,
           license: data.license,
-          isActive: data.isActive,
-        };
+          isActive: data.is_active,
+        } as ClubsTableData;
       })
       originalData.value = result.rows;
       count.value = result.count;
@@ -110,7 +110,7 @@ export function useClubsFetch() {
         method: "POST",
         body: clubs,
         query: {
-          seasonSportId: activeSeasonSport,
+          season_sport_id: activeSeasonSport,
         },
       });
       return response.data?.value;

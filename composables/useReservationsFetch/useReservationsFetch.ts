@@ -21,7 +21,7 @@ export const useReservationsFetch = () => {
     ) {
         const response = await useApiV5Fetch(`reservations`, {
             query: {
-                isDeleted: false,
+                is_deleted: false,
                 ...requestData
             },
         })

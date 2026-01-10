@@ -101,7 +101,7 @@ const headers = [
   {
     label: 'Short Name',
     sortable: true,
-    sortValue: 'shortName',
+    sortValue: 'short_name',
     dataKey: 'shortName',
   },
   {
@@ -114,7 +114,7 @@ const headers = [
     label: 'Period',
     sortable: true,
     dataKey: 'period',
-    sortValue: 'startDate',
+    sortValue: 'start_date',
   },
 ]
 
@@ -124,18 +124,27 @@ watch(showDeleteTournamentConfirmation, () => {
   }
 })
 
+watch(() => route.params.tournamentGroupId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    tableData.value = []
+    tournaments.value = []
+    fetchLeague()
+    fetchData()
+  }
+}, { immediate: false })
+
 onMounted(() => {
   fetchLeague()
   fetchData()
 })
 
 const canEdit = computed(() => {
-  if (!league.value?.clubId) {
+  if (!league.value?.club_id) {
     return userStore.isAdmin
   }
   const user_roles = userStore.user?.user_roles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
   const clubIds = user_roles?.map((userRole: any) => userRole.clubId);
-  return clubIds.includes(league.value.clubId)
+  return clubIds.includes(league.value.club_id)
 })
 
 
@@ -173,19 +182,19 @@ async function fetchData() {
 
   tournaments.value.forEach(tournament => {
     let period = ''
-    if (tournament.startDate) {
-      period = moment(tournament.startDate).format('DD-MM-YYYY').toString() + ' - '
+    if (tournament.start_date) {
+      period = moment(tournament.start_date).format('DD-MM-YYYY').toString() + ' - '
     }
 
-    if (tournament.endDate) {
-      period = !period ? moment(tournament.endDate).format('DD-MM-YYYY').toString() : period + moment(tournament.endDate).format('DD-MM-YYYY').toString()
+    if (tournament.end_date) {
+      period = !period ? moment(tournament.end_date).format('DD-MM-YYYY').toString() : period + moment(tournament.end_date).format('DD-MM-YYYY').toString()
     }
 
     tableData.value.push({
       id: tournament.id,
       alias: tournament.alias,
-      shortName: tournament.shortName,
-      pools: tournament.poolCount,
+      shortName: tournament.short_name,
+      pools: tournament.pool_count,
       period: period
     })
   })

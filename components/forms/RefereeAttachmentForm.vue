@@ -241,7 +241,7 @@ const currentRefText = computed(() => {
 
 async function fetchAvailableReferees () {
   navigateTo(`/referees/referee-attachment/${props.gameId}/game-ref-list`)
-  await getRefList({ gameId: props.gameId, seasonSportId })
+  await getRefList({ gameId: props.gameId, season_sport_id: seasonSportId })
 }
 
 function rejectRef() {
@@ -249,7 +249,7 @@ function rejectRef() {
 };
 
 async function registerRefereeAbsense() {
-  await performRejectRef({gameId: props.gameId, pos: props.pos, seasonSportId })
+  await performRejectRef({gameId: props.gameId, pos: props.pos, season_sport_id: seasonSportId })
   navigateTo("/referees/referee-attachment/")
 }
 
@@ -262,19 +262,19 @@ async function confirmRemoveRef(chkNoMoreGames1: number, chkNoMoreGames2: number
   const noMoreGames2 = chkNoMoreGames2 ? 2 : 0;
   const noMoreGames = noMoreGames2 || noMoreGames1;
   if( gamePlanStatusId.value == 0 && referee.value && referee.value.userId > 0 ) {
-    await performDeleteRef({gameId: props.gameId, pos: props.pos, forUserId: referee.value.userId, nomoregames: noMoreGames, seasonSportId })
+    await performDeleteRef({gameId: props.gameId, pos: props.pos, forUserId: referee.value.userId, nomoregames: noMoreGames, season_sport_id: seasonSportId })
   } else if(referee.value){
-    await performSetRef({gameId: props.gameId, pos: props.pos, refUserId: referee.value.userId , nomoregames: noMoreGames, seasonSportId})
+    await performSetRef({gameId: props.gameId, pos: props.pos, refUserId: referee.value.userId , nomoregames: noMoreGames, season_sport_id: seasonSportId})
   }
 }
 
 
 async function autoAssign() {
-  await selectRefForOneGame({gameId: props.gameId, pos: props.pos, seasonSportId})
+  await selectRefForOneGame({gameId: props.gameId, pos: props.pos, season_sport_id: seasonSportId})
 };
 
 async function assignInMVP() {
- await performSetInMvp({gameId: props.gameId, pos: props.pos, seasonSportId, userId: user.id})
+ await performSetInMvp({gameId: props.gameId, pos: props.pos, season_sport_id: seasonSportId, userId: user.id})
 };
 
 async function  approveDraftRef () {
@@ -282,7 +282,7 @@ async function  approveDraftRef () {
 };
 
 async function approveDraft() {
-  await performApproveRef({gameId: props.gameId, pos: props.pos, seasonSportId, forUserId: referee?.value?.userId})
+  await performApproveRef({gameId: props.gameId, pos: props.pos, season_sport_id: seasonSportId, forUserId: referee?.value?.userId})
 };
 
 async function saveManualRef() {
@@ -302,7 +302,7 @@ async function saveManualRef() {
     if(!license) {
       licenseErrorMessage.value = "Error: You must provide a referee number."
     } else if(referee.value) {
-      await performSetRef({gameId: props.gameId, pos: props.pos, license, seasonSportId})
+      await performSetRef({gameId: props.gameId, pos: props.pos, license, season_sport_id: seasonSportId})
     }
   }
 };
@@ -312,7 +312,7 @@ const debounceGetRefDetails = debounce(async (license: number) => {
     gameId: props.gameId,
     pos: props.pos,
     license,
-    seasonSportId
+    season_sport_id: seasonSportId
   });
   refDetailsText.value = response?.display || "";
 }, 1000);

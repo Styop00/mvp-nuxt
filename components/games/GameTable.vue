@@ -404,15 +404,15 @@ watch(() => props.games, () => {
       date: game.date,
       time: game.time ? moment(game.time, 'HH:mm:ss').format('HH:mm') : '<span class="text-red-600">time is missing</span>',
       number: game.number,
-      teamIdHome: game.homeTeam?.tournamentName ?
-          `<span class="${userStore.isAdmin ? 'hover:text-brand-secondary-color' : ''}">${game.homeTeam?.tournamentName}</span>`
+      teamIdHome: game.home_team?.tournament_name ?
+          `<span class="${userStore.isAdmin ? 'hover:text-brand-secondary-color' : ''}">${game.home_team?.tournament_name}</span>`
           :
           '',
-      teamIdAway: game.guestTeam?.tournamentName ?
-          `<span class="${userStore.isAdmin ? 'hover:text-brand-secondary-color' : ''}">${game.guestTeam?.tournamentName}</span>`
+      teamIdAway: game.guest_team?.tournament_name ?
+          `<span class="${userStore.isAdmin ? 'hover:text-brand-secondary-color' : ''}">${game.guest_team?.tournament_name}</span>`
           :
           '',
-      tournament: game.tournament?.shortName ? game.tournament?.shortName : '',
+      tournament: game.tournament?.short_name ? game.tournament?.short_name : '',
       court: court,
       status: status,
     } as GamesTable
@@ -534,7 +534,7 @@ function getStatus(game: Game) {
     }
     status = `<p  class="bg-amber-500 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md"> ${status} </p>`
   } else {
-    switch (game.statusId) {
+    switch (game.status_id) {
       case 1 :
         status = `<span  class="mx-2 bg-red-600 w-fit rounded-lg px-3 py-1.5 text-white text-xs font-semibold text-nowrap shadow-md">Time missing</span>`;
         break;

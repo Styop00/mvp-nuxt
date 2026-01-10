@@ -108,7 +108,7 @@ const showRejectConfirmation = ref(false)
 async function checkSuggestion() {
   checkLoading.value = true
   showCheckModal.value = true
-  const res = await checkGame(props.suggestion?.gameId, {suggestionId: props.suggestion?.id})
+  const res = await checkGame(props.suggestion?.game_id, {suggestion_id: props.suggestion?.id})
 
   let checkHeader = ''
   checks.value = ''
@@ -142,10 +142,10 @@ function getClassByStatus(status: string) {
 }
 
 async function acceptSuggestion() {
-  const res = await saveDateAndCourt(props.suggestion?.gameId,
+  const res = await saveDateAndCourt(props.suggestion?.game_id,
       {
-        suggestionId: props.suggestion.id,
-        isAcceptedSuggestion: true
+        suggestion_id: props.suggestion.id,
+        is_accepted_suggestion: true
       })
   showAcceptConfirmation.value = false
   if (res) {
@@ -154,10 +154,10 @@ async function acceptSuggestion() {
 }
 
 async function rejectSuggestion() {
-  const res = await saveDateAndCourt(props.suggestion?.gameId,
+  const res = await saveDateAndCourt(props.suggestion?.game_id,
       {
-        suggestionId: props.suggestion.id,
-        isAcceptedSuggestion: false
+        suggestion_id: props.suggestion.id,
+        is_accepted_suggestion: false
       })
   showRejectConfirmation.value = false
   if (res) {

@@ -7,7 +7,7 @@
           Teams
         </p>
         <BaseButton @on-click="() => showAddTeamForm=true"
-                    v-if="!tournamentGroup.maxTeams || teams.length < +tournamentGroup.maxTeams"
+                    v-if="!tournamentGroup.max_teams || teams.length < +tournamentGroup.max_teams"
                     class="!py-1 !px-1 !text-sm sm:text-base sm:!px-4 block">
           Add Team
         </BaseButton>
@@ -21,7 +21,6 @@
                          v-model:value="clubLicense"
                          class="col-span-3"
                          @focus-out="fetchClubByLicense"
-                         :min="60000000"
                          type="number"
                          :required="true"
               />
@@ -40,18 +39,22 @@
           </template>
           <template v-if="selectedTeam.value === 1">
             <div class="grid grid-cols-6 gap-3 mt-3">
-              <TextInput
-                  label="Team License"
-                  v-model:value="teamLicense"
-                  class="col-span-3"
+              <div class="col-span-6">
+                <SearchableSelect
+                  :model-value="selectedTeamByName"
+                  :options="teamSearchOptions"
+                  :is-loading="isLoadingTeamSearch"
+                  label="Team Name"
+                  placeholder="Search by team local name or tournament name..."
                   :required="true"
-                  type="number"
-                  :min="30000000"
-                  @focus-out="fetchTeamByLicense"
-              />
+                  :min-search-length="2"
+                  @update:model-value="handleTeamSelectByName"
+                  @search="searchTeamsByName"
+                />
+              </div>
             </div>
             <span class="text-sm text-red-600">
-              {{ teamLicenseError }}
+              {{ teamNameError }}
             </span>
             <template v-if="searchedTeam?.id">
               <div class="mt-3">
@@ -59,7 +62,7 @@
                   Team
                 </p>
                 <p class="text-md font-bold">
-                  {{ searchedTeam.tournamentName }}
+                  {{ searchedTeam.tournament_name || searchedTeam.local_name }}
                 </p>
               </div>
             </template>
@@ -79,7 +82,7 @@
       <template v-for="team in teams">
         <div class="flex gap-6 items-center justify-between mb-2">
         <span>
-          {{ team.tournamentName }}
+          {{ team.tournament_name }}
         </span>
           <span class="relative group text-nowrap">
                 <font-awesome
@@ -108,10 +111,13 @@ import type Team from "~/interfaces/teams/team";
 import TextInput from "~/components/inputs/TextInput.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
 import Select from "~/components/inputs/Select.vue";
+import SearchableSelect from "~/components/inputs/SearchableSelect.vue";
+import type { SearchableSelectOption } from "~/components/inputs/SearchableSelect.vue";
 import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 import type Clubs from "~/interfaces/clubs/club";
 import {useClubsFetch} from "~/composables/useClubsFetch/useClubsFetch";
+import { debounce } from "~/utils/debounce";
 
 const props = defineProps({
   visible: {
@@ -139,6 +145,10 @@ const clubLicense = ref('')
 const clubLicenseError = ref('')
 const searchedTeam = ref({} as Team)
 const searchedClub = ref({} as Clubs)
+const selectedTeamByName = ref<SearchableSelectOption | null>(null)
+const teamSearchOptions = ref<SearchableSelectOption[]>([])
+const isLoadingTeamSearch = ref(false)
+const teamNameError = ref('')
 const selectedTeam = ref({
   label: '--new team--',
   value: 0,
@@ -182,32 +192,65 @@ const teamTournamentName = computed(() => {
   return ((name1.value + ' ' + name2.value).trim() + ' ' + name3.value).trim()
 })
 
-async function fetchTeamByLicense() {
-  teamLicenseError.value = ''
-  if (!teamLicense.value) {
-    searchedTeam.value = {} as Team
-  } else if (+teamLicense.value < 30000000 || +teamLicense.value > 40000000) {
-    teamLicenseError.value = 'Invalid license!'
-  } else {
-    const res = await fetchTeams(
-        null,
-        null,
-        null,
-        null,
-        1,
-        null,
-        {
-          license: teamLicense.value
-        }
-    ) as { count: Number, rows: Array<Team> }
-
-    if (res.count) {
-      searchedTeam.value = res.rows[0] as Team
-    } else {
-      searchedTeam.value = {} as Team
-      teamLicenseError.value = 'Invalid license!'
-    }
+// Search teams by name
+async function searchTeamsByName(searchTerm: string) {
+  if (!searchTerm || searchTerm.length < 2) {
+    teamSearchOptions.value = [];
+    return;
   }
+
+  isLoadingTeamSearch.value = true;
+  teamNameError.value = '';
+
+  try {
+    const res = await fetchTeams(
+      null, // clubId
+      null, // orderBy
+      null, // orderDirection
+      1,    // page
+      20,   // limit
+      searchTerm.trim() // searchQuery
+    ) as { count: Number, rows: Array<Team> };
+
+    if (res.count && res.count > 0) {
+      teamSearchOptions.value = res.rows.map((team: Team) => ({
+        label: `${team.local_name || team.tournament_name || 'Unknown'}${team.tournament_name && team.local_name ? ` (${team.tournament_name})` : ''}`,
+        value: team,
+        disabled: false
+      }));
+    } else {
+      teamSearchOptions.value = [];
+    }
+  } catch (error) {
+    teamNameError.value = 'Error searching for teams.';
+    teamSearchOptions.value = [];
+  } finally {
+    isLoadingTeamSearch.value = false;
+  }
+}
+
+// Debounced search function
+const debouncedSearchTeamsByName = debounce((searchTerm: string) => {
+  searchTeamsByName(searchTerm);
+}, 300);
+
+// Wrapper to use debounced search
+function handleSearchTeamsByName(searchTerm: string) {
+  debouncedSearchTeamsByName(searchTerm);
+}
+
+// Handle team selection from searchable select
+function handleTeamSelectByName(option: SearchableSelectOption) {
+  if (!option || !option.value) {
+    selectedTeamByName.value = null;
+    searchedTeam.value = {} as Team;
+    teamNameError.value = '';
+    return;
+  }
+
+  selectedTeamByName.value = option;
+  searchedTeam.value = option.value as Team;
+  teamNameError.value = '';
 }
 
 async function fetchClubByLicense() {
@@ -237,7 +280,7 @@ async function deleteGroup(id: number) {
   const response = await attachGroupsToTeam(
       id,
       [
-        ...team.tournamentGroups
+        ...team.tournament_groups
             .map(group => group.id)
             .filter(groupId => groupId !== tournamentGroup.value.id),
       ]
@@ -267,14 +310,14 @@ async function fetchPossibleTeamsForGroup() {
   possibleTeams.value = res
   teamOptions.value = res.map(team => {
     return {
-      label: team.tournamentName,
+      label: team.tournament_name,
       value: team.id,
       disabled: false
     } as SelectOptions
   })
 
   teamOptions.value.unshift({
-    label: '--add by team license--',
+    label: '--add by team name--',
     value: 1,
     disabled: false
   } as SelectOptions)
@@ -300,6 +343,10 @@ function closeForm() {
   clubLicenseError.value = ''
   teamLicense.value = ''
   teamLicenseError.value = ''
+  selectedTeamByName.value = null
+  teamSearchOptions.value = []
+  searchedTeam.value = {} as Team
+  teamNameError.value = ''
   selectedTeam.value = {
     label: '--new team--',
     value: 0,
@@ -314,7 +361,7 @@ async function addTeam() {
     const response = await attachGroupsToTeam(
         +(selectedTeam.value.value ? selectedTeam.value.value : 0),
         [
-          ...team.teamTournamentGroups.map(group => group.tournamentGroupId),
+          ...(team.team_tournament_groups ?? []).map(group => group.tournamentGroupId),
           tournamentGroup.value.id
         ]
     )
@@ -349,8 +396,8 @@ async function addTeam() {
       localName: teamTournamentName.value,
       tournamentName: teamTournamentName.value,
       gender: tournamentGroup.value.gender,
-      ageGroup: tournamentGroup.value.ageGroup,
-      seasonSportId: tournamentGroup.value.league.seasonSportId,
+      ageGroup: tournamentGroup.value.age_group,
+      seasonSportId: tournamentGroup.value.league?.season_sport_id,
     })
     const response = await attachGroupsToTeam(
         +res.id,

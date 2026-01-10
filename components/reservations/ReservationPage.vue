@@ -108,17 +108,17 @@ async function fetchData() {
   loading.value = true
   reservations.value = []
   const res = await fetchReservations({
-    timeSlotId: timeId,
-    orderBy: orderBy.value,
-    orderDirection: orderDirection.value
+    time_slot_id: timeId,
+    order_by: orderBy.value,
+    order_direction: orderDirection.value
   })
   reservations.value = res.map(reservation => {
     return {
       id: reservation.id,
-      startTime: moment(reservation.startTime, 'HH:mm').format('HH:mm'),
-      endTime: moment(reservation.endTime, 'HH:mm').format('HH:mm'),
+      startTime: moment(reservation.start_time, 'HH:mm').format('HH:mm'),
+      endTime: moment(reservation.end_time, 'HH:mm').format('HH:mm'),
       type: reservation.type.text,
-      age: reservation.ageGroup ? reservation.ageGroup : 'All',
+      age: reservation.age_group ? reservation.age_group : 'All',
       text: reservation.text,
     }
   })

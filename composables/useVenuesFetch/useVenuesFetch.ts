@@ -75,10 +75,10 @@ export function useVenuesFetch() {
     const response = await useApiV5Fetch("venues", {
       method: "POST",
       body: sport,
-      query: { seasonSportId },
+      query: { season_sport_id: seasonSportId },
     });
     if (response.data?.value) {
-      return response.data?.value;
+      return response.data?.value as Venues;
     }
     return null;
   }

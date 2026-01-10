@@ -13,7 +13,7 @@
               <span
                   class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
               />
-              {{ game.homeTeam?.tournamentName }} - {{ game.guestTeam?.tournamentName }}
+              {{ game.home_team?.tournament_name }} - {{ game.guest_team?.tournament_name }}
             </p>
             <div class="p-4 leading-8">
               <p>
@@ -21,7 +21,7 @@
                 <span class="ml-3" v-html="location"/>
               </p>
               <p class="text-brand-gray">
-                Original date: {{ moment(game?.originalTermDate).format('DD-MMM-YYYY') }}
+                Original date: {{ moment(game?.original_term_date).format('DD-MMM-YYYY') }}
               </p>
               <p class="text-brand-gray">
                 Organizer Club: {{ organizerClub }}
@@ -65,7 +65,7 @@
                 <BaseButton
                     class="!px-4 !py-2 rounded-md text-sm"
                     @onClick="() => showCancelGameModal = true"
-                    v-if="canRejectSuggestion && (game?.statusId ? game?.statusId : 0) >= 1 && (game?.statusId ? game?.statusId : 0) <= 7"
+                    v-if="canRejectSuggestion && (game?.status_id ? game?.status_id : 0) >= 1 && (game?.status_id ? game?.status_id : 0) <= 7"
                 >
                   Postponement/Cancellation
                 </BaseButton>
@@ -75,8 +75,8 @@
           <template v-if="game.conflict">
             <GameConflicts
                 :conflict="game.conflict"
-                :home-team="game.homeTeam"
-                :guest-team="game.guestTeam"
+                :home-team="game.home_team as Team"
+                :guest-team="game.guest_team as Team"
                 @fetchConflict="fetchGame"/>
           </template>
           <template v-if="game.suggestion">
@@ -95,9 +95,9 @@
           </template>
           <GameMessages
               v-if="game.id"
-              :messages="game.messages"
-              :home-team="game.homeTeam"
-              :guest-team="game.guestTeam"
+              :messages="game.messages as Message[]"
+              :home-team="game.home_team as Team"
+              :guest-team="game.guest_team as Team"
               :game-id="game.id"
               @re-fetch="fetchGame"
               :is-home-c-m-or-coach="isHomeCMOrCoach"
@@ -146,6 +146,8 @@ import ConfirmCancelGameModal from "~/components/modals/games/ConfirmCancelGameM
 import GameMessages from "~/components/games/GameMessages.vue";
 import GameNotes from "~/components/games/GameNotes.vue";
 import SetGameResultModal from "~/components/modals/games/SetGameResultModal.vue";
+import type Message from "~/interfaces/messages/message";
+import type Team from "~/interfaces/teams/team";
 
 const userStore = useUserStore()
 const route = useRoute()
@@ -173,7 +175,7 @@ const location = computed(() => {
 })
 
 const organizerClub = computed(() => {
-  return game.value?.club?.name ? game.value?.club?.name : game.value?.homeTeam?.club?.name
+  return game.value?.club?.name ? game.value?.club?.name : game.value?.home_team?.club?.name
 })
 
 async function deleteMatch() {
@@ -215,10 +217,10 @@ async function postponeTheMatch() {
 
 const gameStatus = computed(() => {
   let status = `<span  class="mx-2 bg-green-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Ok</span>`;
-  if (game.value.isDeleted) {
+  if (game.value.is_deleted) {
     return `<span  class="mx-2 bg-red-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Deleted</span>`
   }
-  switch (game.value.statusId) {
+  switch (game.value.status_id) {
     case 1 :
       status = `<span  class="mx-2 bg-red-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">Time missing</span>`;
       break;
@@ -242,9 +244,9 @@ const gameStatus = computed(() => {
       break;
   }
 
-  if (game.value.pointsHome || game.value.pointsAway) {
+  if (game.value.points_home || game.value.points_away) {
     status = `<span  class="mx-2 bg-green-400 w-fit rounded-xl p-2 text-white text-xs text-nowrap">
-    ${game.value.pointsHome}-${game.value.pointsAway}
+    ${game.value.points_home}-${game.value.points_away}
     </span>`;
   }
 
@@ -256,7 +258,7 @@ const canSetTime = computed(() => {
       (userRole: any) =>
           userRole.roleId === 1 &&
           (
-              userRole.clubId === (game.value?.organizerClubId ? game.value?.organizerClubId : game.value?.homeTeam?.clubId)
+              userRole.clubId === (game.value?.organizer_club_id ? game.value?.organizer_club_id : game.value?.home_team?.club_id)
           )
   )
   return userStore.isAdmin || isOrganizerCM || isCMHome.value
@@ -267,9 +269,9 @@ const isGuestCMOrCoach = computed(() => {
       (userRole: any) =>
           (
               ((userRole.roleId === 5 || userRole.roleId === 6) &&
-                  userRole.clubId === game.value?.guestTeam?.clubId)
+                  userRole.clubId === game.value?.guest_team?.club_id)
               ||
-              (userRole.roleId === 7 && userRole.teamId === game.value?.guestTeam?.id))
+              (userRole.roleId === 7 && userRole.teamId === game.value?.guest_team?.id))
   )
 
   return isGuestCoach || isCMGuest.value
@@ -280,9 +282,9 @@ const isHomeCMOrCoach = computed(() => {
       (userRole: any) =>
           (
               ((userRole.roleId === 5 || userRole.roleId === 6) &&
-                  userRole.clubId === game.value?.homeTeam?.clubId)
+                  userRole.clubId === game.value?.home_team?.club_id)
               ||
-              (userRole.roleId === 7 && userRole.teamId === game.value?.homeTeam?.id))
+              (userRole.roleId === 7 && userRole.teamId === game.value?.home_team?.id))
   )
   return isHomeCouch || isCMHome.value
 })
@@ -290,14 +292,14 @@ const isHomeCMOrCoach = computed(() => {
 const isCMHome = computed(() => {
   return !!userStore.user?.user_roles?.find(
       (userRole: any) =>
-          (userRole.roleId === 1 && userRole.clubId === game.value?.homeTeam?.clubId)
+          (userRole.roleId === 1 && userRole.clubId === game.value?.home_team?.club_id)
   )
 })
 
 const isCMGuest = computed(() => {
   return !!userStore.user?.user_roles?.find(
       (userRole: any) =>
-          (userRole.roleId === 1 && userRole.clubId === game.value?.guestTeam?.clubId)
+          (userRole.roleId === 1 && userRole.clubId === game.value?.guest_team?.club_id)
   )
 })
 

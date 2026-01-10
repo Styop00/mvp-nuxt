@@ -140,11 +140,11 @@ watch(() => time.value, (newVal, oldVal) => {
   }
 })
 
-watch(() => [date.value, time.value, selectedCourt.value.value, props.game.homeTeam?.id, props.game.guestTeam?.id], async () => {
-  if (date.value && time.value && selectedCourt.value.value && !timeError.value) {
+watch(() => [date.value, time.value, selectedCourt.value?.value, props.game?.home_team?.id, props.game?.guest_team?.id], async () => {
+  if (date.value && time.value && selectedCourt.value?.value && !timeError.value) {
     checks.value = ''
     checkLoading.value = true
-    const res = await checkGame(props.game?.id, {time: moment(time.value, 'HH:mm').format('HH:mm'), date: date.value, courtId: selectedCourt.value.value})
+    const res = await checkGame(props.game?.id, {time: moment(time.value, 'HH:mm').format('HH:mm'), date: date.value, court_id: selectedCourt.value.value})
 
     let checkHeader = ''
     res.forEach(check => {
@@ -168,10 +168,10 @@ watch(() => [date.value, time.value, selectedCourt.value.value, props.game.homeT
 })
 
 const minDate = computed(() => {
-  if (moment(props.game?.tournament?.startDate).isBefore(moment())) {
+  if (moment(props.game.tournament.start_date).isBefore(moment())) {
     return moment().format('DD-MMM-YYYY')
   }
-  return moment(props.game?.tournament?.startDate).format('DD-MMM-YYYY')
+  return moment(props.game?.tournament.start_date).format('DD-MMM-YYYY')
 })
 
 function getClassByStatus(status: string) {
@@ -230,7 +230,7 @@ async function fetchAvailableCourts() {
     })
   }
 
-  selectedCourt.value = courtOptions.value.find(option => option.value === props.game.courtId) as SelectOptions
+  selectedCourt.value = courtOptions.value.find(option => option.value === props.game?.court_id) as SelectOptions
 }
 
 function closeSelects() {
@@ -247,7 +247,7 @@ async function save() {
   const res = await saveDateAndCourt(props.game.id, {
     date: date.value,
     time: time.value,
-    courtId: selectedCourt.value.value,
+    court_id: selectedCourt.value.value,
   })
 
   if (res) {

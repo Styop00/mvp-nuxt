@@ -23,7 +23,7 @@
             <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
                  v-if="showStartDateCalendar"
-                 style="z-index: 99999 !important; position: absolute !important;"
+                 style="z-index: 99999 !important; position: absolute !important;">
               <DatePicker v-model:model-value="startDate" color="blue"/>
             </div>
           </div>
@@ -39,7 +39,7 @@
             <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default shadow"
                  @click.stop
                  v-if="showEndDateCalendar"
-                 style="z-index: 99999 !important; position: absolute !important;"
+                 style="z-index: 99999 !important; position: absolute !important;">
               <DatePicker v-model:model-value="endDate" color="blue" :min-date="startDate"/>
             </div>
           </div>

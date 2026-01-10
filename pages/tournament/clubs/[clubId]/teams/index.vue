@@ -19,6 +19,14 @@ async function fetchClubData() {
   loading.value = false
 }
 
+// Watch for route param changes
+watch(() => route.params.clubId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    clubs.value = []
+    fetchClubData()
+  }
+}, { immediate: false })
+
 onMounted(async () => {
   await fetchClubData()
 })

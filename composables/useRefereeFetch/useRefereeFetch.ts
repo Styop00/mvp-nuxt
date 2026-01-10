@@ -83,7 +83,7 @@ export function useRefereesFetch() {
     try {
       const response = await useApiV5Fetch("referees", {
         method: "POST",
-        body: { ...body, seasonSportId: userStore.seasonSportId },
+        body: { ...body, season_sport_id: userStore.seasonSportId },
       });
       return response.data?.value;
     } finally {
@@ -122,7 +122,7 @@ export function useRefereesFetch() {
     gameId: number;
     pos: number;
     forUserId: number;
-    seasonSportId: number;
+    season_sport_id: number;
     nomoregames: number;
     userId?: number;
   }): Promise<IReferee | null> {
@@ -148,12 +148,12 @@ export function useRefereesFetch() {
       pos: number;
       nomoregames?: number;
       userId?: number;
-      seasonSportId: number;
+      season_sport_id: number;
     } = {
       gameId: 0,
       refUserId: 0,
       pos: 0,
-      seasonSportId: 0,
+      season_sport_id: 0,
       nomoregames: 0,
     }
   ): Promise<IReferee | null> {
@@ -179,7 +179,7 @@ export function useRefereesFetch() {
       pos: number;
       nomoregames?: number;
       userId?: number | null;
-      seasonSportId: number;
+      season_sport_id: number;
     }[]
   ): Promise<string | null> {
     const response: { data?: { value?: string | null } } = await useApiV5Fetch(
@@ -199,7 +199,7 @@ export function useRefereesFetch() {
   async function performSetInMvp(bodyParams: {
     gameId: number;
     pos: number;
-    seasonSportId: number;
+    season_sport_id: number;
     userId: number;
   }): Promise<IReferee | null> {
     const response: { data?: { value?: IReferee } } = await useApiV5Fetch(
@@ -221,7 +221,7 @@ export function useRefereesFetch() {
       gameId: number;
       pos: number;
       gameRoleId?: number;
-      seasonSportId: number;
+      season_sport_id: number;
       userId?: number | null;
       generateRunId?: number;
       onlyForRefs?: any[];
@@ -249,7 +249,7 @@ export function useRefereesFetch() {
       gameId: number;
       pos: number;
       forUserId?: number;
-      seasonSportId: number;
+      season_sport_id: number;
     }[]
   ) {
     loading.value = true;
@@ -269,7 +269,7 @@ export function useRefereesFetch() {
     gameId: number;
     pos: number;
     gameRoleId?: number;
-    seasonSportId: number;
+    season_sport_id: number;
     userId?: number;
     generateRunId?: number;
     onlyForRefs?: any[];
@@ -290,7 +290,7 @@ export function useRefereesFetch() {
   async function getRefList(bodyParams: {
     gameId?: number;
     prioBoost?: number;
-    seasonSportId: number;
+    season_sport_id: number;
     pos?: number;
     week?: number;
   }): Promise<RefereeGetRefList[] | null> {
@@ -317,7 +317,7 @@ export function useRefereesFetch() {
     forUserId?: number;
     autoassignnew?: boolean;
     userId?: number;
-    seasonSportId: number;
+    season_sport_id: number;
   }): Promise<IReferee | null> {
     loading.value = true;
     referees.value = [];
@@ -342,7 +342,7 @@ export function useRefereesFetch() {
     gameId: number;
     pos: number;
     forUserId?: number;
-    seasonSportId: number;
+    season_sport_id: number;
   }): Promise<IReferee | null> {
     loading.value = true;
     referees.value = [];
@@ -367,7 +367,7 @@ export function useRefereesFetch() {
     license: number;
     gameId: number;
     pos: number;
-    seasonSportId: number;
+    season_sport_id: number;
   }): Promise<{
     userId: null | number;
     license: number;

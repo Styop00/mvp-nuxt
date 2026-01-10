@@ -15,8 +15,8 @@ export default interface Team {
     tournament_name: String | null;
     gender: String | null;
     club_rank: Number | null;
-    team_staff: Array<Users> | []
-    tournament_groups: Array<TournamentGroup> | []
+    team_staff?: Array<Users> | []
+    tournament_groups?: Array<TournamentGroup> | []
     tournaments?: Array<Tournament> | []
     TeamTournament?: Array<any>
     team_tournament_groups?: Array<any> | []

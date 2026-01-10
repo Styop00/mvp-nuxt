@@ -150,7 +150,7 @@ const headers = [
   {label: 'Name', sortable: true, sortValue: 'name', dataKey: 'name', className: 'w-96'},
   {label: 'License', sortable: true, sortValue: 'license', dataKey: 'license', className: 'w-32'},
   {label: 'Managers', sortable: false, sortValue: '', dataKey: 'managers'},
-  {label: 'Status', sortable: false, sortValue: 'inActive', dataKey: 'isActive', className: 'w-32'},
+  {label: 'Status', sortable: false, sortValue: 'is_active', dataKey: 'isActive', className: 'w-32'},
 ] as Array<TableHeader>;
 const router = useRouter();
 const showConfirmModal = ref(false);

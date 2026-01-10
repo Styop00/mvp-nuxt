@@ -43,10 +43,10 @@ async function fetchGames(data?: any) {
 
   const res = await getGames(
       {
-        orderBy: orderBy.value,
-        orderDirection: orderDirection.value,
-        seasonSportId: userStore.seasonSportId,
-        isDeleted: true,
+        order_by: orderBy.value,
+        order_direction: orderDirection.value,
+        season_sport_id: userStore.seasonSportId,
+        is_deleted: true,
         ...reqData,
         ...(data ? data : {limit: 10, page: 1})
       }

@@ -25,7 +25,7 @@
         <div class="flex-[2] text-start">
           <span
             class="inline-block pr-6 text-xs"
-            >{{ generateCourtUsageString(court.courtUsages)  }}</span
+            >{{ generateCourtUsageString(court.courtUsages || [])  }}</span
           >
         </div>
 
@@ -50,7 +50,7 @@
     <AddOrUpdateCourtToVenue
       v-model:visible="isCourtCreateOrUpdateModalOpen"
       :venueId="venue.id"
-      :court="selectedCourt.value"
+      :court="selectedCourt.value || undefined"
       :venueName="venue.name"
       @courtUpdate="updateCourt"
       @courtCreate="createCourt"
@@ -65,41 +65,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive, watch, type PropType } from 'vue';
 import type Venues from '~/interfaces/venues/venues';
 import ConfirmationDeleteModalVue from '~/components/modals/venues/ConfirmationDeleteModal.vue';
 import AddOrUpdateCourtToVenue from '../modals/venues/AddOrUpdateCourtToVenue.vue';
-import type { Courts } from '~/interfaces/courts/courts';
+import type { Courts, CourtUsage } from '~/interfaces/courts/courts';
 
 const showConfirmModalCourt = ref(false)
-const pseudoCourtTableData = reactive({value: []})
+const pseudoCourtTableData = reactive<{value: Courts[]}>({value: []})
 
 interface CourtDto {
   name: string;
-  venueId: number;
+  venue_id: number;
 }
 
 interface CourtRequirements {
-  courtRequirement1: number;
-  courtRequirement2: number;
-  courtRequirement3: number;
-  courtRequirement4: number;
+  court_requirement_1: number;
+  court_requirement_2: number;
+  court_requirement_3: number;
+  court_requirement_4: number;
 }
 
 interface CourtCreateEntry {
-  createCourtDto: CourtDto;
-  courtRequirements: CourtRequirements;
+  create_court_dto: CourtDto;
+  court_requirements: CourtRequirements;
 }
 
 interface CourtUpdateEntry {
   id: number
-  updateCourtDto: CourtDto;
-  courtRequirements: CourtRequirements;
+  update_court_dto: CourtDto;
+  court_requirements: CourtRequirements;
 }
 
 const courtsCreate = ref<{ [key: number]: CourtCreateEntry }>({});
 const courtsUpdate = reactive<{value: { [key: number]: CourtUpdateEntry }}>({value: {}});
-const deleteCourts = ref<{[key: number]: { id: number, venueId: number} }>({})
+const deleteCourts = ref<{[key: number]: { id: number, venue_id: number} }>({})
 const isCourtCreateOrUpdateModalOpen = ref(false)
 
 
@@ -109,17 +109,22 @@ const props = defineProps({
     required: true
   },
   courts: {
-    type: Object as PropType<Courts>,
-    required: true
+    type: Array as PropType<Courts[]>,
+    required: true,
+    default: () => []
   }
 });
 
-const selectedCourt = reactive({value: {}});
+const selectedCourt = reactive<{value: Partial<Courts> | null}>({value: null});
 
 const emit = defineEmits(['venueSaved', 'unsavedChanges', 'update:courts']);
 
 watch(() => props.courts, () => {
-  pseudoCourtTableData.value = JSON.parse(JSON.stringify(props.courts))
+  if (Array.isArray(props.courts)) {
+    pseudoCourtTableData.value = JSON.parse(JSON.stringify(props.courts))
+  } else {
+    pseudoCourtTableData.value = []
+  }
 }, {
   deep: true,
   immediate: true
@@ -135,97 +140,97 @@ watch(() => pseudoCourtTableData.value, () => {
 })
 
 
-function isShowConfirmDeleteModalCourt (court: any) {
-  if (court && !court.id) {
+function isShowConfirmDeleteModalCourt (court: Courts | null) {
+  if (!court) return;
+  
+  if (!court.id) {
     const createIndex = Object.keys(courtsCreate.value).find((key) => {
       const courtInCreate = courtsCreate.value[key];
-      return courtInCreate.createCourtDto.name === court.name;
+      return courtInCreate.create_court_dto.name === court.name;
     });
     if (createIndex) {
-      selectedCourt.value = courtsCreate.value[createIndex].createCourtDto;
-
-      const pseudoIndex = pseudoCourtTableData.value.findIndex(
-        (item) => item.name === courtsCreate.value[createIndex].createCourtDto.name
-      );
       selectedCourt.value = {
-        name: courtsCreate.value[createIndex].createCourtDto.name,
-        venueId: courtsCreate.value[createIndex].createCourtDto.venueId,
+        name: courtsCreate.value[createIndex].create_court_dto.name,
+        venue_id: courtsCreate.value[createIndex].create_court_dto.venue_id,
         courtUsages: [
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement1,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_1,
             courtRequirementId: 1,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement2,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_2,
             courtRequirementId: 2,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement3,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_3,
             courtRequirementId: 3,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement4,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_4,
             courtRequirementId: 4,
           }
         ]
       };
-      showConfirmModalCourt.value = true
+      showConfirmModalCourt.value = true;
+      return;
     }
   }
   selectedCourt.value = court;
-  showConfirmModalCourt.value = true
+  showConfirmModalCourt.value = true;
 }
 
 function openCourtCreateOrUpdateModal(court: Courts | null) {
    if (court && !court.id) {
     const createIndex = Object.keys(courtsCreate.value).find((key) => {
       const courtInCreate = courtsCreate.value[key];
-      return courtInCreate.createCourtDto.name === court.name;
+      return courtInCreate.create_court_dto.name === court.name;
     });
 
     if (createIndex) {
-      selectedCourt.value = courtsCreate.value[createIndex].createCourtDto;
+      selectedCourt.value = courtsCreate.value[createIndex].create_court_dto;
 
       const pseudoIndex = pseudoCourtTableData.value.findIndex(
-        (item) => item.name === courtsCreate.value[createIndex].createCourtDto.name
+        (item) => item.name === courtsCreate.value[createIndex].create_court_dto.name
       );
       selectedCourt.value = {
-        name: courtsCreate.value[createIndex].createCourtDto.name,
-        venueId: courtsCreate.value[createIndex].createCourtDto.venueId,
+        name: courtsCreate.value[createIndex].create_court_dto.name,
+        venue_id: courtsCreate.value[createIndex].create_court_dto.venue_id,
 
         courtUsages: [
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement1,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_1,
             courtRequirementId: 1,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement2,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_2,
             courtRequirementId: 2,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement3,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_3,
             courtRequirementId: 3,
           },
           {
-            courtUsageCount: courtsCreate.value[createIndex].courtRequirements.courtRequirement4,
+            courtUsageCount: courtsCreate.value[createIndex].court_requirements.court_requirement_4,
             courtRequirementId: 4,
           }
         ]
       };
 
-      if (pseudoIndex !== -1) {
+      if (pseudoIndex !== -1 && selectedCourt.value && selectedCourt.value.name) {
         pseudoCourtTableData.value[pseudoIndex].name = selectedCourt.value.name;
-        pseudoCourtTableData.value[pseudoIndex].courtUsages.forEach((usage: any) => {
-          if (usage.courtRequirementId === 1) {
-            usage.courtUsageCount = courtsCreate.value[createIndex].courtRequirements.courtRequirement1;
-          } else if (usage.courtRequirementId === 2) {
-            usage.courtUsageCount = courtsCreate.value[createIndex].courtRequirements.courtRequirement2;
-          } else if (usage.courtRequirementId === 3) {
-            usage.courtUsageCount = courtsCreate.value[createIndex].courtRequirements.courtRequirement3;
-          } else if (usage.courtRequirementId === 4) {
-            usage.courtUsageCount = courtsCreate.value[createIndex].courtRequirements.courtRequirement4;
-          }
-        });
+        if (pseudoCourtTableData.value[pseudoIndex].courtUsages && Array.isArray(pseudoCourtTableData.value[pseudoIndex].courtUsages)) {
+          pseudoCourtTableData.value[pseudoIndex].courtUsages.forEach((usage: any) => {
+            if (usage.courtRequirementId === 1) {
+              usage.courtUsageCount = courtsCreate.value[createIndex].court_requirements.court_requirement_1;
+            } else if (usage.courtRequirementId === 2) {
+              usage.courtUsageCount = courtsCreate.value[createIndex].court_requirements.court_requirement_2;
+            } else if (usage.courtRequirementId === 3) {
+              usage.courtUsageCount = courtsCreate.value[createIndex].court_requirements.court_requirement_3;
+            } else if (usage.courtRequirementId === 4) {
+              usage.courtUsageCount = courtsCreate.value[createIndex].court_requirements.court_requirement_4;
+            }
+          });
+        }
       }
       isCourtCreateOrUpdateModalOpen.value = true;
 
@@ -236,12 +241,11 @@ function openCourtCreateOrUpdateModal(court: Courts | null) {
   }
 }
 
-interface CourtUsage {
-  courtRequirementId: 1 | 2 | 3 | 4;
-  courtUsageCount: number;
-}
+function generateCourtUsageString(courtUsages: CourtUsage[] | undefined | null): string {
+  if (!courtUsages || !Array.isArray(courtUsages) || courtUsages.length === 0) {
+    return '';
+  }
 
-function generateCourtUsageString(courtUsages: CourtUsage[]): string {
   const usageMap: { [key: number]: string } = {
     1: 'Liga/Div',
     2: 'Sen ungdom',
@@ -250,7 +254,7 @@ function generateCourtUsageString(courtUsages: CourtUsage[]): string {
   };
 
   const usageArray = courtUsages.map((usage) => {
-    const name = usageMap[usage.courtRequirementId] || 'Unknown';
+    const name = usageMap[usage.courtRequirementId || 0] || 'Unknown';
     const count = Number(usage.courtUsageCount) || 0;
     return `${name}: ${count}`;
   });
@@ -265,7 +269,7 @@ function createCourt (
   courtRequirement3: number,
   courtRequirement4: number
 ) {
-  pseudoCourtTableData.value.push({
+  const newCourt: Partial<Courts> = {
     name: courtName,
     courtUsages: [
       {
@@ -285,20 +289,21 @@ function createCourt (
         courtUsageCount: courtRequirement4 ? courtRequirement4 : 0,
       },
     ],
-  });
+  };
+  pseudoCourtTableData.value.push(newCourt as Courts);
 
   const nextIndex = Object.keys(courtsCreate.value).length;
 
   courtsCreate.value[nextIndex] = {
-    createCourtDto: {
+    create_court_dto: {
       name: courtName,
-      venueId: props.venue.id,
+      venue_id: props.venue.id,
     },
-    courtRequirements: {
-      courtRequirement1: courtRequirement1 ,
-      courtRequirement2: courtRequirement2 ,
-      courtRequirement3: courtRequirement3 ,
-      courtRequirement4: courtRequirement4 ,
+    court_requirements: {
+      court_requirement_1: courtRequirement1 ,
+      court_requirement_2: courtRequirement2 ,
+      court_requirement_3: courtRequirement3 ,
+      court_requirement_4: courtRequirement4 ,
     },
   };
 }
@@ -317,93 +322,20 @@ function updateCourt(
       return courtsUpdate.value[key].id === id;
     });
     if (updateIndex !== undefined) {
-      courtsUpdate.value[Number(updateIndex)].updateCourtDto.name = courtName;
-      courtsUpdate.value[Number(updateIndex)].courtRequirements = {
-        courtRequirement1: courtRequirement1 ,
-        courtRequirement2: courtRequirement2,
-        courtRequirement3: courtRequirement3,
-        courtRequirement4: courtRequirement4,
+      courtsUpdate.value[Number(updateIndex)].update_court_dto.name = courtName;
+      courtsUpdate.value[Number(updateIndex)].court_requirements = {
+        court_requirement_1: courtRequirement1 ,
+        court_requirement_2: courtRequirement2,
+        court_requirement_3: courtRequirement3,
+        court_requirement_4: courtRequirement4,
       }
 
       const courtToUpdate = pseudoCourtTableData.value.find((item) => item.id === id);
         if (courtToUpdate) {
           courtToUpdate.name = courtName;
 
-          courtToUpdate.courtUsages.forEach((usage) => {
-            if (usage.courtRequirementId === 1) {
-              usage.courtUsageCount = courtRequirement1;
-            } else if (usage.courtRequirementId === 2) {
-              usage.courtUsageCount = courtRequirement2;
-            } else if (usage.courtRequirementId === 3) {
-              usage.courtUsageCount = courtRequirement3;
-            } else if (usage.courtRequirementId === 4) {
-              usage.courtUsageCount = courtRequirement4;
-            }
-          });
-        }
-    } else {
-      const nextIndex = Object.keys(courtsUpdate.value).length;
-        courtsUpdate.value[nextIndex] = {
-          id: id,
-          updateCourtDto: {
-            name: courtName,
-            venueId: props.venue.id,
-          },
-          courtRequirements: {
-            courtRequirement1: courtRequirement1 ,
-            courtRequirement2: courtRequirement2 ,
-            courtRequirement3: courtRequirement3 ,
-            courtRequirement4: courtRequirement4 ,
-          },
-        }
-        const courtToUpdate = pseudoCourtTableData.value.find((item) => item.id === id);
-
-        if (courtToUpdate) {
-          courtToUpdate.name = courtName;
-
-          courtToUpdate.courtUsages.forEach((usage: any) => {
-            if (usage.courtRequirementId === 1) {
-              usage.courtUsageCount = courtRequirement1;
-            } else if (usage.courtRequirementId === 2) {
-              usage.courtUsageCount = courtRequirement2;
-            } else if (usage.courtRequirementId === 3) {
-              usage.courtUsageCount = courtRequirement3;
-            } else if (usage.courtRequirementId === 4) {
-              usage.courtUsageCount = courtRequirement4;
-            }
-          });
-        }
-
-      }
-    } else if (!id) {
-        const createIndex = Object.keys(courtsCreate.value).find((key) => {
-          const court = courtsCreate.value[key];
-          return (
-            court.createCourtDto.name === selectedCourt.value.name &&
-            court.createCourtDto.venueId === props.venue.id
-          );
-        });
-
-        if (createIndex) {
-          courtsCreate.value[createIndex].createCourtDto.name = courtName;
-          courtsCreate.value[createIndex].courtRequirements = {
-            courtRequirement1: courtRequirement1,
-            courtRequirement2: courtRequirement2,
-            courtRequirement3: courtRequirement3,
-            courtRequirement4: courtRequirement4,
-          };
-
-          const pseudoIndex = pseudoCourtTableData.value.findIndex(
-
-            (item) => {
-             return item.name === selectedCourt.value.name
-
-            }
-          );
-
-          if (pseudoIndex ) {
-            pseudoCourtTableData.value[pseudoIndex].name = courtName;
-            pseudoCourtTableData.value[pseudoIndex].courtUsages.forEach((usage: any) => {
+          if (courtToUpdate.courtUsages && Array.isArray(courtToUpdate.courtUsages)) {
+            courtToUpdate.courtUsages.forEach((usage) => {
               if (usage.courtRequirementId === 1) {
                 usage.courtUsageCount = courtRequirement1;
               } else if (usage.courtRequirementId === 2) {
@@ -416,52 +348,128 @@ function updateCourt(
             });
           }
         }
+    } else {
+      const nextIndex = Object.keys(courtsUpdate.value).length;
+        courtsUpdate.value[nextIndex] = {
+          id: id,
+          update_court_dto: {
+            name: courtName,
+            venue_id: props.venue.id,
+          },
+          court_requirements: {
+            court_requirement_1: courtRequirement1 ,
+            court_requirement_2: courtRequirement2 ,
+            court_requirement_3: courtRequirement3 ,
+            court_requirement_4: courtRequirement4 ,
+          },
+        }
+        const courtToUpdate = pseudoCourtTableData.value.find((item) => item.id === id);
+
+        if (courtToUpdate) {
+          courtToUpdate.name = courtName;
+
+          if (courtToUpdate.courtUsages && Array.isArray(courtToUpdate.courtUsages)) {
+            courtToUpdate.courtUsages.forEach((usage: any) => {
+              if (usage.courtRequirementId === 1) {
+                usage.courtUsageCount = courtRequirement1;
+              } else if (usage.courtRequirementId === 2) {
+                usage.courtUsageCount = courtRequirement2;
+              } else if (usage.courtRequirementId === 3) {
+                usage.courtUsageCount = courtRequirement3;
+              } else if (usage.courtRequirementId === 4) {
+                usage.courtUsageCount = courtRequirement4;
+              }
+            });
+          }
+        }
+
+      }
+    } else if (!id) {
+        const createIndex = Object.keys(courtsCreate.value).find((key) => {
+          const court = courtsCreate.value[key];
+          return (
+            court.create_court_dto.name === selectedCourt.value?.name &&
+            court.create_court_dto.venue_id === props.venue.id
+          );
+        });
+
+        if (createIndex && selectedCourt.value) {
+          courtsCreate.value[createIndex].create_court_dto.name = courtName;
+          courtsCreate.value[createIndex].court_requirements = {
+            court_requirement_1: courtRequirement1,
+            court_requirement_2: courtRequirement2,
+            court_requirement_3: courtRequirement3,
+            court_requirement_4: courtRequirement4,
+          };
+
+          const pseudoIndex = pseudoCourtTableData.value.findIndex(
+            (item) => {
+              return item.name === selectedCourt.value?.name;
+            }
+          );
+
+          if (pseudoIndex !== -1 && pseudoIndex !== undefined) {
+            pseudoCourtTableData.value[pseudoIndex].name = courtName;
+            if (pseudoCourtTableData.value[pseudoIndex].courtUsages && Array.isArray(pseudoCourtTableData.value[pseudoIndex].courtUsages)) {
+              pseudoCourtTableData.value[pseudoIndex].courtUsages.forEach((usage: any) => {
+                if (usage.courtRequirementId === 1) {
+                  usage.courtUsageCount = courtRequirement1;
+                } else if (usage.courtRequirementId === 2) {
+                  usage.courtUsageCount = courtRequirement2;
+                } else if (usage.courtRequirementId === 3) {
+                  usage.courtUsageCount = courtRequirement3;
+                } else if (usage.courtRequirementId === 4) {
+                  usage.courtUsageCount = courtRequirement4;
+                }
+              });
+            }
+          }
+        }
       }
 }
 
 function removeCourt() {
-  if(selectedCourt.value.id) {
+  if (!selectedCourt.value) return;
+
+  if (selectedCourt.value.id) {
     const courtIndex = pseudoCourtTableData.value.findIndex(
-    (court) => court.id === selectedCourt.value.id
-  );
-  if (courtIndex !== -1) {
-    const nextIndex = Object.keys(deleteCourts.value).length;
+      (court) => court.id === selectedCourt.value?.id
+    );
+    if (courtIndex !== -1) {
+      const nextIndex = Object.keys(deleteCourts.value).length;
 
-    deleteCourts.value[nextIndex] = {
-      id: selectedCourt.value.id,
-      venueId: selectedCourt.value.venueId,
-    };
+      deleteCourts.value[nextIndex] = {
+        id: selectedCourt.value.id,
+        venue_id: selectedCourt.value.venue_id || (selectedCourt.value as any).venueId || props.venue.id,
+      };
 
-    pseudoCourtTableData.value.splice(courtIndex, 1);
-  }
+      pseudoCourtTableData.value.splice(courtIndex, 1);
+    }
 
-  showConfirmModalCourt.value = false;
-
+    showConfirmModalCourt.value = false;
   } else {
     const createIndex = Object.keys(courtsCreate.value).find((key) => {
-          const court = courtsCreate.value[key];
-          return (
-            court.createCourtDto.name === selectedCourt.value.name &&
-            court.createCourtDto.venueId === props.venue.id
-          );
-        });
+      const court = courtsCreate.value[key];
+      return (
+        court.create_court_dto.name === selectedCourt.value?.name &&
+        court.create_court_dto.venue_id === props.venue.id
+      );
+    });
 
-    if(createIndex) {
+    if (createIndex) {
       delete courtsCreate.value[createIndex];
     }
 
     const pseudoIndex = pseudoCourtTableData.value.findIndex(
-
-    (item) => {
-      return item.name === selectedCourt.value.name
-    }
+      (item) => {
+        return item.name === selectedCourt.value?.name;
+      }
     );
 
-    if (pseudoIndex) {
-      pseudoCourtTableData.value.splice(pseudoIndex, 1)
+    if (pseudoIndex !== -1) {
+      pseudoCourtTableData.value.splice(pseudoIndex, 1);
     }
   }
-
 }
 
 defineExpose({

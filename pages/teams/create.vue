@@ -6,12 +6,12 @@
       <form action="#" @submit.prevent="create">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <TextInput
-            v-model:value="team.localName"
+            v-model:value="team.local_name"
             label="Local Name"
             :required="true"
           />
           <TextInput
-            v-model:value="team.clubRank"
+            v-model:value="team.club_rank"
             type="number"
             :min="0"
             label="Club ranking (1-xxx)"
@@ -114,7 +114,6 @@ import type Team from "~/interfaces/teams/team";
 import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 import Select from "~/components/inputs/Select.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
-import type TournamentConfigs from "~/interfaces/tournament/config/tournamentConfigs";
 import {useUserStore} from "~/store/user";
 import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
 import {ageGroups} from "~/constants/ageGroups";
@@ -134,20 +133,20 @@ const showSuccessAlert = ref(false)
 const loading = ref(false)
 const team = ref({
   id: 0,
-  clubId: +clubId,
-  localName: '',
+  club_id: +clubId,
+  local_name: '',
   deleted: false,
-  ancestorId: 0,
-  calKey: '',
+  ancestor_id: 0,
+  cal_key: '',
   license: 0,
-  tournamentName: '',
+  tournament_name: '',
   gender: '',
-  clubRank: 0,
-  teamStaff: [],
-  tournamentGroups: [],
-  ageGroup: '',
-  officialTypeId: 0,
-  officialTeamId: 0,
+  club_rank: 0,
+  team_staff: [],
+  tournament_groups: [],
+  age_group: '',
+  official_team_id: 0,
+  official_type_id: 0,
 } as Team)
 const tournamentGroups = ref([] as Array<SelectOptions>)
 const selectedGroups = ref([] as Array<SelectOptions>)
@@ -191,8 +190,8 @@ const tournamentGroupOptions = computed(() => {
 
 async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
-    seasonSportId: userStore.seasonSportId,
-    isActive: true,
+    season_sport_id: userStore.seasonSportId,
+    is_active: true,
   }) as Array<TournamentGroup>
 
   if (response.length) {
@@ -218,11 +217,11 @@ async function fetchTournamentGroups() {
 }
 
 async function fetchClubTeams() {
-  const res = await fetchTeamNames('localName', 'ASC', {clubId: +clubId})
+  const res = await fetchTeamNames('localName', 'ASC', {club_id: +clubId})
   officialTeams.value = []
   res.forEach((team) => {
     officialTeams.value.push({
-      label: team.localName,
+      label: team.local_name,
       value: team.id,
       disabled: false
     } as SelectOptions)
@@ -257,15 +256,15 @@ async function create() {
   loading.value=true
 
   const res = await createTeam({
-    clubId: team.value.clubId,
-    localName: team.value.localName,
-    tournamentName: team.value.tournamentName ? team.value.tournamentName : team.value.localName,
-    clubRank: team.value.clubRank,
+    club_id: team.value.club_id,
+    local_name: team.value.local_name,
+    tournament_name: team.value.tournament_name ? team.value.tournament_name : team.value.local_name,
+    club_rank: team.value.club_rank,
     gender: gender.value.value,
-    ageGroup: ageGroup.value.value,
-    officialTypeId: officialType.value.value,
-    officialTeamId: officialType.value.value === 2 ? officialTeam.value.value : null,
-    seasonSportId: userStore.seasonSportId,
+    age_group: ageGroup.value.value,
+    official_type_id: officialType.value.value,
+    official_team_id: officialType.value.value === 2 ? officialTeam.value.value : null,
+    season_sport_id: userStore.seasonSportId,
   })
 
   const attachedGroups = selectedGroups.value.filter(group => !!group.value).map(group => group.value)
