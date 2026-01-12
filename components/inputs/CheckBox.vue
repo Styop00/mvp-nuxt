@@ -61,7 +61,6 @@ watch(inputValue, (value, oldValue) => {
 
 <style scoped>
 .form-check-input {
-  --bs-form-check-bg: #1E293B;
   flex-shrink: 0;
   width: 1.125em;
   height: 1.125em;
@@ -74,8 +73,8 @@ watch(inputValue, (value, oldValue) => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  background-color: #1E293B;
-  border: 2px solid #334155;
+  background-color: var(--color-surface-default);
+  border: 2px solid var(--color-border-default);
   border-radius: 0.375rem;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
@@ -84,12 +83,12 @@ watch(inputValue, (value, oldValue) => {
 }
 
 .form-check-input:hover {
-  border-color: #475569;
-  background-color: #334155;
+  border-color: var(--color-border-light);
+  background-color: var(--color-bg-hover);
 }
 
 .form-check-input:focus {
-  border-color: #6366F1;
+  border-color: var(--tw-brand-primary, #6366F1);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
   outline: none;
 }
@@ -99,13 +98,13 @@ watch(inputValue, (value, oldValue) => {
 }
 
 .form-check-input:checked {
-  background-color: #6366F1;
-  border-color: #6366F1;
+  background-color: var(--tw-brand-primary, #6366F1);
+  border-color: var(--tw-brand-primary, #6366F1);
 }
 
 .form-check-input:checked:hover {
-  background-color: #818CF8;
-  border-color: #818CF8;
+  background-color: var(--tw-brand-hover, #818CF8);
+  border-color: var(--tw-brand-hover, #818CF8);
 }
 
 .form-check-input:checked[type=checkbox] {
@@ -115,12 +114,12 @@ watch(inputValue, (value, oldValue) => {
 .form-check-input:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background-color: #1E293B;
-  border-color: #334155;
+  background-color: var(--color-surface-default);
+  border-color: var(--color-border-default);
 }
 
 label {
-  color: #F1F5F9;
+  color: var(--color-text-primary);
   font-size: 0.875rem;
   cursor: pointer;
   user-select: none;

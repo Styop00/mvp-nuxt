@@ -8,7 +8,7 @@
       @click.stop
       :id="'modal-body' + name"
       :class="[
-        'bg-dark-surface-default border border-dark-border-default p-3 rounded-2xl small-scrollbar shadow-xl',
+        'bg-surface-default border border-border-default text-text-primary p-3 rounded-2xl small-scrollbar shadow-sm transition-[background-color,border-color,color] duration-200',
         widthStyles,
         isOverflowVisible ? 'overflow-visible' : 'overflow-hidden'
       ]"
@@ -19,7 +19,7 @@
   </div>
   <div
     v-else
-    class="fixed top-0 left-0 w-screen h-screen bg-black/50 z-[9999] overflow-hidden"
+    class="fixed top-0 left-0 w-screen h-screen bg-black/50 dark:bg-black/60 z-[9999] overflow-hidden transition-opacity duration-200"
     v-show="visible"
     @click="() => modal = false"
   >
@@ -27,7 +27,7 @@
       @click.stop
       :id="'modal-body' + name"
       :class="[
-        'bg-dark-surface-default border border-dark-border-default absolute p-3 rounded-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 small-scrollbar shadow-xl',
+        'bg-surface-default border border-border-default text-text-primary absolute p-3 rounded-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 small-scrollbar shadow-sm transition-[background-color,border-color,color] duration-200',
         widthStyles,
         isOverflowVisible ? 'overflow-visible' : 'overflow-hidden'
       ]"

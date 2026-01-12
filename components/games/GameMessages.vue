@@ -79,7 +79,7 @@
               @click="addMessage"
           />
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-2 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-2 -translate-x-1/2 border">
             Send
           </span>
         </span>

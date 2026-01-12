@@ -121,7 +121,7 @@
                         @click="() => showApproveUserRole(row.id)"
                         class="p-1.5 text-base rounded-full hover:text-green-300 transition text-green-400 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
             Approve
           </span>
         </span>
@@ -130,7 +130,7 @@
                         @click="() => showJerseyNumber()"
                         class="p-1.5 text-base rounded-full hover:text-teal-500 transition text-teal-600 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
             Jersey number
           </span>
         </span>

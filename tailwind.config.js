@@ -172,51 +172,39 @@ export default {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
-      // Dark Theme Colors
-      dark: {
-        bg: {
-          primary: "#0F172A",
-          secondary: "#1E293B",
-          tertiary: "#334155",
-          hover: "#475569",
-        },
-        surface: {
-          default: "#1E293B",
-          elevated: "#334155",
-        },
-        text: {
-          primary: "#F8FAFC",
-          secondary: "#CBD5E1",
-          tertiary: "#94A3B8",
-          disabled: "#64748B",
-        },
-        border: {
-          default: "#334155",
-          light: "#475569",
-          dark: "#1E293B",
-          focus: "#6366F1",
-        },
-      },
-      // Legacy brand colors (updated for dark theme)
-      "brand-blue-200": "#818CF8",
-      "brand-blue-300": "#6366F1",
-      "brand-blue-400": "#4F46E5",
-      "brand-primary-color": "#6366F1",
-      "brand-secondary-color": "#00D9C0",
-      "brand-blue-hover": "#4F46E5",
-      "brand-blue-900": "#0F172A",
+      
+      // Theme Colors - Centralized color management using CSS variables
+      // Change colors in assets/css/tailwind.css (CSS variables) and they update everywhere
+      // Following Tailwind CSS pattern: https://tailwindcss.com/docs/dark-mode
+      // These map to CSS variables defined in tailwind.css @layer base
+      
+      // Background colors - map to CSS variables for centralized management
+      "bg-primary": "var(--color-bg-primary)",
+      "bg-secondary": "var(--color-bg-secondary)",
+      "bg-tertiary": "var(--color-bg-tertiary)",
+      "bg-hover": "var(--color-bg-hover)",
+      
+      // Surface colors
+      "surface-default": "var(--color-surface-default)",
+      "surface-elevated": "var(--color-surface-elevated)",
+      
+      // Text colors
+      "text-primary": "var(--color-text-primary)",
+      "text-secondary": "var(--color-text-secondary)",
+      "text-tertiary": "var(--color-text-tertiary)",
+      "text-disabled": "var(--color-text-disabled)",
+      
+      // Border colors
+      "border-default": "var(--color-border-default)",
+      "border-light": "var(--color-border-light)",
+      "border-dark": "var(--color-border-dark)",
+      
+      // Brand colors (same in both themes)
+      "brand-primary": "#6366F1",
+      "brand-secondary": "#00D9C0",
+      "brand-hover": "#4F46E5",
+      "brand-active": "#4338CA",
       "brand-green": "#10B981",
-      "body-gray": "#0F172A",
-      "gray-700": "#334155",
-      "input-border": "#334155",
-      "login-reg-bg": "#0F172A",
-      "custom-blue": "#3B82F6",
-      "purple-500": "#8B5CF6",
-      "custom-yellow": "#F59E0B",
-      "text-muted": "#94A3B8",
-      "disabled-gray": "#1E293B",
-      "black": "#0F172A",
-      "brand-gray": "#64748B",
     }),
     columns: {
       auto: "auto",
@@ -1208,5 +1196,11 @@ export default {
       50: "50",
     },
   },
-  plugins: [],
+  plugins: [
+    // Custom dark variant following Tailwind official pattern
+    // https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
+    function ({ addVariant }) {
+      addVariant('dark', '&:where(.dark, .dark *)');
+    },
+  ],
 };

@@ -1,28 +1,24 @@
 <template>
   <div class="w-full relative text-sm" ref="selectContainer">
-    <p class="font-inter-medium text-dark-text-primary">
+    <p class="font-inter-medium text-text-primary">
       {{ label }}
-      <span v-if="required && label"
-            class="text-red-500"
-      >
-        *
-      </span>
+      <span v-if="required && label" class="text-red-500">*</span>
     </p>
     <div
-        class="flex items-center border border-dark-border-default bg-dark-bg-primary text-sm text-dark-text-primary px-3 py-2.5 gap-2 justify-between w-full rounded-lg min-h-11 cursor-pointer transition-all duration-200 hover:border-dark-border-light hover:shadow-sm focus-within:border-brand-primary-color focus-within:ring-2 focus-within:ring-brand-primary-color/20"
+        class="flex items-center border border-border-default bg-bg-primary text-sm text-text-primary px-3 py-2.5 gap-2 justify-between w-full rounded-lg min-h-11 cursor-pointer transition-all duration-200 hover:border-border-light hover:shadow-sm focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20"
         :class="selectStyles"
         @click="openDropdown">
-      <span :class="!value?.label ? 'text-dark-text-tertiary' : 'text-dark-text-primary'">
+      <span :class="!value?.label ? 'text-text-tertiary' : 'text-text-primary'">
         {{ value?.label || 'Select an option' }}
       </span>
       <template v-if="!dropdownOpened">
-        <font-awesome :icon="['fas', 'angle-down']" class="ml-auto text-dark-text-tertiary transition-transform"/>
+        <font-awesome :icon="['fas', 'angle-down']" class="ml-auto text-text-tertiary transition-transform duration-200"/>
       </template>
       <template v-else>
         <font-awesome
             :icon="['fas', 'angle-up']"
             @click.stop="() => dropdownOpened = false"
-            class="cursor-pointer ml-auto text-brand-primary-color transition-transform"
+            class="cursor-pointer ml-auto text-brand-primary transition-transform duration-200"
         />
       </template>
     </div>
@@ -30,14 +26,14 @@
       <div
           v-if="dropdownOpened"
           :class="direction === 'bottom' ? 'top-full' : 'bottom-11'"
-          class="absolute shadow-2xl border border-dark-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-dark-surface-elevated rounded-lg mt-1"
+          class="absolute shadow-sm border border-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-surface-elevated rounded-lg mt-1"
           style="z-index: 99999 !important; position: absolute !important; min-width: 100%;"
       >
         <template v-for="(option, index) in selectOptions" :key="index">
           <div
-              class="px-3 py-2.5 border-b border-dark-border-default last:border-b-0 text-sm text-dark-text-primary bg-dark-surface-elevated transition-all duration-200"
+              class="px-3 py-2.5 border-b border-border-default last:border-b-0 text-sm text-text-primary bg-surface-elevated transition-all duration-200"
               @click="setOption(option)"
-              :class="!option.disabled ? 'cursor-pointer hover:bg-dark-bg-hover hover:text-brand-primary-color' : '!bg-dark-bg-secondary opacity-50 cursor-not-allowed'"
+              :class="!option.disabled ? 'cursor-pointer hover:bg-bg-hover hover:text-brand-primary' : 'bg-bg-secondary opacity-50 cursor-not-allowed'"
           >
             {{ option.label }}
           </div>

@@ -1,29 +1,31 @@
 <template>
   <label class="flex flex-col text-sm">
-    <span class="font-inter-medium flex gap-1 text-dark-text-primary"
-    >
+    <span class="font-inter-medium flex gap-1 text-text-primary">
       {{ label }}
-      <span v-if="required && label"
-            class="text-red-500"
-      >
-        *
-      </span>
-    </span
-    >
+      <span v-if="required && label" class="text-red-500">*</span>
+    </span>
     <input
-        :type="type"
-        :placeholder="placeholder"
-        class="px-3 py-2.5 border min-h-11 w-full rounded-lg bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm"
-        :class="inputClasses"
-        v-model="inputValue"
-        :name="name"
-        :required="required"
-        :autocomplete="autocomplete"
-        :disabled="disabled"
-        @keydown="(e) => {if(preventInput) e.preventDefault()}"
-        @focusout="emit('focus-out')"
-        :min="+min"
-        :max="+max"
+      :type="type"
+      :placeholder="placeholder"
+      class="px-3 py-2.5 border min-h-11 w-full rounded-lg 
+             bg-bg-primary border-border-default 
+             text-sm text-text-primary 
+             outline-none 
+             focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 
+             transition-all duration-200 
+             placeholder:text-text-tertiary placeholder:text-xs 
+             hover:border-border-light hover:shadow-sm
+             disabled:opacity-50 disabled:cursor-not-allowed"
+      :class="inputClasses"
+      v-model="inputValue"
+      :name="name"
+      :required="required"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      @keydown="(e) => {if(preventInput) e.preventDefault()}"
+      @focusout="emit('focus-out')"
+      :min="+min"
+      :max="+max"
     />
   </label>
 </template>

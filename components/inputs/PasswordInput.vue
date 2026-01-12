@@ -6,13 +6,13 @@
       :name="name"
       :id="id"
       :placeholder="placeholder"
-      class="w-full px-3 py-2.5 border min-h-11 rounded-lg bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm pr-10"
+      class="w-full px-3 py-2.5 border min-h-11 rounded-lg bg-bg-primary border-border-default text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all duration-200 placeholder:text-text-tertiary placeholder:text-xs hover:border-border-light hover:shadow-sm pr-10"
       :required="required"
       :autocomplete="autocomplete"
     />
     <button
       @click="changeInputType"
-      class="absolute inset-y-0 right-0 flex items-center p-3 rounded-tr-[0.35rem] rounded-br-[0.35rem] bg-login-reg-bg"
+      class="absolute inset-y-0 right-0 flex items-center p-3 rounded-tr-[0.35rem] rounded-br-[0.35rem] bg-bg-secondary hover:bg-bg-hover transition-colors duration-200"
       type="button"
     >
       <font-awesome

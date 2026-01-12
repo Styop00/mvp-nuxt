@@ -1,6 +1,6 @@
 <template>
   <div class="w-full relative text-sm" ref="selectContainer">
-    <p class="font-inter-medium text-dark-text-primary mb-1">
+    <p class="font-inter-medium text-text-primary mb-1">
       {{ label }}
       <span v-if="required && label" class="text-red-500">*</span>
     </p>
@@ -9,7 +9,7 @@
         v-model="searchQuery"
         type="text"
         :placeholder="placeholder"
-        class="px-3 py-2.5 border min-h-11 border-dark-border-default bg-dark-bg-primary text-sm text-dark-text-primary rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-brand-primary-color focus:border-brand-primary-color transition-all duration-200 placeholder:text-dark-text-tertiary hover:border-dark-border-light hover:shadow-sm"
+        class="px-3 py-2.5 border min-h-11 border-border-default bg-bg-primary text-sm text-text-primary rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-all duration-200 placeholder:text-text-tertiary hover:border-border-light hover:shadow-sm"
         @focus="openDropdown"
         @input="handleInput"
         @keydown.escape="closeDropdown"
@@ -18,24 +18,24 @@
         @keydown.enter.prevent="selectHighlighted"
       />
       <div v-if="isLoading" class="absolute right-3 top-1/2 transform -translate-y-1/2">
-        <font-awesome :icon="['fas', 'spinner']" class="animate-spin text-dark-text-tertiary" />
+        <font-awesome :icon="['fas', 'spinner']" class="animate-spin text-text-tertiary" />
       </div>
     </div>
     <Transition name="dropdown">
       <div
         v-if="dropdownOpened && (filteredOptions.length > 0 || searchQuery.length > 0)"
-        class="absolute shadow-2xl border border-dark-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-dark-surface-elevated rounded-lg mt-1 z-50"
+        class="absolute shadow-sm border border-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-surface-elevated rounded-lg mt-1 z-50"
         style="z-index: 99999 !important;"
       >
         <div
           v-if="isLoading"
-          class="px-3 py-2.5 text-dark-text-tertiary text-center"
+          class="px-3 py-2.5 text-text-tertiary text-center"
         >
           Searching...
         </div>
         <div
           v-else-if="filteredOptions.length === 0 && searchQuery.length > 0"
-          class="px-3 py-2.5 text-dark-text-tertiary text-center"
+          class="px-3 py-2.5 text-text-tertiary text-center"
         >
           No results found
         </div>
@@ -43,8 +43,8 @@
           <div
             v-for="(option, index) in filteredOptions"
             :key="index"
-            class="px-3 py-2.5 border-b border-dark-border-default last:border-b-0 text-sm text-dark-text-primary bg-dark-surface-elevated transition-all duration-200 cursor-pointer hover:bg-dark-bg-hover hover:text-brand-primary-color"
-            :class="index === highlightedIndex ? 'bg-dark-bg-hover text-brand-primary-color' : ''"
+            class="px-3 py-2.5 border-b border-border-default last:border-b-0 text-sm text-text-primary bg-surface-elevated transition-all duration-200 cursor-pointer hover:bg-bg-hover hover:text-brand-primary"
+            :class="index === highlightedIndex ? 'bg-bg-hover text-brand-primary' : ''"
             @click="selectOption(option)"
             @mouseenter="highlightedIndex = index"
           >

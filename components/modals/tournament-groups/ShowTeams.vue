@@ -91,7 +91,7 @@
                     class="p-1.5 text-xs rounded-full border border-red-100 bg-red-50 -500 hover:text-white transition text-red-400 cursor-pointer"
                 />
                 <span
-                    class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                    class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border"
                 >
                   Delete
                 </span>

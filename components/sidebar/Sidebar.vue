@@ -1,34 +1,34 @@
 <template>
   <div
-    class="bg-dark-surface-default border-r border-dark-border-default transition-all font-montserrat font-medium shadow-lg"
+    class="bg-surface-default border-r border-border-default transition-all font-montserrat font-medium shadow-sm"
     :class="props.showFullSidebar ? 'w-60' : 'w-20'"
     @mouseover="() => hovered = true"
     @mouseleave="() => hovered = false"
   >
     <div
-      class="h-14 fixed z-50 top-0 bg-dark-surface-default left-0 border-b border-dark-border-default flex items-center justify-center backdrop-blur-sm"
+      class="h-14 fixed z-50 top-0 bg-surface-default left-0 border-b border-border-default flex items-center justify-center backdrop-blur-sm"
       :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20'"
     >
       <p
-        class="text-dark-text-primary text-3xl uppercase hover:text-brand-primary-color cursor-pointer font-bold flex items-center justify-center gap-4 transition-colors duration-300 group"
+        class="text-text-primary text-3xl uppercase hover:text-brand-primary cursor-pointer font-bold flex items-center justify-center gap-4 transition-colors duration-200 group"
         @click="navigateTo('/')"
       >
-        <img src="/images/logo.png" alt="#" class="w-8 transition-transform duration-300 group-hover:scale-110">
+        <img src="/images/logo.png" alt="#" class="w-8 transition-transform duration-200 group-hover:scale-110">
         <span class="text-xl" v-if="(props.showFullSidebar || hovered)">
           MVP 5.0
         </span>
       </p>
     </div>
     <div
-      class="fixed z-50 top-[56px] left-0 bg-dark-surface-default overflow-y-auto sidebar px-3"
+      class="fixed z-50 top-[56px] left-0 bg-surface-default overflow-y-auto sidebar px-3"
       :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20 flex flex-col items-center'"
     >
-      <p class="text-xxs text-dark-text-tertiary py-3 px-3 font-bold uppercase tracking-wider">
+      <p class="text-xxs text-text-tertiary py-3 px-3 font-bold uppercase tracking-wider">
         <template v-if="props.showFullSidebar || hovered">
           <span> Main </span>
         </template>
         <template v-else>
-          <span class="block w-1 h-1 rounded-full border border-dark-text-tertiary my-1.5" />
+          <span class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5" />
         </template>
       </p>
       <template v-for="navigation in navigations" :key="navigation.label">
@@ -43,13 +43,13 @@
           />
         </template>
         <template v-else-if="navigation.type === 'group_name'">
-          <p class="text-xxs text-dark-text-tertiary py-3 px-3 font-bold uppercase tracking-wider">
+          <p class="text-xxs text-text-tertiary py-3 px-3 font-bold uppercase tracking-wider">
             <template v-if="props.showFullSidebar || hovered">
               {{ $t(navigation.label.toLowerCase()) }}
             </template>
             <template v-else>
               <span
-                class="block w-1 h-1 rounded-full border border-dark-text-tertiary my-1.5"
+                class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5"
               />
             </template>
           </p>
@@ -192,12 +192,12 @@ watch(route, () => {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #334155;
+      background-color: var(--color-border-default);
       border-radius: 10px;
-      border-right: 2px solid #1E293B;
+      border-right: 2px solid var(--color-surface-default);
 
       &:hover {
-        background-color: #475569;
+        background-color: var(--color-border-light);
       }
     }
 

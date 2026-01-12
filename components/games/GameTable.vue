@@ -77,7 +77,7 @@
               </div>
             </div>
             <div 
-              class="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/2 bg-dark-surface-default border border-dark-border-default shadow-2xl rounded-xl mt-3 backdrop-blur-md animate-scale-in"
+              class="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/2 bg-dark-surface-default border border-dark-border-default shadow-sm rounded-xl mt-3 backdrop-blur-md animate-scale-in"
               @click.stop
               v-if="showRangeCalendar"
               style="z-index: 99999 !important; position: absolute !important;">
@@ -132,7 +132,7 @@
             @click.stop="() => emit('ignoreConflict', row.id)"
             class="p-1.5 text-base rounded-full hover:text-red-500 transition text-red-600 cursor-pointer"/>
         <span
-            class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+            class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
           Ignore conflicts
         </span>
       </span>

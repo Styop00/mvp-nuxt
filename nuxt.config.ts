@@ -81,6 +81,8 @@ export default defineNuxtConfig({
         "inbox",
         "camera",
         "key",
+        "sun",
+        "moon",
       ],
       regular: ["user", "circle-user", "clock", "comments", "paper-plane", "note-sticky"],
       brands: ["google"],
@@ -91,15 +93,42 @@ export default defineNuxtConfig({
     head: {
       title: "MVPApp",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
-      htmlAttrs: {
-        class: "dark",
-      },
-      style: [
+      script: [
         {
+          // Inline script following Tailwind CSS official pattern
+          // https://tailwindcss.com/docs/dark-mode#with-system-theme-support
+          // Prevents FOUC (Flash of Unstyled Content) by applying theme before rendering
           children: `
-            html { background-color: #0F172A !important; }
-            body { background-color: #0F172A !important; color: #F8FAFC !important; }
-            * { transition: background-color 0.2s ease, color 0.2s ease; }
+            (function() {
+              // Check localStorage for theme preference
+              const storedTheme = localStorage.getItem('theme');
+              const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              
+              // Determine if dark mode should be active
+              // Priority: stored theme > system preference > default to dark
+              let shouldBeDark;
+              if (storedTheme === 'dark') {
+                shouldBeDark = true;
+              } else if (storedTheme === 'light') {
+                shouldBeDark = false;
+              } else if (!storedTheme && prefersDark) {
+                shouldBeDark = true;
+              } else {
+                shouldBeDark = true; // Default to dark
+              }
+              
+              // Apply dark class to html element (Tailwind's class-based dark mode)
+              if (shouldBeDark) {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+              } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+              }
+              
+              // Set color-scheme for browser UI
+              document.documentElement.style.colorScheme = shouldBeDark ? 'dark' : 'light';
+            })();
           `,
         },
       ],

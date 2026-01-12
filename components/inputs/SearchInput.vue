@@ -4,7 +4,7 @@
       v-model="searchQuery"
       type="text"
       :placeholder="placeholder"
-      class="px-3 py-2.5 pl-10 border min-h-11 border-dark-border-default bg-dark-bg-primary text-sm text-dark-text-primary rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-brand-primary-color focus:border-brand-primary-color transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs hover:border-dark-border-light hover:shadow-sm"
+      class="px-3 py-2.5 pl-10 border min-h-11 border-border-default bg-bg-primary text-sm text-text-primary rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-all duration-200 placeholder:text-text-tertiary placeholder:text-xs hover:border-border-light hover:shadow-sm"
     />
   </div>
 </template>

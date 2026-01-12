@@ -144,7 +144,7 @@
           </BaseButton>
           <template v-if="!tournament.start_date || !tournament.end_date">
           <span
-              class="absolute bottom-full mb-1 text-xs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+              class="absolute bottom-full mb-1 text-xs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
             Start Date and End Date fields are required
           </span>
           </template>

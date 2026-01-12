@@ -3,22 +3,22 @@
     <div class="rounded-lg overflow-hidden pb-4 animate-fade-in">
       <div>
         <Breadcrumb/>
-        <div class="bg-dark-surface-default min-w-full shadow-xl rounded-2xl overflow-hidden border border-dark-border-default">
+        <div class="bg-surface-default min-w-full shadow-sm rounded-2xl overflow-hidden border border-border-default transition-[background-color,border-color,box-shadow] duration-200">
           <!-- Header Section -->
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-dark-border-default bg-gradient-to-r from-dark-surface-default/50 to-dark-bg-primary/30">
-            <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-dark-text-primary">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-border-default bg-gradient-to-r from-surface-default/50 to-bg-primary/30 transition-[background-color,border-color] duration-200">
+            <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-text-primary transition-colors duration-200">
               <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
               Calendar
             </p>
           </div>
           
           <!-- Filter Section -->
-          <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full items-stretch lg:items-center justify-between px-4 lg:px-6 py-5 bg-gradient-to-br from-dark-surface-default/40 via-dark-bg-primary/30 to-dark-surface-default/40 border-b border-dark-border-default backdrop-blur-sm relative">
+          <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 w-full items-stretch lg:items-center justify-between px-4 lg:px-6 py-5 bg-gradient-to-br from-surface-default/40 via-bg-primary/30 to-surface-default/40 border-b border-border-default backdrop-blur-sm relative transition-[background-color,border-color] duration-200">
             <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center flex-1">
               <div class="flex items-center gap-3 relative z-30">
-                <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary-color/10 to-brand-primary-color/5 border border-brand-primary-color/20 shadow-sm hover:shadow-md hover:border-brand-primary-color/30 transition-all duration-200">
-                  <font-awesome :icon="['fas', 'filter']" class="text-brand-primary-color text-sm"/>
-                  <span class="text-nowrap text-xs sm:text-sm font-bold text-dark-text-primary uppercase tracking-wider whitespace-nowrap">Filters</span>
+                <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/20 shadow-sm hover:shadow-sm hover:border-brand-primary/30 transition-all duration-200">
+                  <font-awesome :icon="['fas', 'filter']" class="text-brand-primary text-sm"/>
+                  <span class="text-nowrap text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider whitespace-nowrap transition-colors duration-200">Filters</span>
                 </div>
                 <div class="relative z-30">
                   <Select
@@ -31,8 +31,8 @@
               </div>
               
               <div class="flex items-center gap-3 relative z-30" v-if="filter.value === 'court'">
-                <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-                  <font-awesome :icon="['fas', 'location-dot']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+                <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary/50 group-hover:bg-brand-primary/10 transition-all duration-200 flex-shrink-0">
+                  <font-awesome :icon="['fas', 'location-dot']" class="text-xs text-text-tertiary group-hover:text-brand-primary transition-colors"/>
                 </div>
                 <div class="relative z-30">
                   <FilterSelect
@@ -44,8 +44,8 @@
               </div>
               
               <div class="flex items-center gap-3 relative z-30" v-if="filter.value === 'coach'">
-                <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-                  <font-awesome :icon="['fas', 'user']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+                <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary/50 group-hover:bg-brand-primary/10 transition-all duration-200 flex-shrink-0">
+                  <font-awesome :icon="['fas', 'user']" class="text-xs text-text-tertiary group-hover:text-brand-primary transition-colors"/>
                 </div>
                 <div class="relative z-30">
                   <FilterSelect
@@ -68,14 +68,14 @@
           </div>
           
           <!-- Mobile View Toggle Buttons -->
-          <div class="flex flex-wrap gap-2 justify-center px-4 pb-4 lg:hidden border-t border-dark-border-default pt-4">
+          <div class="flex flex-wrap gap-2 justify-center px-4 pb-4 lg:hidden border-t border-border-default pt-4 transition-[border-color] duration-200">
             <button
               @click="changeView('listWeek')"
               :class="[
                 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-h-11',
                 currentView === 'listWeek' 
-                  ? 'bg-brand-primary-color text-white shadow-md' 
-                  : 'bg-dark-surface-elevated text-dark-text-secondary hover:bg-dark-bg-hover'
+                  ? 'bg-brand-primary text-white shadow-sm' 
+                  : 'bg-surface-elevated text-text-secondary hover:bg-bg-hover transition-[background-color,color] duration-200'
               ]"
             >
               List
@@ -85,8 +85,8 @@
               :class="[
                 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-h-11',
                 currentView === 'dayGridMonth' 
-                  ? 'bg-brand-primary-color text-white shadow-md' 
-                  : 'bg-dark-surface-elevated text-dark-text-secondary hover:bg-dark-bg-hover'
+                  ? 'bg-brand-primary text-white shadow-sm' 
+                  : 'bg-surface-elevated text-text-secondary hover:bg-bg-hover transition-[background-color,color] duration-200'
               ]"
             >
               Month
@@ -96,8 +96,8 @@
               :class="[
                 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-h-11',
                 currentView === 'timeGridWeek' 
-                  ? 'bg-brand-primary-color text-white shadow-md' 
-                  : 'bg-dark-surface-elevated text-dark-text-secondary hover:bg-dark-bg-hover'
+                  ? 'bg-brand-primary text-white shadow-sm' 
+                  : 'bg-surface-elevated text-text-secondary hover:bg-bg-hover transition-[background-color,color] duration-200'
               ]"
             >
               Week
@@ -107,8 +107,8 @@
               :class="[
                 'px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 min-h-11',
                 currentView === 'timeGridDay' 
-                  ? 'bg-brand-primary-color text-white shadow-md' 
-                  : 'bg-dark-surface-elevated text-dark-text-secondary hover:bg-dark-bg-hover'
+                  ? 'bg-brand-primary text-white shadow-sm' 
+                  : 'bg-surface-elevated text-text-secondary hover:bg-bg-hover transition-[background-color,color] duration-200'
               ]"
             >
               Day
@@ -367,20 +367,30 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Calendar Wrapper */
+/* Calendar Wrapper - Remove any bottom shadow */
 .calendar-wrapper {
   background: transparent;
 }
 
-/* FullCalendar Dark Theme Styling */
-:deep(.fc) {
-  background-color: transparent !important;
-  color: #F1F5F9 !important;
-  font-family: inherit;
-  border-color: #334155 !important;
+/* Remove bottom shadow from calendar container and all FullCalendar elements */
+.calendar-wrapper :deep(.fc-scrollgrid),
+.calendar-wrapper :deep(.fc-view),
+.calendar-wrapper :deep(.fc-daygrid-body),
+.calendar-wrapper :deep(.fc-timegrid),
+.calendar-wrapper :deep(.fc-list-view) {
+  box-shadow: none !important;
 }
 
-/* Remove all white borders - comprehensive override */
+/* FullCalendar Theme-Aware Styling - Using CSS Variables */
+:deep(.fc) {
+  background-color: transparent !important;
+  color: var(--color-text-primary) !important;
+  font-family: inherit;
+  border-color: var(--color-border-default) !important;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Theme-aware borders using CSS variables */
 :deep(.fc *),
 :deep(.fc table),
 :deep(.fc table *),
@@ -390,44 +400,42 @@ onMounted(() => {
 :deep(.fc-daygrid *),
 :deep(.fc-timegrid),
 :deep(.fc-timegrid *) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc table td),
 :deep(.fc table th),
 :deep(.fc-scrollgrid td),
 :deep(.fc-scrollgrid th) {
-  border-color: #334155 !important;
-  border-right-color: #334155 !important;
-  border-bottom-color: #334155 !important;
-  border-top-color: #334155 !important;
-  border-left-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Ensure no white or light borders anywhere */
 :deep(.fc-scrollgrid-section),
 :deep(.fc-scrollgrid-section-header),
 :deep(.fc-scrollgrid-section-body),
 :deep(.fc-scrollgrid-sync-table) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Day grid specific */
 :deep(.fc-daygrid-body),
 :deep(.fc-daygrid-body-unbalanced),
 :deep(.fc-daygrid-day-frame),
 :deep(.fc-daygrid-day-top) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Header Toolbar */
+/* Header Toolbar - Theme-aware */
 :deep(.fc-header-toolbar) {
   margin-bottom: 1.5rem !important;
   padding: 1rem 1.25rem !important;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.4) 50%, rgba(30, 41, 59, 0.6) 100%) !important;
+  background: linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-bg-tertiary) 50%, var(--color-surface-elevated) 100%) !important;
   border-radius: 1rem !important;
-  border: 1px solid rgba(51, 65, 85, 0.5) !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--color-border-default) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   backdrop-filter: blur(8px) !important;
   display: flex !important;
   flex-wrap: wrap !important;
@@ -436,19 +444,16 @@ onMounted(() => {
   gap: 1rem !important;
   position: relative !important;
   z-index: 1 !important;
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-toolbar-title) {
   font-size: 1.5rem !important;
   font-weight: 700 !important;
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
   text-transform: capitalize;
   letter-spacing: 0.025em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #F1F5F9 0%, #CBD5E1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Toolbar Chunks */
@@ -473,18 +478,18 @@ onMounted(() => {
   justify-content: flex-end !important;
 }
 
-/* Buttons */
+/* Buttons - Theme-aware */
 :deep(.fc-button-primary) {
-  background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
-  border: 1px solid #475569 !important;
-  color: #F1F5F9 !important;
+  background: var(--color-surface-elevated) !important;
+  border: 1px solid var(--color-border-default) !important;
+  color: var(--color-text-primary) !important;
   border-radius: 0.625rem !important;
   padding: 0.625rem 1.25rem !important;
   font-weight: 600 !important;
   font-size: 0.875rem !important;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) !important;
   text-transform: capitalize !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   position: relative !important;
   overflow: hidden !important;
 }
@@ -505,48 +510,49 @@ onMounted(() => {
 }
 
 :deep(.fc-button-primary:hover) {
-  background: linear-gradient(135deg, #475569 0%, #64748B 100%) !important;
-  border-color: #6366F1 !important;
-  color: #FFFFFF !important;
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 6px 12px -2px rgba(99, 102, 241, 0.4), 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+  background: var(--color-bg-hover) !important;
+  border-color: #6366F1 !important; /* brand-primary color */
+  color: #6366F1 !important; /* brand-primary color */
+  transform: translateY(-1px);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 :deep(.fc-button-primary:not(:disabled):active) {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 :deep(.fc-button-primary:not(:disabled).fc-button-active) {
-  background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%) !important;
-  border-color: #6366F1 !important;
+  background: #6366F1 !important; /* brand-primary color */
+  border-color: #6366F1 !important; /* brand-primary color */
   color: #FFFFFF !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3), 0 4px 6px -1px rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   transform: translateY(-1px);
 }
 
 :deep(.fc-button-primary:focus) {
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
   outline: none !important;
 }
 
 :deep(.fc-button-primary:disabled) {
-  background: linear-gradient(135deg, #1E293B 0%, #334155 100%) !important;
-  border-color: #334155 !important;
-  color: #64748B !important;
+  background: var(--color-bg-tertiary) !important;
+  border-color: var(--color-border-default) !important;
+  color: var(--color-text-disabled) !important;
   opacity: 0.6 !important;
   cursor: not-allowed !important;
   box-shadow: none !important;
 }
 
-/* Button Group */
+/* Button Group - Theme-aware */
 :deep(.fc-button-group) {
   display: inline-flex !important;
   gap: 0.375rem !important;
   border-radius: 0.625rem !important;
   padding: 0.25rem !important;
-  background: rgba(15, 23, 42, 0.3) !important;
-  border: 1px solid rgba(51, 65, 85, 0.3) !important;
+  background: var(--color-bg-tertiary) !important;
+  border: 1px solid var(--color-border-default) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-button-group .fc-button) {
@@ -571,7 +577,9 @@ onMounted(() => {
 
 :deep(.fc-prev-button:hover),
 :deep(.fc-next-button:hover) {
-  background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%) !important;
+  background: #6366F1 !important; /* brand-primary color */
+  border-color: #6366F1 !important; /* brand-primary color */
+  color: #FFFFFF !important;
 }
 
 /* Today Button */
@@ -580,10 +588,10 @@ onMounted(() => {
   letter-spacing: 0.025em !important;
 }
 
-/* View Toggle Buttons */
+/* View Toggle Buttons - Theme-aware */
 :deep(.fc-button-group .fc-button-primary.fc-button-active) {
-  background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%) !important;
-  border-color: #6366F1 !important;
+  background: #6366F1 !important; /* brand-primary color */
+  border-color: #6366F1 !important; /* brand-primary color */
   color: #FFFFFF !important;
   font-weight: 700 !important;
   position: relative !important;
@@ -601,9 +609,8 @@ onMounted(() => {
   border-radius: 2px;
 }
 
-/* Icon buttons enhancement */
+/* Icon buttons enhancement - Theme-aware */
 :deep(.fc-icon) {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
   transition: transform 200ms;
 }
 
@@ -633,12 +640,7 @@ onMounted(() => {
   opacity: 1;
 }
 
-/* Enhanced button group container */
-:deep(.fc-button-group) {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Separator between button groups */
+/* Separator between button groups - Theme-aware */
 :deep(.fc-toolbar-chunk:not(:last-child)::after) {
   content: '';
   display: none;
@@ -649,38 +651,32 @@ onMounted(() => {
     display: block;
     width: 1px;
     height: 32px;
-    background: linear-gradient(to bottom, transparent, rgba(51, 65, 85, 0.5), transparent);
+    background: linear-gradient(to bottom, transparent, var(--color-border-default), transparent);
     margin: 0 0.5rem;
   }
 }
 
-/* Day Headers */
+/* Day Headers - Theme-aware */
 :deep(.fc-col-header-cell) {
-  background-color: #1E293B !important;
-  border-color: #334155 !important;
-  border-right-color: #334155 !important;
-  border-bottom-color: #334155 !important;
-  border-top-color: #334155 !important;
-  border-left-color: #334155 !important;
+  background-color: var(--color-surface-elevated) !important;
+  border-color: var(--color-border-default) !important;
   padding: 0.75rem !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-col-header-cell-cushion) {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
   font-weight: 600 !important;
   text-transform: capitalize;
   font-size: 0.875rem;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Calendar Grid */
+/* Calendar Grid - Theme-aware */
 :deep(.fc-daygrid-day) {
-  background-color: #0F172A !important;
-  border-color: #334155 !important;
-  border-right-color: #334155 !important;
-  border-bottom-color: #334155 !important;
-  border-top-color: #334155 !important;
-  border-left-color: #334155 !important;
-  transition: background-color 200ms !important;
+  background-color: var(--color-surface-default) !important;
+  border-color: var(--color-border-default) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Remove any white borders */
@@ -692,66 +688,71 @@ onMounted(() => {
   border-color: transparent !important;
 }
 
-/* Table borders */
+/* Table borders - Theme-aware */
 :deep(.fc-scrollgrid) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-sync-table) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-sync-table td),
 :deep(.fc-scrollgrid-sync-table th) {
-  border-color: #334155 !important;
-  border-right-color: #334155 !important;
-  border-bottom-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section-header td),
 :deep(.fc-scrollgrid-section-header th) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section-body td),
 :deep(.fc-scrollgrid-section-body th) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-daygrid-day:hover) {
-  background-color: #1E293B !important;
+  background-color: var(--color-bg-hover) !important;
 }
 
 :deep(.fc-daygrid-day.fc-day-today) {
   background-color: rgba(99, 102, 241, 0.1) !important;
-  border-color: #6366F1 !important;
+  border-color: #6366F1 !important; /* brand-primary color */
 }
 
 :deep(.fc-daygrid-day-number) {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
   padding: 0.5rem !important;
   font-weight: 500;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-daygrid-day.fc-day-today .fc-daygrid-day-number) {
-  color: #6366F1 !important;
+  color: #6366F1 !important; /* brand-primary color */
   font-weight: 700;
 }
 
-/* Other Month Days */
+/* Other Month Days - Theme-aware */
 :deep(.fc-day-other .fc-daygrid-day-number) {
-  color: #64748B !important;
+  color: var(--color-text-tertiary) !important;
   opacity: 0.5;
 }
 
-/* Events */
+/* Events - Brand color (same in both themes) */
 :deep(.fc-event) {
-  background-color: #6366F1 !important;
-  border-color: #6366F1 !important;
+  background-color: #6366F1 !important; /* brand-primary color */
+  border-color: #6366F1 !important; /* brand-primary color */
   color: #FFFFFF !important;
   border-radius: 0.375rem !important;
   padding: 0.25rem 0.5rem !important;
@@ -763,10 +764,10 @@ onMounted(() => {
 }
 
 :deep(.fc-event:hover) {
-  background-color: #818CF8 !important;
-  border-color: #818CF8 !important;
+  background-color: #818CF8 !important; /* brand-primary hover */
+  border-color: #818CF8 !important; /* brand-primary hover */
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 :deep(.fc-event-title) {
@@ -774,80 +775,86 @@ onMounted(() => {
   font-weight: 500 !important;
 }
 
-/* Time Grid (Week/Day View) */
+/* Time Grid (Week/Day View) - Theme-aware */
 :deep(.fc-timegrid-slot) {
-  border-color: #334155 !important;
-  border-top-color: #334155 !important;
-  border-bottom-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-slot-label) {
-  color: #94A3B8 !important;
+  color: var(--color-text-tertiary) !important;
   font-size: 0.75rem !important;
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-col) {
-  border-color: #334155 !important;
-  border-left-color: #334155 !important;
-  border-right-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-col-frame) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-axis) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-divider) {
-  border-color: #334155 !important;
+  border-color: var(--color-border-default) !important;
+  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-now-indicator-line) {
-  border-color: #6366F1 !important;
+  border-color: #6366F1 !important; /* brand-primary color */
 }
 
-/* List View */
+/* List View - Theme-aware */
 :deep(.fc-list-day-cushion) {
-  background-color: #1E293B !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
   font-weight: 600 !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event) {
-  background-color: #0F172A !important;
-  border-color: #334155 !important;
+  background-color: var(--color-surface-default) !important;
+  border-color: var(--color-border-default) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event:hover) {
-  background-color: #1E293B !important;
+  background-color: var(--color-bg-hover) !important;
 }
 
 :deep(.fc-list-event-title) {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event-time) {
-  color: #94A3B8 !important;
+  color: var(--color-text-tertiary) !important;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* More Link */
+/* More Link - Brand color */
 :deep(.fc-more-link) {
-  color: #6366F1 !important;
+  color: #6366F1 !important; /* brand-primary color */
   font-weight: 500 !important;
 }
 
 :deep(.fc-more-link:hover) {
-  color: #818CF8 !important;
+  color: #818CF8 !important; /* brand-primary hover */
   text-decoration: underline;
 }
 
-/* Scrollbar for calendar */
+/* Scrollbar for calendar - Theme-aware */
 :deep(.fc-scroller) {
   scrollbar-width: thin;
-  scrollbar-color: #475569 #1E293B;
+  scrollbar-color: var(--color-border-light) var(--color-surface-elevated);
 }
 
 :deep(.fc-scroller::-webkit-scrollbar) {
@@ -856,34 +863,39 @@ onMounted(() => {
 }
 
 :deep(.fc-scroller::-webkit-scrollbar-track) {
-  background: #1E293B;
+  background: var(--color-surface-elevated);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :deep(.fc-scroller::-webkit-scrollbar-thumb) {
-  background: #475569;
+  background: var(--color-border-light);
   border-radius: 3px;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :deep(.fc-scroller::-webkit-scrollbar-thumb:hover) {
-  background: #64748B;
+  background: var(--color-border-default);
 }
 
-/* Popover */
+/* Popover - Theme-aware */
 :deep(.fc-popover) {
-  background-color: #1E293B !important;
-  border-color: #334155 !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+  background-color: var(--color-surface-elevated) !important;
+  border-color: var(--color-border-default) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-popover-header) {
-  background-color: #334155 !important;
-  color: #F1F5F9 !important;
-  border-color: #475569 !important;
+  background-color: var(--color-surface-default) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-border-default) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-popover-body) {
-  background-color: #1E293B !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Responsive adjustments */

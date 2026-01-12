@@ -101,22 +101,22 @@ function clickBody() {
 
 /* Tags container (input area) */
 .multiselect__tags {
-  @apply bg-dark-bg-primary border-dark-border-default text-sm text-dark-text-primary outline-none focus:border-brand-primary-color focus:ring-2 focus:ring-brand-primary-color/20 transition-all duration-200 placeholder:text-dark-text-tertiary placeholder:text-xs min-h-11 px-3 py-2.5 flex items-center rounded-lg hover:border-dark-border-light hover:shadow-sm;
-  background-color: #0F172A !important;
-  border-color: #334155 !important;
+  @apply bg-bg-primary border-border-default text-sm text-text-primary outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all duration-200 placeholder:text-text-tertiary placeholder:text-xs min-h-11 px-3 py-2.5 flex items-center rounded-lg hover:border-border-light hover:shadow-sm;
+  background-color: var(--color-bg-primary) !important;
+  border-color: var(--color-border-default) !important;
 }
 
 .multiselect__tags:focus-within {
-  border-color: #6366F1 !important;
+  border-color: var(--tw-brand-primary, #6366F1) !important;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
 }
 
 /* Content wrapper (dropdown) */
 .multiselect__content-wrapper {
   @apply rounded-lg;
-  background-color: #1E293B !important;
-  border: 1px solid #334155 !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+  background-color: var(--color-surface-elevated) !important;
+  border: 1px solid var(--color-border-default) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   z-index: 99999 !important;
   position: absolute !important;
   margin-top: 4px !important;
@@ -125,48 +125,48 @@ function clickBody() {
 /* Single selected value */
 .multiselect__single {
   line-height: unset;
-  @apply mb-0 text-sm px-0 text-dark-text-primary;
+  @apply mb-0 text-sm px-0 text-text-primary;
   background: transparent !important;
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Input field */
 .multiselect__input,
 .multiselect__input:focus {
-  @apply text-sm mb-0 px-0 text-dark-text-primary;
+  @apply text-sm mb-0 px-0 text-text-primary;
   background: transparent !important;
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
   border: none !important;
   box-shadow: none !important;
 }
 
 .multiselect__input::placeholder {
-  color: #94A3B8 !important;
+  color: var(--color-text-tertiary) !important;
 }
 
 /* Placeholder */
 .multiselect__placeholder {
-  @apply text-sm mb-0 text-dark-text-tertiary;
-  color: #94A3B8 !important;
+  @apply text-sm mb-0 text-text-tertiary;
+  color: var(--color-text-tertiary) !important;
   background: transparent !important;
 }
 
 /* Options list */
 .multiselect__content {
-  background-color: #1E293B !important;
+  background-color: var(--color-surface-elevated) !important;
 }
 
 /* Individual option */
 .multiselect__element {
   @apply text-sm mb-0;
-  background-color: #1E293B !important;
+  background-color: var(--color-surface-elevated) !important;
 }
 
 .multiselect__option {
-  background-color: #1E293B !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-surface-elevated) !important;
+  color: var(--color-text-primary) !important;
   padding: 10px 12px !important;
-  border-bottom: 1px solid #334155 !important;
+  border-bottom: 1px solid var(--color-border-default) !important;
   transition: all 200ms !important;
 }
 
@@ -176,21 +176,21 @@ function clickBody() {
 
 /* Highlighted option (hover) */
 .multiselect__option--highlight {
-  background-color: #475569 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Selected option */
 .multiselect__option--selected {
-  background-color: #334155 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-surface-default) !important;
+  color: var(--color-text-primary) !important;
   font-weight: 500 !important;
 }
 
 /* Selected and highlighted */
 .multiselect__option--selected.multiselect__option--highlight {
-  background-color: #475569 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Selected checkmark */
@@ -202,9 +202,9 @@ function clickBody() {
 
 /* Tag (selected item chip) */
 .multiselect__tag {
-  background-color: #334155 !important;
-  color: #F1F5F9 !important;
-  border: 1px solid #475569 !important;
+  background-color: var(--color-surface-default) !important;
+  color: var(--color-text-primary) !important;
+  border: 1px solid var(--color-border-light) !important;
   padding: 4px 8px !important;
   border-radius: 6px !important;
   margin: 2px 4px 2px 0 !important;
@@ -213,34 +213,34 @@ function clickBody() {
 
 .multiselect__tag-icon {
   background-color: transparent !important;
-  color: #94A3B8 !important;
-  border-left: 1px solid #475569 !important;
+  color: var(--color-text-tertiary) !important;
+  border-left: 1px solid var(--color-border-light) !important;
   padding-left: 6px !important;
   margin-left: 6px !important;
 }
 
 .multiselect__tag-icon:hover {
-  background-color: #475569 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
 }
 
 .multiselect__tag-icon:focus {
-  background-color: #475569 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
 }
 
 .multiselect__tag-icon::after {
-  color: #94A3B8 !important;
+  color: var(--color-text-tertiary) !important;
 }
 
 .multiselect__tag-icon:hover::after {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Strong tag (when multiple selected) */
 .multiselect__strong {
-  background-color: #334155 !important;
-  color: #F1F5F9 !important;
+  background-color: var(--color-surface-default) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Spinner */
@@ -317,44 +317,44 @@ function clickBody() {
   background-color: transparent !important;
 }
 
-/* Override any remaining white backgrounds with specific selectors */
+/* Override any remaining backgrounds with CSS variables */
 .multiselect__tags,
 .multiselect__content-wrapper,
 .multiselect__content {
-  background-color: #1E293B !important;
-  background: #1E293B !important;
+  background-color: var(--color-surface-elevated) !important;
+  background: var(--color-surface-elevated) !important;
 }
 
 .multiselect__tags {
-  background-color: #0F172A !important;
-  background: #0F172A !important;
+  background-color: var(--color-bg-primary) !important;
+  background: var(--color-bg-primary) !important;
 }
 
 .multiselect__option {
-  background-color: #1E293B !important;
-  background: #1E293B !important;
+  background-color: var(--color-surface-elevated) !important;
+  background: var(--color-surface-elevated) !important;
 }
 
 .multiselect__tag {
-  background-color: #334155 !important;
-  background: #334155 !important;
+  background-color: var(--color-surface-default) !important;
+  background: var(--color-surface-default) !important;
 }
 
-/* Ensure text colors are correct */
+/* Ensure text colors use CSS variables */
 .multiselect__option,
 .multiselect__tag,
 .multiselect__single {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Fix search input inside multiselect */
 .multiselect__input {
-  color: #F1F5F9 !important;
+  color: var(--color-text-primary) !important;
   background: transparent !important;
 }
 
 .multiselect__input::placeholder {
-  color: #94A3B8 !important;
+  color: var(--color-text-tertiary) !important;
   background: transparent !important;
 }
 

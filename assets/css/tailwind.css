@@ -40,71 +40,116 @@
 @tailwind components;
 @tailwind utilities;
 
-.small-scrollbar::-webkit-scrollbar {
-  height: 2px;
-  @apply bg-dark-bg-secondary;
-  width: 4px;
-}
+/* CSS Variables - Single source of truth for colors */
+/* Following Tailwind CSS official pattern: https://tailwindcss.com/docs/dark-mode */
+/* Change colors here and they update everywhere */
 
-.small-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-dark-border-default;
-  border-radius: 10px;
-}
+/* Base Styles - Following Tailwind CSS official pattern */
+/* https://tailwindcss.com/docs/dark-mode */
 
-/* Dark Theme Base Styles */
-/* Note: The 'dark' class is applied via the theme plugin and nuxt config */
-html.dark,
-html {
-  color-scheme: dark;
-  background-color: #0F172A !important;
+/* CSS Variables - Single source of truth for colors */
+/* Change colors here and they update everywhere */
+@layer base {
+  :root {
+    /* Light mode colors (default) */
+    --color-bg-primary: #F8FAFC;
+    --color-bg-secondary: #FFFFFF;
+    --color-bg-tertiary: #F1F5F9;
+    --color-bg-hover: #E2E8F0;
+    --color-surface-default: #FFFFFF;
+    --color-surface-elevated: #F1F5F9;
+    --color-text-primary: #1E293B;
+    --color-text-secondary: #1E293B;
+    --color-text-tertiary: #64748B;
+    --color-text-disabled: #94A3B8;
+    --color-border-default: #E2E8F0;
+    --color-border-light: #E2E8F0;
+    --color-border-dark: #F1F5F9;
+  }
+  
+  .dark {
+    /* Dark mode colors - override when .dark class is present */
+    --color-bg-primary: #0F172A;
+    --color-bg-secondary: #1E293B;
+    --color-bg-tertiary: #334155;
+    --color-bg-hover: #475569;
+    --color-surface-default: #1E293B;
+    --color-surface-elevated: #334155;
+    --color-text-primary: #F8FAFC;
+    --color-text-secondary: #CBD5E1;
+    --color-text-tertiary: #94A3B8;
+    --color-text-disabled: #64748B;
+    --color-border-default: #334155;
+    --color-border-light: #475569;
+    --color-border-dark: #1E293B;
+  }
 }
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-dark-bg-primary text-dark-text-primary;
-  background-color: #0F172A !important;
-  color: #F8FAFC !important;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
 }
 
 /* Prevent white flash during page transitions */
 #__nuxt {
-  background-color: #0F172A !important;
+  background-color: var(--color-bg-primary);
   min-height: 100vh;
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ensure all page containers have dark background */
+/* Page transitions */
 .page-enter-active,
 .page-leave-active,
 .layout-enter-active,
 .layout-leave-active {
-  background-color: #0F172A !important;
+  background-color: var(--color-bg-primary);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom scrollbar for dark theme */
+/* Custom scrollbar - using CSS variables */
+.small-scrollbar::-webkit-scrollbar {
+  height: 2px;
+  background-color: var(--color-bg-secondary);
+  width: 4px;
+}
+
+.small-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-default);
+  border-radius: 10px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-dark-bg-secondary;
+  background-color: var(--color-bg-secondary);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-dark-border-default;
+  background-color: var(--color-border-default);
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-dark-border-light;
+  background-color: var(--color-border-light);
 }
 
 .quill-message-style {
@@ -137,12 +182,14 @@ body {
 .ql-toolbar {
   border-top-left-radius: 0.35rem;
   border-top-right-radius: 0.35rem;
-  @apply border-dark-border-default bg-dark-surface-elevated !important;
+  border-color: var(--color-border-default) !important;
+  background-color: var(--color-surface-elevated) !important;
 }
 
 .ql-tooltip {
   left: 0 !important;
-  @apply border-dark-border-default bg-dark-surface-elevated !important;
+  border-color: var(--color-border-default) !important;
+  background-color: var(--color-surface-elevated) !important;
 }
 
 /* Page Transition Styles */
