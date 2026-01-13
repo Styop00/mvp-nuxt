@@ -25,7 +25,7 @@
                             @click="() => {selectedGroupToShowTeams=row.id; showGroupsTeams = true}"
                             class="p-1.5 text-base rounded-full hover:text-orange-300 transition text-orange-400 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Teams
               </span>
             </span>
@@ -34,7 +34,7 @@
                             @click="() => navigateTo(`tournament-groups/${row.id}/tournaments`)"
                             class="p-1.5 text-base rounded-full hover:text-purple-400 transition text-purple-500 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Tournaments
               </span>
             </span>
@@ -43,7 +43,7 @@
                             @click="() => navigateTo(`tournament-groups/${row.id}/games`)"
                             class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Games
               </span>
             </span>
@@ -177,7 +177,7 @@ const headers = [
   {
     label: 'Short Name',
     sortable: true,
-    sortValue: 'shortName',
+    sortValue: 'short_name',
     dataKey: 'shortName',
     className: 'w-48'
   },
@@ -192,17 +192,17 @@ const headers = [
     label: 'Period',
     sortable: true,
     dataKey: 'period',
-    sortValue: 'startDate',
+    sortValue: 'start_date',
   },
 ] as TableHeader[]
 
 const canEdit = computed(() => {
-  if (!league.value?.clubId) {
+  if (!league.value?.club_id) {
     return userStore.isAdmin
   }
   const user_roles = userStore.user?.user_roles.filter((role: any) => ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(role.roleId) && role.clubId))
-  const clubIds = user_roles?.map((userRole: any) => userRole.clubId);
-  return clubIds.includes(league.value.clubId)
+  const clubIds = user_roles?.map((userRole: any) => userRole.club_id);
+  return clubIds.includes(league.value.club_id)
 })
 
 const pagesCount = computed(() => {
@@ -277,19 +277,19 @@ async function fetchGroups() {
 
   tournamentGroups.value.forEach(tournamentGroup => {
     let period = ''
-    if (tournamentGroup.startDate) {
-      period = moment(tournamentGroup.startDate + '').format('DD-MM-YYYY').toString() + ' - '
+    if (tournamentGroup.start_date) {
+      period = moment(tournamentGroup.start_date + '').format('DD-MM-YYYY').toString() + ' - '
     }
 
-    if (tournamentGroup.endDate) {
-      period = !period ? moment(tournamentGroup.endDate + '').format('DD-MM-YYYY').toString() : period + moment(tournamentGroup.endDate + '').format('DD-MM-YYYY').toString()
+    if (tournamentGroup.end_date) {
+      period = !period ? moment(tournamentGroup.end_date + '').format('DD-MM-YYYY').toString() : period + moment(tournamentGroup.end_date + '').format('DD-MM-YYYY').toString()
     }
 
     tableData.value.push({
       id: tournamentGroup.id,
       name: tournamentGroup.name,
-      shortName: tournamentGroup.shortName,
-      ageAndGender: (tournamentGroup.ageGroup ?? '-') + ' ' + (tournamentGroup.gender ?? '-'),
+      shortName: tournamentGroup.short_name,
+      ageAndGender: (tournamentGroup.age_group ?? '-') + ' ' + (tournamentGroup.gender ?? '-'),
       period: period
     })
   })

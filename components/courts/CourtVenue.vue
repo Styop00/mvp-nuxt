@@ -117,7 +117,7 @@ const props = defineProps({
 
 const selectedCourt = reactive<{value: Partial<Courts> | null}>({value: null});
 
-const emit = defineEmits(['venueSaved', 'unsavedChanges', 'update:courts']);
+const emit = defineEmits(['venueSaved', 'update:courts']);
 
 watch(() => props.courts, () => {
   if (Array.isArray(props.courts)) {

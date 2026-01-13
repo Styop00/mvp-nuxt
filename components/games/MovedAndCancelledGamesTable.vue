@@ -1,21 +1,31 @@
 <template>
-  <div class="min-w-full shadow-lg rounded-2xl overflow-x-auto bg-dark-surface-default min-h-96 flex flex-col justify-between">
+  <div class="min-w-full shadow-sm rounded-2xl overflow-hidden bg-surface-default border border-border-default transition-[background-color,border-color,box-shadow] duration-200 min-h-96 flex flex-col justify-between">
     <div>
-      <div class="flex justify-between items-center px-2">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 px-4 sm:px-6 py-4 sm:py-5 border-b border-border-default transition-[border-color] duration-200">
         <p
-            class="text-base font-bold py-4 flex items-center justify-start tracking-widest"
+            class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-text-primary transition-colors duration-200"
         >
         <span
-            class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
+            class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"
         />
           {{ type === 'moves' ? 'Moves' : 'Cancellation / No-shows' }}
         </p>
       </div>
-      <div class="w-full flex justify-between">
-        <div class="flex gap-6 w-full  items-center justify-between ml-2">
-          <div class="flex gap-6 items-center my-3">
-            <div class="flex gap-4 items-center">
-              <span class="text-nowrap text-sm font-bold">Filter by</span>
+      <div class="w-full border-b border-border-default bg-bg-primary/30 transition-[background-color,border-color] duration-200 p-4">
+        <div class="flex flex-col xl:flex-row gap-4 xl:gap-6 w-full items-stretch xl:items-center justify-between bg-gradient-to-br from-surface-default/40 via-bg-primary/30 to-surface-default/40 backdrop-blur-sm relative transition-[background-color,border-color] duration-200">
+          <!-- Filters Section -->
+          <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch lg:items-center flex-1">
+            <!-- Filter Label -->
+            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/20 shadow-sm hover:shadow-sm hover:border-brand-primary/30 transition-all duration-200">
+              <font-awesome :icon="['fas', 'filter']" class="text-brand-primary-color text-sm"/>
+              <span class="text-nowrap text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider whitespace-nowrap transition-colors duration-200">Filters</span>
+            </div>
+
+            <!-- Tournament Group Filter -->
+            <div class="flex items-center gap-3 w-full sm:w-auto group relative">
+              <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+                <font-awesome :icon="['fas', 'layer-group']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+              </div>
               <SelectMultiple
                   v-model:value="selectedTournamentGroup"
                   :options="tournamentGroups"
@@ -26,13 +36,18 @@
                   label="label"
                   track-by="value"
                   :preselect-first="true"
-                  class="!w-64"
+                  class="w-full sm:w-auto sm:min-w-[200px] flex-1"
                   select-label=""
                   deselect-label=""
                   selected-label=""
               />
             </div>
-            <div class="flex gap-4 items-center" v-if="tournamentOptions.length">
+
+            <!-- Tournament Filter -->
+            <div class="flex items-center gap-3 w-full sm:w-auto group relative" v-if="tournamentOptions.length">
+              <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+                <font-awesome :icon="['fas', 'trophy']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+              </div>
               <SelectMultiple
                   v-model:value="selectedTournament"
                   :options="tournamentOptions"
@@ -43,13 +58,18 @@
                   label="label"
                   track-by="value"
                   :preselect-first="true"
-                  class="!w-64"
+                  class="w-full sm:w-auto sm:min-w-[200px] flex-1"
                   select-label=""
                   deselect-label=""
                   selected-label=""
               />
             </div>
-            <div class="flex gap-4 items-center">
+
+            <!-- Club Filter -->
+            <div class="flex items-center gap-3 w-full sm:w-auto group relative">
+              <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+                <font-awesome :icon="['fas', 'landmark']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+              </div>
               <SelectMultiple
                   v-model:value="selectedClub"
                   :options="clubs"
@@ -60,142 +80,149 @@
                   label="label"
                   track-by="value"
                   :preselect-first="true"
-                  class="!w-64"
+                  class="w-full sm:w-auto sm:min-w-[200px] flex-1"
                   select-label=""
                   deselect-label=""
                   selected-label=""
               />
             </div>
-            <div class="flex gap-4 items-center">
-              <Select :options="penaltyStatusOptions" v-model:value="penaltyStatus" class="min-w-52"/>
+
+            <!-- Penalty Status Filter -->
+            <div class="flex items-center gap-3 w-full sm:w-auto group relative">
+              <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+                <font-awesome :icon="['fas', 'check-circle']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+              </div>
+              <Select :options="penaltyStatusOptions" v-model:value="penaltyStatus" class="w-full sm:w-auto sm:min-w-[180px] flex-1"/>
             </div>
           </div>
         </div>
       </div>
-      <div class="relative">
-        <table class="bg-dark-surface-default w-full border-t rounded-2xl"
-               :class="{'opacity-30': loading}">
-          <thead>
-          <template v-for="header in headers">
-            <th
-                class="p-3 text-nowrap text-left"
-                :class="{
+      <div class="relative" style="z-index: 1;">
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto relative">
+          <table class="bg-surface-default border border-border-default text-text-primary w-full border-t rounded-2xl min-w-full transition-[background-color,border-color,color] duration-200"
+                 :class="{'opacity-30': loading}">
+            <thead class="bg-surface-elevated">
+            <template v-for="header in headers">
+              <th
+                  class="p-4 text-nowrap text-left text-text-primary font-semibold sticky top-0 bg-surface-elevated z-10 border-b border-border-default transition-[background-color,border-color,color] duration-200"
+                  :class="{
                   'cursor-pointer': header.sortable,
-                  'w-24': header.label === 'Status',
                   [header.className as string]: !!header.className
                 }"
-                @click="sort(header)"
-            >
-              <div
-                  class="flex items-center gap-2 w-fit"
-                  :class="{'cursor-pointer': header.sortable}"
+                  @click="sort(header)"
               >
-                {{ header.label }}
-                <template v-if="header.sortable">
-                  <font-awesome :icon="['fas', 'sort']" class="text-xs"/>
-                </template>
-              </div>
-            </th>
+                <div
+                    class="flex items-center gap-2 w-fit"
+                    :class="{'cursor-pointer': header.sortable}"
+                >
+                  {{ header.label }}
+                  <template v-if="header.sortable">
+                    <font-awesome :icon="['fas', 'sort']" class="text-xs text-text-tertiary hover:text-brand-primary transition-colors"/>
+                  </template>
+                </div>
+              </th>
+            </template>
+            <th class="p-4 text-text-primary font-semibold sticky top-0 bg-surface-elevated z-10 border-b border-border-default transition-[background-color,border-color,color] duration-200">Actions</th>
+            </thead>
+            <tbody>
+            <template v-if="!tableData.length && !loading">
+              <tr>
+                <td :colspan="headers.length + 1" class="p-12">
+                  <div class="flex flex-col items-center justify-center gap-3">
+                    <font-awesome :icon="['fas', 'inbox']" class="text-4xl text-text-tertiary opacity-50"/>
+                    <p class="font-semibold text-base text-center text-text-tertiary">No data found.</p>
+                    <p class="text-sm text-center text-text-tertiary opacity-75">Try adjusting your filters to see more results.</p>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            <template v-for="row in tableData" :key="row.id">
+              <tr
+                  class="hover:!bg-bg-hover border-y border-border-default transition-[background-color,border-color,color] duration-200"
+              >
+                <td class="p-4 text-nowrap lg:text-wrap break-words text-text-primary transition-colors duration-200" :class="headers[0].className">
+                  {{ row.day }}
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap break-words text-text-primary transition-colors duration-200" :class="headers[1].className">
+                  {{ row.dateTime }}
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap break-words text-text-primary transition-colors duration-200" :class="headers[2].className">
+                  {{ row.number }}
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap break-words text-text-primary transition-colors duration-200" :class="headers[3].className">
+                  {{ row.match }}
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap break-words transition-colors duration-200" :class="headers[4].className">
+                  <TextInput
+                      v-model:value="row.homePenalty1"
+                      type="number"
+                      class="w-full"
+                      @focus-out="() => updatePenalty(row.id, row.homePenalty1, 'home')"
+                  />
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap break-words transition-colors duration-200" :class="headers[5].className">
+                  <TextInput
+                      v-model:value="row.awayPenalty1"
+                      type="number"
+                      class="w-full"
+                      @focus-out="() => updatePenalty(row.id, row.awayPenalty1, 'away')"
+                  />
+                </td>
+                <td class="p-4 text-nowrap lg:text-wrap text-center transition-colors duration-200" :class="headers[6].className">
+                  <CheckBox
+                      v-model:value="row.penaltyStatus"
+                      :name="`processed_${row.id}`"
+                      @update:value="(value) => updatePenaltyStatus(row.id, value)"
+                  />
+                </td>
+                <td class="p-3 h-full m-auto w-20">
+                  <div class="flex justify-center items-center h-full gap-3">
+                    <span class="relative group text-nowrap">
+                      <font-awesome
+                          :icon="['fas', 'up-right-from-square']"
+                          class="text-base cursor-pointer text-text-tertiary hover:text-brand-primary-color transition-colors duration-200"
+                          @click.stop="navigateTo(`${type}/${row.id}`)"
+                      />
+                      <span
+                          class="z-10 absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-default text-text-primary border border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
+                      >
+                        View
+                      </span>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+          <template v-if="loading">
+            <div class="p-8 text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-surface-default text-text-primary rounded-xl border border-border-default shadow-sm transition-[background-color,border-color,color,box-shadow] duration-200">
+              <font-awesome
+                  :icon="['fas', 'spinner']"
+                  class="fa-spin text-3xl text-brand-primary mb-3"
+              />
+              <p class="text-text-secondary font-medium">Loading data...</p>
+            </div>
           </template>
-          </thead>
-          <tbody>
-          <template v-if="!tableData.length && !loading">
-            <tr>
-              <td :colspan="headers.length">
-                <p class="p-4 font-bold text-xl text-center">No data founds.</p>
-              </td>
-            </tr>
-          </template>
-          <template v-for="row in tableData">
-            <tr
-                class="hover:!bg-[#f7f8f9] border-y border-gray-100"
-            >
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                  <span>
-                    {{ row.day }}
-                  </span>
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                  <span>
-                    {{ row.dateTime }}
-                  </span>
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                  <span>
-                    {{ row.number }}
-                  </span>
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                  <span>
-                    {{ row.match }}
-                  </span>
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                <TextInput
-                    v-model:value="row.homePenalty1"
-                    type="number"
-                    class="w-full"
-                    @focus-out="() => updatePenalty(row.id, row.homePenalty1, 'home')"
-                />
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words">
-                <TextInput
-                    v-model:value="row.awayPenalty1"
-                    type="number"
-                    class="w-full"
-                    @focus-out="() => updatePenalty(row.id, row.awayPenalty1, 'away')"
-                />
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap text-center">
-                <CheckBox
-                    v-model:value="row.penaltyStatus"
-                    :name="`processed_${row.id}`"
-                    @update:value="(value) => updatePenaltyStatus(row.id, value)"
-                />
-              </td>
-              <td class="p-3 text-nowrap lg:text-wrap break-words w-20">
-                <span class="relative group text-nowrap">
-                    <font-awesome
-                        :icon="['fas', 'up-right-from-square']"
-                        class="text-base cursor-pointer"
-                        @click="navigateTo(`${type}/${row.id}`)"
-                    />
-                    <span
-                        class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border"
-                    >
-                    View
-                  </span>
-                </span>
-              </td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
-        <template v-if="loading">
-          <div class="p-4 text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <font-awesome
-                :icon="['fas', 'spinner']"
-                class="fa-spin text-2xl"
-            />
-            <p>Loading data...</p>
-          </div>
-        </template>
+        </div>
       </div>
     </div>
-    <template>
-      <div class="flex justify-between ml-4 items-center gap-6">
+    <template v-if="tableData.length">
+      <div class="flex flex-col sm:flex-row justify-between px-4 sm:px-6 items-start sm:items-center gap-4 py-4 border-t border-border-default bg-bg-primary/30 transition-[background-color,border-color] duration-200">
         <div>
-          <p class="text-xs text-nowrap tracking-wider text-gray-400 font-bold">
+          <p class="text-xs text-nowrap tracking-wider text-text-secondary font-medium transition-colors duration-200">
             {{ currentShowCount }}
           </p>
         </div>
-        <div class="flex justify-start m-2 lg:justify-end items-center gap-6">
-          <p class="flex items-center text-nowrap gap-4">
-            Rows per page:
-            <Select :options="limitOptions" v-model:value="limit" direction="top" size="small"/>
+        <div class="flex flex-col sm:flex-row justify-start sm:justify-end items-start sm:items-center gap-4 w-full sm:w-auto">
+          <p class="flex items-center text-nowrap gap-2 sm:gap-4 text-sm text-text-secondary transition-colors duration-200">
+            <span class="hidden sm:inline">Rows per page:</span>
+            <span class="sm:hidden">Per page:</span>
+            <Select :options="limitOptions" v-model:value="limit" direction="top" size="small" class="w-20"/>
           </p>
           <template v-if="count > (limit.value ?? 0)">
-            <div class="my-2 mr-2">
+            <div class="w-full sm:w-auto">
               <TablePagination v-model:page="page" :page-count="pagesCount"/>
             </div>
           </template>
@@ -359,12 +386,6 @@ const headers = [
     sortValue: 'court',
     className: 'w-28',
   },
-  {
-    label: '',
-    sortable: false,
-    sortValue: '',
-    className: 'w-20'
-  },
 ] as TableHeader[];
 
 const emitData = computed(() => {
@@ -417,7 +438,6 @@ const emitReFetch = () => {
 
 watch(() => props.games, () => {
   tableData.value = props.games?.map(game => {
-
     let homePenalty1 = 0
     let awayPenalty1 = 0
 
@@ -562,3 +582,22 @@ onMounted(() => {
   fetchTournamentGroups()
 })
 </script>
+
+<style scoped>
+/* Theme-aware striped rows - using CSS variables */
+tbody tr:nth-of-type(odd) {
+  background-color: var(--color-bg-tertiary);
+}
+
+tbody tr:hover {
+  background-color: var(--color-bg-hover) !important;
+}
+
+td, th {
+  vertical-align: middle;
+}
+
+tr {
+  height: auto;
+}
+</style>

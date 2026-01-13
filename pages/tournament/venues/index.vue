@@ -43,7 +43,7 @@
                             @click="() => navigateTo(`venues/${row.id}/games`)"
                             class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Games
               </span>
             </span>

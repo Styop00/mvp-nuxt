@@ -26,11 +26,6 @@
     <SuccessAlert v-model:visible="showSuccessAlert"
                   text="The Tournament successfully created."/>
   </div>
-  <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
@@ -45,7 +40,6 @@ import TournamentForm from "~/components/tournament/TournamentForm.vue";
 import type Rounds from "~/interfaces/rounds/rounds";
 import {usePoolsFetch} from "~/composables/usePoolsFetch/usePoolsFetch";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 const route = useRoute()
 const loading = ref(false)
 const errors = ref({})
@@ -73,22 +67,12 @@ const tournament = ref({
   tournament_group_id: +route.params.tournamentGroupId,
   tournament_program_id: 0,
 } as Tournament)
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
 
 const pools = ref([] as Array<Pools>)
 
 const {createTournament} = useTournamentFetch()
 const {createRounds, attachRoundsToTournaments, deleteGeneratedRoundsByIds} = useRoundsFetch()
 const {createPools} = usePoolsFetch()
-
-watch(() => tournament.value, () => {
-  hasUnsavedChanges.value = true;
-}, {
-  deep: true,
-})
-
 async function create(): Promise<void> {
   if (loading.value) return;
 
@@ -110,7 +94,6 @@ async function create(): Promise<void> {
       await createPools(pools.value)
     }
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false;
     setTimeout(() => {
       navigateTo(res.id + '')
     }, 3000)
@@ -145,24 +128,4 @@ async function deleteRounds() {
   }
 }
 
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 </script>

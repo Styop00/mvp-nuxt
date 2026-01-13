@@ -11,52 +11,16 @@
           />
           Edit Club
         </p>
-        <ClubForm :clubId="clubId" @unsavedChanges="handleUnsavedChanges" />
+        <ClubForm :clubId="clubId"/>
       </div>
     </div>
   </div>
-
-  <LivePageOrNot
-    v-model:visible="showUnsavedChangesModal"
-    @confirm="confirmLeavePage"
-    @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import ClubForm from '~/components/forms/ClubForm.vue';
 import Breadcrumb from '~/components/breadcrumb/Breadcrumb.vue';
-import LivePageOrNot from '~/components/alerts/LivePageOrNot.vue';
-
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
-
-function handleUnsavedChanges(value: any) {
-  hasUnsavedChanges.value = value;
-}
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 
 const route = useRoute();
 const clubId = Number(route.params.clubId);

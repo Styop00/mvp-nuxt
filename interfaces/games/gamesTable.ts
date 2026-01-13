@@ -1,7 +1,7 @@
 export default interface GamesTable {
     id: number,
     day: string,
-    date: Date,
+    date: Date|string,
     time: string,
     number: number,
     teamIdHome: string,

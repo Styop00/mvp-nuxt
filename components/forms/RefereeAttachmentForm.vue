@@ -157,7 +157,7 @@ const props = defineProps<{
   pos: number;
 }>();
 
-const emit = defineEmits(['unsavedChanges', 'refreshData']);
+const emit = defineEmits(['refreshData']);
 
 const showSuccessAlertCreate = ref(false);
 const loadingbutton = ref(false);

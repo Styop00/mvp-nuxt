@@ -188,6 +188,21 @@ export default {
       "surface-default": "var(--color-surface-default)",
       "surface-elevated": "var(--color-surface-elevated)",
       
+      // Legacy dark-* classes (aliases for backward compatibility)
+      "dark-surface-default": "var(--color-surface-default)",
+      "dark-surface-elevated": "var(--color-surface-elevated)",
+      "dark-bg-primary": "var(--color-bg-primary)",
+      "dark-bg-secondary": "var(--color-bg-secondary)",
+      "dark-bg-tertiary": "var(--color-bg-tertiary)",
+      "dark-bg-hover": "var(--color-bg-hover)",
+      "dark-text-primary": "var(--color-text-primary)",
+      "dark-text-secondary": "var(--color-text-secondary)",
+      "dark-text-tertiary": "var(--color-text-tertiary)",
+      "dark-text-disabled": "var(--color-text-disabled)",
+      "dark-border-default": "var(--color-border-default)",
+      "dark-border-light": "var(--color-border-light)",
+      "dark-border-dark": "var(--color-border-dark)",
+      
       // Text colors
       "text-primary": "var(--color-text-primary)",
       "text-secondary": "var(--color-text-secondary)",

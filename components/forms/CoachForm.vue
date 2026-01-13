@@ -157,7 +157,7 @@ const coaches = ref([]);
 const clubSelect = ref<InstanceType<typeof Select> | null>(null)
 
 
-const emit = defineEmits([ 'unsavedChanges', 'refreshData']);
+const emit = defineEmits([ 'refreshData']);
 
 const { createCoursesOrCoachEducation } = useCoachEducationFetch()
 
@@ -192,21 +192,18 @@ watch(() => props.course, (newVal) => {
 watch(moduleName, (newVal) => {
   if (newVal && newVal.label && newVal.value) {
     requiredFieldsErrorMessage.value = '';
-    emit('unsavedChanges', true);
   }
 });
 
 watch(() => course.value.date, (newVal) => {
   if (newVal) {
     requiredFieldsErrorMessage.value = '';
-    emit('unsavedChanges', true);
   }
 });
 
 watch(coaches, (newVal) => {
   if (newVal.length > 0) {
     requiredFieldsErrorMessage.value = '';
-    emit('unsavedChanges', true);
   }
 });
 
@@ -214,14 +211,12 @@ watch([course.value.licenseM, course.value.licenseB, course.value.licenseT], ([n
   if (newLicenseM || newLicenseB || newLicenseT) {
     licenseErrorMessage.value = '';
     requiredFieldsErrorMessage.value = '';
-    emit('unsavedChanges', true);
   }
 });
 
 watch(() => course.value.hours, debounce((newValue: number) => {
   if(newValue) {
     requiredFieldsErrorMessage.value = '';
-    emit('unsavedChanges', true);
     validateHours(newValue);
   }
 
@@ -337,7 +332,6 @@ async function saveCourses() {
     if(props.isShowFileInput) {
       showSuccessAlertCreate.value = true;
       setTimeout(() => {
-        emit('unsavedChanges', false);
         emit('refreshData')
         resetForm();
         navigateTo('/coaches/coaches');

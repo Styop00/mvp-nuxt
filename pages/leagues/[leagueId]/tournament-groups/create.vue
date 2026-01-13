@@ -8,7 +8,6 @@
             :tournament-group="groupBaseData as TournamentGroup"
             ref="editTournamentGroupRef"
             :errors="errors"
-            @unsavedChanges="handleUnsavedChanges"
         />
         <Switch
             v-model:value="selectExistingTournamentConfig"
@@ -39,8 +38,6 @@
               :data="tournamentConfig"
               :show-disabled-inputs="selectExistingTournamentConfig"
               :show-update-button="false"
-              @unsavedChanges="handleUnsavedChanges"
-
           />
         </div>
         <BaseButton
@@ -56,11 +53,6 @@
         text="The new Tournament Group has been successfully created."
     />
   </div>
-  <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
@@ -77,8 +69,6 @@ import SuccessAlert from "~/components/alerts/SuccessAlert.vue";
 import {useUserStore} from "~/store/user";
 import type TournamentConfigsErrors from "~/interfaces/tournament/config/tournamentConfigsErrors";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
-import type League from "~/interfaces/league/leagues";
 import {camelToSnake} from "~/utils/camelToSnake";
 
 const route = useRoute()
@@ -92,8 +82,6 @@ const editTournamentConfigRef = ref<InstanceType<typeof EditTournamentConfigForm
 const editTournamentGroupRef = ref<InstanceType<typeof EditTournamentGroupForm> | null>(null)
 const loading = ref(true)
 const showSuccessAlert = ref(false)
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
 const groupBaseData = ref({
   ageGroup: null,
   gender: null,
@@ -125,11 +113,7 @@ const groupBaseData = ref({
   showBirthInScoreSheet: false,
   tournamentConfigsId: 0,
 } as TournamentGroup);
-
-let routeNext: any = null;
-
 const userStore = useUserStore()
-
 const errors = ref({} as TournamentConfigsErrors)
 
 onMounted(() => {
@@ -138,7 +122,6 @@ onMounted(() => {
 })
 
 watch([selectedTournamentConfig, selectExistingTournamentConfig], () => {
-  hasUnsavedChanges.value = true
   fetchSelectedTournamentConfigs()
 })
 
@@ -229,7 +212,6 @@ async function createTournamentGroup() {
 
   if (response.status.value === 'success') {
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false
     setTimeout(() => {
       navigateTo(`/leagues/${leagueId}/tournament-groups/${response.data.value.id}`)
     }, 3000)
@@ -237,29 +219,4 @@ async function createTournamentGroup() {
     loading.value = false
   }
 }
-
-function handleUnsavedChanges(value: any) {
-  hasUnsavedChanges.value = value;
-}
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 </script>

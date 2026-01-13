@@ -188,7 +188,7 @@ const props = defineProps({
   venueId: Number,
 });
 
-const emit = defineEmits(['venueSaved', 'unsavedChanges']);
+const emit = defineEmits(['venueSaved']);
 
 const { updateVenue, createVenue, loading } = useVenuesFetch();
 
@@ -301,7 +301,6 @@ async function saveVenue() {
           courtVenueRef.value.deleteCourts = {};
         }
 
-        emit('unsavedChanges', false);
         refreshData()
       }
     } else {
@@ -309,7 +308,6 @@ async function saveVenue() {
       if (response) {
           loadingbutton.value = true
           showSuccessAlertCreate.value = true
-          emit('unsavedChanges', false);
           setTimeout(() => {
             navigateTo(`/tournament/venues/${response.id}`)
           }, 3000)
@@ -331,20 +329,6 @@ async function refreshData() {
 watch(() => venue.value.phone_number, debounce(() => {
   validatePhoneNumber();
 }, 500));
-
-
-watch(() => venue.value.courts, (newVal, oldVal) => {
-}, { deep: true, immediate: true })
-watch(() => venue.value, (newVal, oldVal) => {
-  if (oldVal?.id === undefined && newVal.id === props.venueId && props.venueId) {
-    return;
-  }
-
-  if(JSON.stringify(initialVenue.value) !== JSON.stringify(newVal)) {
-    emit('unsavedChanges', true);
-  }
-
-}, { deep: true, immediate: true });
 
 // Watch for prop changes (e.g., navigating from venue 1 to venue 2)
 watch(() => props.venueId, (newId, oldId) => {

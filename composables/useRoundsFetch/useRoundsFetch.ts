@@ -40,10 +40,11 @@ export const useRoundsFetch = () => {
     }
 
     async function deleteGeneratedRoundsByIds(rounds: any): Promise<Boolean> {
+        console.log(rounds);
         const response = await useApiV5Fetch(`rounds/delete-rounds`, {
             method: 'DELETE',
             query: {
-                rounds: rounds
+                'rounds[]': rounds
             }
         })
         if (response.data?.value) {

@@ -26,7 +26,7 @@
                     class="p-1.5 text-base rounded-full hover:text-blue-300 transition text-blue-400 cursor-pointer"
                 />
                 <span
-                    class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border"
+                    class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
                 >
                   Edit
                 </span>
@@ -51,7 +51,7 @@
                             @click="() => navigateTo(`leagues/${row.id}/tournament-groups`)"
                             class="p-1.5 text-base rounded-full hover:text-purple-400 transition text-purple-500 cursor-pointer"/>
               <span
-                  class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-2xl px-3 -translate-x-1/2 border">
+                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Groups
               </span>
             </span>
@@ -138,13 +138,13 @@ onMounted(() => {
     {
       label: 'Start Date',
       sortable: true,
-      sortValue: 'startDate',
+      sortValue: 'start_date',
       dataKey: 'start',
     },
     {
       label: 'End Date',
       sortable: true,
-      sortValue: 'endDate',
+      sortValue: 'end_date',
       dataKey: 'end',
     },
     {
@@ -197,8 +197,8 @@ async function fetch() {
     leagues.value.push({
       id: data.id,
       name: data.name,
-      start: data.start_date,
-      end: data.end_date,
+      start: moment(data.start_date).format('YYYY-MM-DD'),
+      end: moment(data.end_date).format('YYYY-MM-DD'),
       organizer: !data.club_id ? 'federation' : data.club.name,
       clubId: data.club_id,
     })

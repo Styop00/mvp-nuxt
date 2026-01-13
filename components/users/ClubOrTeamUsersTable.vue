@@ -84,7 +84,7 @@
                 class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"
             />
             <span
-                class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
+                class="z-10 absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
               Games
             </span>
           </span>

@@ -189,7 +189,6 @@ async function saveRegistration() {
     }));
 
     const response = await createOrEditBulkRegistration(registrationData);
-    emit('unsavedChanges', false);
 
     if (!response || response.length === 0) {
       loading.value = false
@@ -243,14 +242,6 @@ function getErrorMessage(message: string) {
       return '';
   }
 }
-
-const emit = defineEmits([ 'unsavedChanges']);
-
-
-watch(() => tableData.value, (newVal, oldVal) => {
-    emit('unsavedChanges', true);
-
-}, { deep: true });
 
 onMounted(() => {
   if (props.tournamentGroupId) {

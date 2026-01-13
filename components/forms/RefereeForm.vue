@@ -126,7 +126,6 @@
           v-model:value="prio"
           :options="refereelevelsUI"
           class=""
-          @update:value="handleInputChange"
           required
         />
         <TextInput
@@ -147,7 +146,6 @@
           :options="seasonSportId !== 20 ? commissionerAndEvalLevelOptionsWithoutLast : commissionerAndEvalLevelOptions"
           class=""
           ref="clubSelect"
-          @update:value="handleInputChange"
         />
         <Select
           label="Commissioner Level"
@@ -155,14 +153,12 @@
           :options="commissionerAndEvalLevelOptions"
           class=""
           ref="clubSelect"
-          @update:value="handleInputChange"
         />
         <Select
           label="Assesses Level"
           v-model:value="evaluatorLevel"
           :options="commissionerAndEvalLevelOptions"
           class=""
-          @update:value="handleInputChange"
         />
       </div>
 
@@ -264,7 +260,7 @@ const props = defineProps<{
   refereeId: Number;
 }>();
 
-const emit = defineEmits([ 'unsavedChanges', 'refreshData']);
+const emit = defineEmits(['refreshData']);
 
 const showSuccessAlertCreate = ref(false)
 const loadingbutton = ref(false)
@@ -338,11 +334,6 @@ function isFormValid() {
 
 function handleInputChange(eventOrValue: any) {
   const inputValue = eventOrValue && eventOrValue.target ? eventOrValue.target.value : eventOrValue;
-  if (inputValue) {
-    emit('unsavedChanges', true);
-  } else {
-    emit('unsavedChanges', false);
-  }
 }
 async function createOrEditReferee() {
   loadingbutton.value = true;
@@ -387,7 +378,6 @@ async function createOrEditReferee() {
   const response = await createEditRef(body);
 
     if (response === "success") {
-      emit('unsavedChanges', false);
       showSuccessAlertCreate.value = true
       setTimeout(() => {
           emit('refreshData')

@@ -97,11 +97,6 @@
         v-model:visible="showSuccessAlert"
         text="The Team successfully created."
     />
-    <LivePageOrNot
-        v-model:visible="showUnsavedChangesModal"
-        @confirm="confirmLeavePage"
-        @cancel="cancelLeavePage"
-    />
   </div>
 </template>
 
@@ -114,14 +109,12 @@ import type Team from "~/interfaces/teams/team";
 import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 import Select from "~/components/inputs/Select.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
-import type TournamentConfigs from "~/interfaces/tournament/config/tournamentConfigs";
 import {useUserStore} from "~/store/user";
 import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
 import {ageGroups} from "~/constants/ageGroups";
 import {genders} from "~/constants/genders";
 import {officialTypes} from "~/constants/officialTypes";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 
 const route = useRoute()
@@ -273,61 +266,11 @@ async function create() {
   if (response) {
     loading.value = true
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false
     setTimeout(() => {
       navigateTo(res.id + '')
     }, 3000)
   }
 }
-
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
-
-function handleUnsavedChanges(value: any) {
-  hasUnsavedChanges.value = value;
-}
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-watch(() => team.value, (newVal, oldVal) => {
-
-  if (oldVal.id === undefined && newVal.id === team.value.id) {
-    return;
-  }
-
-  if (oldVal && newVal) {
-    hasUnsavedChanges.value = true
-
-    return;
-  }
-
-  if (newVal) {
-    hasUnsavedChanges.value = true
-
-  }
-
-}, {deep: true});
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
-
 onMounted(() => {
   fetchTournamentGroups()
   fetchClubTeams()

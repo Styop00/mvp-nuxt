@@ -179,7 +179,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['clubSaved', 'unsavedChanges']);
+const emit = defineEmits(['clubSaved']);
 
 
 const { updateClub, createClub } = useClubsFetch();
@@ -256,14 +256,12 @@ async function saveClub() {
       if (response) {
       showSuccessAlertUpdate.value = true
       loading.value = false
-      emit('unsavedChanges', false);
 
       }
     } else {
       const response = await createClub({...club.value});
       if (response) {
           showSuccessAlertCreate.value = true
-          emit('unsavedChanges', false);
           loading.value = true
           setTimeout(() => {
             navigateTo(`/tournament/clubs/${response.id}`)
@@ -286,29 +284,6 @@ watch(() => club.value.phone_number1, debounce((newValue) => {
 watch(() => club.value.phone_number2, debounce((newValue) => {
   validatePhoneNumber();
 }, 500));
-
-watch(() => club.value, (newVal, oldVal) => {
-
-  if (oldVal.id === undefined && newVal.id === props.clubId && props.clubId) {
-    return;
-  }
-
-  if (oldVal && newVal) {
-    emit('unsavedChanges', true);
-    return;
-  }
-
-  if (oldVal.id && newVal.id === props.clubId) {
-    emit('unsavedChanges', true);
-    return;
-  }
-
-  if (newVal) {
-    emit('unsavedChanges', true);
-  }
-
-}, { deep: true });
-
 
 // Watch for prop changes (e.g., navigating from club 1 to club 2)
 watch(() => props.clubId, (newId, oldId) => {

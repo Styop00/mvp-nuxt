@@ -8,7 +8,6 @@
             :tournament-group="tournamentGroup"
             ref="editTournamentGroupRef"
             :errors="errors"
-            @unsavedChanges="handleUnsavedChanges"
         />
         <Switch
             v-model:value="selectExistingTournamentConfig"
@@ -38,7 +37,6 @@
               :data="tournamentConfig"
               :show-disabled-inputs="selectExistingTournamentConfig"
               :show-update-button="false"
-              @unsavedChanges="handleUnsavedChanges"
           />
         </div>
         <BaseButton
@@ -52,11 +50,6 @@
     <SuccessAlert
         v-model:visible="showSuccessAlert"
         text="The Tournament Group’s information has been successfully updated."
-    />
-    <LivePageOrNot
-        v-model:visible="showUnsavedChangesModal"
-        @confirm="confirmLeavePage"
-        @cancel="cancelLeavePage"
     />
   </div>
 </template>
@@ -77,7 +70,6 @@ import SuccessAlert from "~/components/alerts/SuccessAlert.vue";
 import {useUserStore} from "~/store/user";
 import type TournamentConfigsErrors from "~/interfaces/tournament/config/tournamentConfigsErrors";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 
 const route = useRoute()
 const leagueId = route.params.leagueId
@@ -92,9 +84,6 @@ const editTournamentGroupRef = ref<InstanceType<typeof EditTournamentGroupForm> 
 const loading = ref(true)
 const showSuccessAlert = ref(false)
 const errors = ref({} as TournamentConfigsErrors)
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
 
 const userStore = useUserStore()
 
@@ -124,12 +113,6 @@ watch([selectedTournamentConfig, selectExistingTournamentConfig], () => {
 }, {
   deep: true,
   immediate: true
-})
-
-watch(() => tournamentConfig.value, () => {
-  if (tournamentConfig.value && tournamentConfig.value.id !== tournamentGroup.value.tournament_configs_id) {
-    hasUnsavedChanges.value = true
-  }
 })
 
 function closeCalendars() {
@@ -239,33 +222,7 @@ async function updateTournamentGroupData() {
 
   if (res) {
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false
     loading.value = false
   }
 }
-
-function handleUnsavedChanges(value: any) {
-  hasUnsavedChanges.value = value;
-}
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 </script>

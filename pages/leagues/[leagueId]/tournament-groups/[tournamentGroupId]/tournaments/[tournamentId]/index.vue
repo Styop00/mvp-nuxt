@@ -27,11 +27,6 @@
     <SuccessAlert v-model:visible="showSuccessAlert"
                   text="The Tournament information has been successfully updated."/>
   </div>
-  <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
@@ -47,7 +42,6 @@ import TournamentForm from "~/components/tournament/TournamentForm.vue";
 import {usePoolsFetch} from "~/composables/usePoolsFetch/usePoolsFetch";
 import type Rounds from "~/interfaces/rounds/rounds";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 
 const router = useRouter()
 const route = useRoute()
@@ -57,10 +51,7 @@ const errors = ref({})
 const showSuccessAlert = ref(false)
 const tournament = ref({} as Tournament)
 const tournamentFormRef = ref(null)
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
 const dataFetched = ref(false)
-let routeNext: any = null;
 
 const pools = ref([] as Array<Pools>)
 const rounds = ref([] as Array<Rounds>)
@@ -84,14 +75,6 @@ watch(() => route.params.tournamentId, (newId, oldId) => {
 if (tournamentId) {
   fetchTournament()
 }
-
-watch([tournament, pools, rounds], () => {
-  if (dataFetched.value) {
-    hasUnsavedChanges.value = true;
-  }
-}, {
-  deep: true,
-})
 
 async function fetchTournament() {
   if (loading.value) {
@@ -132,7 +115,6 @@ async function updateTournamentData(): Promise<void> {
       await createOrUpdatePools(+tournamentId, pools.value)
     }
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false
   }
   loading.value = false
 }
@@ -156,26 +138,5 @@ async function calculateRounds() {
     end_date: tournament.value.end_date
   })
 }
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 
 </script>

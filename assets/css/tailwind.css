@@ -62,9 +62,10 @@
     --color-text-secondary: #1E293B;
     --color-text-tertiary: #64748B;
     --color-text-disabled: #94A3B8;
-    --color-border-default: #E2E8F0;
-    --color-border-light: #E2E8F0;
-    --color-border-dark: #F1F5F9;
+    /* Darker borders for better visibility in light mode */
+    --color-border-default: #CBD5E1;
+    --color-border-light: #CBD5E1;
+    --color-border-dark: #94A3B8;
   }
   
   .dark {
@@ -79,9 +80,10 @@
     --color-text-secondary: #CBD5E1;
     --color-text-tertiary: #94A3B8;
     --color-text-disabled: #64748B;
-    --color-border-default: #334155;
-    --color-border-light: #475569;
-    --color-border-dark: #1E293B;
+    /* Darker borders for better visibility in dark mode */
+    --color-border-default: #475569;
+    --color-border-light: #64748B;
+    --color-border-dark: #334155;
   }
 }
 
@@ -281,4 +283,136 @@ body {
 [class*="select"] [class*="dropdown"],
 [class*="multiselect"] [class*="content"] {
   z-index: 99999 !important;
+}
+
+/* V-Calendar DatePicker Theme-Aware Styling */
+.vc-container,
+.vc-container.vc-transparent {
+  background-color: var(--color-surface-default) !important;
+  border: 1px solid var(--color-border-default) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-pane-container {
+  background-color: var(--color-surface-default) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-pane {
+  background-color: var(--color-surface-default) !important;
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Calendar Header */
+.vc-header {
+  background-color: var(--color-surface-elevated) !important;
+  border-bottom: 1px solid var(--color-border-default) !important;
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-title {
+  color: var(--color-text-primary) !important;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Calendar Navigation Arrows */
+.vc-arrow,
+.vc-nav-arrow {
+  color: var(--color-text-secondary) !important;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-arrow:hover,
+.vc-nav-arrow:hover {
+  color: var(--color-brand-primary) !important;
+  background-color: var(--color-bg-hover) !important;
+}
+
+/* Calendar Weekday Headers */
+.vc-weekday {
+  color: var(--color-text-tertiary) !important;
+  font-weight: 600 !important;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Calendar Day Cells */
+.vc-day {
+  color: var(--color-text-primary) !important;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-day-content {
+  color: var(--color-text-primary) !important;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-day-content:hover {
+  background-color: var(--color-bg-hover) !important;
+  color: var(--color-text-primary) !important;
+}
+
+/* Selected Day */
+.vc-day-content.is-selected,
+.vc-day-content.is-selected:hover {
+  background-color: #6366F1 !important; /* brand-primary */
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+/* Today */
+.vc-day-content.is-today {
+  border: 2px solid #6366F1 !important; /* brand-primary */
+  color: var(--color-text-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Other Month Days */
+.vc-day-content.is-not-in-month {
+  color: var(--color-text-tertiary) !important;
+  opacity: 0.5 !important;
+}
+
+/* Disabled Days */
+.vc-day-content.is-disabled {
+  color: var(--color-text-disabled) !important;
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* Range Selection */
+.vc-day-content.is-in-range {
+  background-color: rgba(99, 102, 241, 0.1) !important; /* brand-primary with opacity */
+  color: var(--color-text-primary) !important;
+}
+
+.vc-day-content.is-range-start,
+.vc-day-content.is-range-end {
+  background-color: #6366F1 !important; /* brand-primary */
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+/* Calendar Footer/Time Picker */
+.vc-time-picker {
+  background-color: var(--color-surface-elevated) !important;
+  border-top: 1px solid var(--color-border-default) !important;
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-time-input {
+  background-color: var(--color-surface-default) !important;
+  border: 1px solid var(--color-border-default) !important;
+  color: var(--color-text-primary) !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.vc-time-input:focus {
+  border-color: #6366F1 !important; /* brand-primary */
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
 }

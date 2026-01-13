@@ -146,8 +146,6 @@ const props = defineProps<{
   errors?: {}
 }>();
 
-const emit = defineEmits(['unsavedChanges'])
-
 const route = useRoute()
 const leagueId = route.params.leagueId
 const tournamentGroupId = route.params.tournamentGroupId
@@ -608,17 +606,6 @@ const editData = computed(() => {
     penaltyTypeId: penaltyType.value?.value ? penaltyType.value?.value : null,
     tournament_type_id: tournamentType.value?.value !== undefined ? tournamentType.value?.value : null,
   }
-})
-
-watch([
-  editData
-], () => {
-  if (((tournamentGroupId && props.tournamentGroup?.id) || !tournamentGroupId) && (JSON.stringify(editData.value) !== JSON.stringify(props.tournamentGroup))) {
-    emit('unsavedChanges', true)
-  }
-}, {
-  deep: true,
-  immediate: true
 })
 
 onMounted(async () => {

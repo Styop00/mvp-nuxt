@@ -179,8 +179,6 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['unsavedChanges'])
-
 const courtRequirements = [
   {
     label: 'League / Div',
@@ -372,17 +370,6 @@ watch(() => editData.value.latest_start, (newVal, oldVal) => {
       compareTimes()
     }
   }
-})
-
-watch([
-  editData
-], () => {
-  if (JSON.stringify(editData.value) !== JSON.stringify(props.data)) {
-    emit('unsavedChanges', true)
-  }
-}, {
-  deep: true,
-  immediate: true
 })
 
 function compareTimes() {

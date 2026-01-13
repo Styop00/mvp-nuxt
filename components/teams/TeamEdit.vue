@@ -102,11 +102,6 @@
         text="The Team information has been successfully updated."
     />
   </div>
-  <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
@@ -118,14 +113,12 @@ import type Team from "~/interfaces/teams/team";
 import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 import Select from "~/components/inputs/Select.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
-import type TournamentConfigs from "~/interfaces/tournament/config/tournamentConfigs";
 import {useUserStore} from "~/store/user";
 import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
 import {ageGroups} from "~/constants/ageGroups";
 import {genders} from "~/constants/genders";
 import {officialTypes} from "~/constants/officialTypes";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 
 const route = useRoute()
@@ -285,53 +278,8 @@ async function updateTeamData() {
   loading.value = false
   if (response) {
     showSuccessAlert.value = true
-    hasUnsavedChanges.value = false
   }
 }
-
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-watch(() => team.value, (newVal, oldVal) => {
-
-  if (oldVal.id === undefined && newVal.id === team.value.id) {
-    return;
-  }
-
-  if (oldVal && newVal) {
-    hasUnsavedChanges.value = true
-
-    return;
-  }
-
-  if (newVal) {
-    hasUnsavedChanges.value = true
-
-  }
-
-}, {deep: true});
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 
 // Watch for route param changes
 watch(() => route.params.teamId, (newId, oldId) => {

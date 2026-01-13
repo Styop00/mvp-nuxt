@@ -15,7 +15,7 @@
           <slot name="header"/>
         </div>
       </div>
-      <div class="w-full border-b border-border-default bg-bg-primary/30 transition-[background-color,border-color] duration-200">
+      <div class="w-full border-b border-border-default bg-bg-primary/30 transition-[background-color,border-color] duration-200 p-4">
         <slot name="headerBottom"/>
       </div>
       <div class="relative" style="z-index: 1;">
@@ -107,7 +107,7 @@
           </template>
           <template v-for="row in data">
             <tr
-                class="hover:!bg-bg-hover border-y border-border-default transition-[background-color,border-color,color] duration-200 group"
+                class="hover:!bg-bg-hover border-y border-border-default transition-[background-color,border-color,color] duration-200"
                 :class="clickable ? 'cursor-pointer' : ''"
                 @click="() => clicked(row.id)"
             >
@@ -141,7 +141,7 @@
                       <font-awesome :icon="['fas', 'pen']"/>
                     </button>
                     <span
-                        class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
+                        class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
                     >
                       Edit
                     </span>
@@ -156,7 +156,7 @@
                         <font-awesome :icon="['fas', 'trash-can']"/>
                       </button>
                       <span
-                          class="absolute bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
+                          class="absolute z-10 bottom-full text-xxs mb-1 tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200"
                       >
                         Delete
                       </span>

@@ -7,13 +7,11 @@
           :disabled="true"
           label="License"
           input-classes="cursor-not-allowed !bg-gray-100"
-          @update:value="() => hasUnsavedChanges = true"
       />
       <div>
         <TextInput
             v-model:value="user.name"
             label="Name"
-            @update:value="() => hasUnsavedChanges = true"
             :required="true"
         />
         <p v-if="nameError" class="text-red-700 text-xs pl-1 pt-1">
@@ -26,20 +24,18 @@
             v-model:value="user.email"
             label="Email"
             type="email"
-            @update:value="() => hasUnsavedChanges = true"
             :required="true"
         />
         <p v-if="emailError" class="text-red-700 text-xs pl-1 pt-1">
           {{ emailError }}
         </p>
       </div>
-      <TextInput v-model:value="user.nationality" label="Nationality" @update:value="() => hasUnsavedChanges = true"/>
+      <TextInput v-model:value="user.nationality" label="Nationality"/>
       <div>
         <TextInput
             v-model:value="birthDate"
             label="Date Year-Month"
             placeholder="Date YYYY-MM"
-            @update:value="() => hasUnsavedChanges = true"
         />
         <p v-if="dateError" class="text-red-700 text-xs pl-1 pt-1">
           {{ dateError }}
@@ -121,7 +117,7 @@
                         @click="() => showApproveUserRole(row.id)"
                         class="p-1.5 text-base rounded-full hover:text-green-300 transition text-green-400 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
+              class="z-10 absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
             Approve
           </span>
         </span>
@@ -130,7 +126,7 @@
                         @click="() => showJerseyNumber()"
                         class="p-1.5 text-base rounded-full hover:text-teal-500 transition text-teal-600 cursor-pointer"/>
           <span
-              class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
+              class="z-10 absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
             Jersey number
           </span>
         </span>
@@ -174,11 +170,6 @@
       v-model:visible="showSuccessAlert"
       text="The user details has been successfully updated."
   />
-  <LivePageOrNot
-      v-model:visible="showUnsavedChangesModal"
-      @confirm="confirmLeavePage"
-      @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
@@ -201,7 +192,6 @@ import {useRolesFetch} from "~/composables/useRolesFetch/useRolesFetch";
 import ConfirmationModal from "~/components/modals/games/ConfirmationModal.vue";
 import {usePersonFetch} from "~/composables/usePersonFetch/usePersonFetch";
 import SuccessAlert from "~/components/alerts/SuccessAlert.vue";
-import LivePageOrNot from "~/components/alerts/LivePageOrNot.vue";
 import AddJerseyNumberModal from "~/components/modals/user/AddJerseyNumberModal.vue";
 import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 
@@ -232,10 +222,7 @@ const showApproveRoleModal = ref(false)
 const selectedRoleIdToDelete = ref(0)
 const selectedRoleIdToApprove = ref(0)
 const showSuccessAlert = ref(false)
-const showUnsavedChangesModal = ref(false)
 const showJerseyNumberModal = ref(false)
-let routeNext: any = null;
-const hasUnsavedChanges = ref(false);
 const emailError = ref('')
 const dateError = ref('')
 const nameError = ref('')
@@ -479,7 +466,6 @@ async function saveChanges() {
   }
 
   showSuccessAlert.value = true
-  hasUnsavedChanges.value = false
   licenseChanged.value = false
   rolesChanged.value = false
   loading.value = false
@@ -540,30 +526,9 @@ function deleteRole() {
 
 }
 
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
 function showJerseyNumber() {
   showJerseyNumberModal.value = true;
 }
-
-onBeforeRouteLeave((to, from, next) => {
-  if (rolesChanged.value || licenseChanged.value || hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
 
 onMounted(() => {
   document.addEventListener('click', () => closeSelects())

@@ -27,25 +27,17 @@
             class="w-full h-full object-cover transition-opacity duration-300"
           />
         </div>
-        <UserForm :userId="userId" @unsavedChanges="handleUnsavedChanges" />
+        <UserForm :userId="userId"/>
       </div>
     </div>
   </div>
-
-  <LivePageOrNot
-    v-model:visible="showUnsavedChangesModal"
-    @confirm="confirmLeavePage"
-    @cancel="cancelLeavePage"
-  />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import UserForm from '~/components/forms/UserForm.vue';
 import { useUsersFetch } from '~/composables/useUsersFetch/useUsersFetch';
-import { useUserStore } from '~/store/user';
 import Breadcrumb from '~/components/breadcrumb/Breadcrumb.vue';
-import LivePageOrNot from '~/components/alerts/LivePageOrNot.vue';
 
 const config = useRuntimeConfig()
 
@@ -56,35 +48,4 @@ const userId = Number(route.params.id);
 const {fetchUserById} = useUsersFetch();
 const response = await fetchUserById(userId)
 
-const hasUnsavedChanges = ref(false);
-const showUnsavedChangesModal = ref(false);
-let routeNext: any = null;
-
-function handleUnsavedChanges(value: any) {
-  hasUnsavedChanges.value = value;
-}
-
-function confirmLeavePage() {
-  showUnsavedChangesModal.value = false;
-  if (routeNext) {
-    routeNext();
-  }
-}
-
-function cancelLeavePage() {
-  showUnsavedChangesModal.value = false;
-  routeNext = null;
-}
-
-onBeforeRouteLeave((to, from, next) => {
-  if (hasUnsavedChanges.value) {
-    showUnsavedChangesModal.value = true;
-    routeNext = next;
-  } else {
-    next();
-  }
-});
-
-
-const { user } = useUserStore()
 </script>

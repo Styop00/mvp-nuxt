@@ -4,7 +4,7 @@
       :clickable="true"
       :data="tableData"
       title="Games"
-      class="bg-dark-surface-default min-h-96 flex flex-col justify-between"
+      class="bg-surface-default min-h-96 flex flex-col justify-between"
       :loading="loading"
       :show-actions="type === 'conflicts'"
       @sorted="(column) => emit('sort', {column: column, data: emitData})"
@@ -13,14 +13,14 @@
       :fixed-table="false"
   >
     <template #headerBottom>
-      <div class="flex flex-col xl:flex-row gap-4 xl:gap-6 w-full items-stretch xl:items-center justify-between px-4 xl:px-6 py-5 bg-gradient-to-br from-dark-surface-default/40 via-dark-bg-primary/30 to-dark-surface-default/40 border-t border-dark-border-default backdrop-blur-sm relative">
+      <div class="flex flex-col xl:flex-row gap-4 xl:gap-6 w-full items-stretch xl:items-center justify-between bg-gradient-to-br from-surface-default/40 via-bg-primary/30 to-surface-default/40 backdrop-blur-sm relative transition-[background-color,border-color] duration-200">
         <!-- Filters Section -->
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-6 items-stretch lg:items-center flex-1">
           <!-- Filter Label and Type Select -->
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center min-w-0 flex-shrink-0 relative">
-            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary-color/10 to-brand-primary-color/5 border border-brand-primary-color/20 shadow-sm hover:shadow-md hover:border-brand-primary-color/30 transition-all duration-200">
+            <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/20 shadow-sm hover:shadow-sm hover:border-brand-primary/30 transition-all duration-200">
               <font-awesome :icon="['fas', 'filter']" class="text-brand-primary-color text-sm"/>
-              <span class="text-nowrap text-xs sm:text-sm font-bold text-dark-text-primary uppercase tracking-wider whitespace-nowrap">Filters</span>
+              <span class="text-nowrap text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider whitespace-nowrap transition-colors duration-200">Filters</span>
             </div>
             <Select
                 :options="filterOptions"
@@ -31,12 +31,12 @@
           </div>
 
           <!-- Visual Separator (Desktop) -->
-          <div class="hidden lg:block w-px h-8 bg-gradient-to-b from-transparent via-dark-border-default to-transparent mx-1"></div>
+          <div class="hidden lg:block w-px h-8 bg-gradient-to-b from-transparent via-border-default to-transparent mx-1 transition-colors duration-200"></div>
 
           <!-- Club Filter (Conditional) -->
           <div class="flex items-center gap-3 w-full sm:w-auto group relative" v-if="tournamentGroupId || tournamentId">
-            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-              <font-awesome :icon="['fas', 'landmark']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'landmark']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
             </div>
             <FilterSelect 
               :options="clubs" 
@@ -47,8 +47,8 @@
 
           <!-- Court Filter -->
           <div class="flex items-center gap-3 w-full sm:w-auto group relative">
-            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-              <font-awesome :icon="['fas', 'location-dot']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'location-dot']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
             </div>
             <FilterSelect 
               :options="courts" 
@@ -59,8 +59,8 @@
 
           <!-- Date Filter -->
           <div class="flex items-center gap-3 w-full sm:w-auto group relative">
-            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-              <font-awesome :icon="['fas', 'calendar']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'calendar']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
             </div>
             <div class="relative flex-1 w-full sm:w-auto sm:min-w-[200px]">
               <TextInput
@@ -73,16 +73,16 @@
                   class="w-full"
               />
               <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none lg:hidden">
-                <font-awesome :icon="['fas', 'calendar']" class="text-sm text-dark-text-tertiary"/>
+                <font-awesome :icon="['fas', 'calendar']" class="text-sm text-text-tertiary transition-colors"/>
               </div>
             </div>
             <div 
-              class="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/2 bg-dark-surface-default border border-dark-border-default shadow-sm rounded-xl mt-3 backdrop-blur-md animate-scale-in"
+              class="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/2 bg-surface-default border border-border-default shadow-sm rounded-xl mt-3 backdrop-blur-md animate-scale-in transition-[background-color,border-color] duration-200"
               @click.stop
               v-if="showRangeCalendar"
               style="z-index: 99999 !important; position: absolute !important;">
-              <div class="p-3 border-b border-dark-border-default flex items-center justify-between bg-dark-surface-elevated">
-                <p class="text-sm font-semibold text-dark-text-primary flex items-center gap-2">
+              <div class="p-3 border-b border-border-default flex items-center justify-between bg-surface-elevated transition-[background-color,border-color] duration-200">
+                <p class="text-sm font-semibold text-text-primary flex items-center gap-2 transition-colors duration-200">
                   <font-awesome :icon="['fas', 'calendar']" class="text-brand-primary-color"/>
                   Select Date Range
                 </p>
@@ -103,17 +103,17 @@
         </div>
 
         <!-- Visual Separator (Desktop) -->
-        <div class="hidden xl:block w-px h-8 bg-gradient-to-b from-transparent via-dark-border-default to-transparent mx-2"></div>
+        <div class="hidden xl:block w-px h-8 bg-gradient-to-b from-transparent via-border-default to-transparent mx-2 transition-colors duration-200"></div>
 
         <!-- Search Section -->
         <div class="w-full xl:w-auto xl:min-w-[300px] flex-shrink-0">
           <div class="flex items-center gap-3 group relative">
-            <div class="hidden xl:flex items-center justify-center w-9 h-9 rounded-lg bg-dark-surface-elevated border border-dark-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
-              <font-awesome :icon="['fas', 'magnifying-glass']" class="text-xs text-dark-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
+            <div class="hidden xl:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
+              <font-awesome :icon="['fas', 'magnifying-glass']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
             </div>
             <div class="relative flex-1">
               <div class="absolute left-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none transition-colors xl:hidden group-focus-within:text-brand-primary-color">
-                <font-awesome :icon="['fas', 'magnifying-glass']" class="text-dark-text-tertiary text-sm"/>
+                <font-awesome :icon="['fas', 'magnifying-glass']" class="text-text-tertiary text-sm transition-colors"/>
               </div>
               <SearchInput
                   v-model="searchQuery"
@@ -132,20 +132,20 @@
             @click.stop="() => emit('ignoreConflict', row.id)"
             class="p-1.5 text-base rounded-full hover:text-red-500 transition text-red-600 cursor-pointer"/>
         <span
-            class="absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-dark-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border">
+            class="z-10 absolute bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-default left-1/2 p-px shadow-sm px-3 -translate-x-1/2 border border-border-default transition-[background-color,border-color] duration-200">
           Ignore conflicts
         </span>
       </span>
     </template>
     <template #footer>
-      <div class="flex flex-col sm:flex-row justify-between px-4 sm:px-6 items-start sm:items-center gap-4 py-4 border-t border-dark-border-default bg-dark-bg-primary/30">
+      <div class="flex flex-col sm:flex-row justify-between px-4 sm:px-6 items-start sm:items-center gap-4 py-4 border-t border-border-default bg-bg-primary/30 transition-[background-color,border-color] duration-200">
         <div>
-          <p class="text-xs text-nowrap tracking-wider text-dark-text-secondary font-medium">
+          <p class="text-xs text-nowrap tracking-wider text-text-secondary font-medium transition-colors duration-200">
             {{ currentShowCount }}
           </p>
         </div>
         <div class="flex flex-col sm:flex-row justify-start sm:justify-end items-start sm:items-center gap-4 w-full sm:w-auto">
-          <p class="flex items-center text-nowrap gap-2 sm:gap-4 text-sm text-dark-text-secondary">
+          <p class="flex items-center text-nowrap gap-2 sm:gap-4 text-sm text-text-secondary transition-colors duration-200">
             <span class="hidden sm:inline">Rows per page:</span>
             <span class="sm:hidden">Per page:</span>
             <Select :options="limitOptions" v-model:value="limit" direction="top" size="small" class="w-20"/>
@@ -401,7 +401,7 @@ watch(() => props.games, () => {
     return {
       id: game.id,
       day: moment(game.date).format('ddd'),
-      date: game.date,
+      date: moment(game.date).format('YYYY-MM-DD').toString(),
       time: game.time ? moment(game.time, 'HH:mm:ss').format('HH:mm') : '<span class="text-red-600">time is missing</span>',
       number: game.number,
       teamIdHome: game.home_team?.tournament_name ?
