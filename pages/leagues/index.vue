@@ -180,7 +180,7 @@ async function fetch() {
   leagues.value = []
   loading.value = true
   const response = await fetchLeagues({
-        seasonSportId: userStore.seasonSportId,
+        season_sport_id: userStore.seasonSportId,
         deleted: false,
       },
       orderBy.value,

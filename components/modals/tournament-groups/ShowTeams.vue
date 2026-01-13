@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3" name="_group_teams">
+  <BaseModalComponent v-model:visible="modal" :width="3" name="_group_teams" title="Group Teams">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <div class="flex items-center justify-between my-5">
         <p class="font-bold text-lg tracking-widest">
           Teams

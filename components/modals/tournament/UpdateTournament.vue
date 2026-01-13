@@ -1,10 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="6">
+  <BaseModalComponent v-model:visible="modal" :width="6" title="Create a new tournament">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-      <p class="font-bold mb-5 border-b">
-        Create a new tournament
-      </p>
       <EditTournamentForm :data="data" ref="editForm" @updated="emitUpdated" class="p-0"/>
     </div>
   </BaseModalComponent>

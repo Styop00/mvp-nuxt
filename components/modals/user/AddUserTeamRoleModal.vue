@@ -1,11 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
+  <BaseModalComponent v-model:visible="modal" :width="3" title="Add new role for the user">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => cancelAction()"
-                    class="cursor-pointer absolute top-4 right-4 ml-auto block"/>
-      <p class="font-bold mb-5 border-b pb-1">
-        Add new role for the user
-      </p>
       <div class="min-h-96">
         <div class="grid grid-cols-1 items-center justify-center ">
           <div class="mb-4 mx-auto w-full">

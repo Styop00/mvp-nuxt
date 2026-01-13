@@ -184,7 +184,13 @@ async function requestLogin() {
     loginError.value = ''
     const response = await userStore.login(email.value, password.value)
     if (response.value) {
-      navigateTo('/')
+      // Check if user has season_sports, if not redirect to complete profile
+      const seasonSports = response.value.season_sports || [];
+      if (seasonSports.length === 0) {
+        navigateTo('/complete-profile')
+      } else {
+        navigateTo('/')
+      }
     }
   } catch (e: any) {
     loginError.value = e.toString()

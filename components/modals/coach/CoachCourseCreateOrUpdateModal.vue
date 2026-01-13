@@ -1,16 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4" name="_coach_courses">
+  <BaseModalComponent v-model:visible="modal" :width="4" name="_coach_courses" :title="(!isNaN(props.courseId as number) && props.visible) ? 'Edit Course' : 'Create New Course'">
     <div class="pb-4">
-      <div class="flex m-6 justify-between items-center mb-3 py-3 border-b">
-        <p class="font-bold">
-          {{(!isNaN(props.courseId as number) && props.visible)? 'Edit Course' : 'Create New Course' }}
-        </p>
-        <font-awesome
-          :icon="['fas', 'xmark']"
-          @click="closeModal"
-          class="cursor-pointer"
-        />
-      </div>
       <CoachForm
           :isShowFileInput="false"
           :course="course"

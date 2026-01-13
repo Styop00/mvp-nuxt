@@ -10,7 +10,9 @@ export const useUserStore = defineStore(
     const token = useCookie("accessToken", {
       maxAge: 2592000,
     });
-    const seasonSportId = ref(0);
+    const seasonSportId = useCookie("seasonSportId", {
+      maxAge: 2592000,
+    });
 
     const setUser = (data: any) => (user.value = data);
     const setToken = (data: any) => (token.value = data);
@@ -142,7 +144,7 @@ export const useUserStore = defineStore(
             jwt.value = accessToken;
             setToken(accessToken);
             setUser(user);
-            if (season_sports.length) {
+            if (!seasonSportId.value && season_sports.length) {
               setSeasonSportId(season_sports[0].id);
             }
             resolve(response.data);
@@ -188,7 +190,7 @@ export const useUserStore = defineStore(
           if (response.data.value) {
             setUser(response.data.value);
             let season_sports = response.data.value.season_sports;
-            if (season_sports.length) {
+            if (!seasonSportId.value && season_sports.length) {
               setSeasonSportId(season_sports[0].id);
             }
           }
@@ -204,7 +206,7 @@ export const useUserStore = defineStore(
     const resetState = (): void => {
       setUser(null);
       setToken(null);
-      setSeasonSportId(0);
+      setSeasonSportId(null);
       const authToken = useCookie("authToken", {
         maxAge: 2592000,
       });

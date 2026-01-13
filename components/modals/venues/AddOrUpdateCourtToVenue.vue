@@ -1,10 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
+  <BaseModalComponent v-model:visible="modal" :width="3" :title="props.court ? `Edit Court (${props.venueName})` : `Create a new Court (${props.venueName})`">
     <div class="p-4">
-      <p class="font-bold mb-4">
-        {{ props.court ?  `Edit Court (${props.venueName})` : `Create a new Court (${props.venueName})` }}
-      </p>
-
       <div class="mb-4">
         <TextInput
           label="Court Name"

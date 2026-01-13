@@ -1,12 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" @close="handleModalClose">
+  <BaseModalComponent v-model:visible="modal" @close="handleModalClose" title="Check Email">
     <div class="p-3 relative">
-      <font-awesome
-        :icon="['fas', 'xmark']"
-        @click="closeModal"
-        class="text-xl cursor-pointer absolute right-0.5 top-0"
-      />
-      <h2 class="mb-2 text-center">Check Email</h2>
       <p class="mb-2 text-center">
         Please check your email for a link to reset your password.
       </p>

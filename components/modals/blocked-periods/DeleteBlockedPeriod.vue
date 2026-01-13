@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
+  <BaseModalComponent v-model:visible="modal" :width="3" title="Delete Blocked Period">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <p class="font-bold my-5 text-center">
         Are you sure you want to delete this period?
       </p>

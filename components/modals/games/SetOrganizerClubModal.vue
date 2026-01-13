@@ -1,11 +1,7 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4" name="_game_organizer_edit">
+  <BaseModalComponent v-model:visible="modal" :width="4" name="_game_organizer_edit" title="Edit Organizer club">
     <form class="p-4 min-h-[50vh] flex flex-col justify-between" @submit.prevent="() => save()">
       <div>
-        <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-        <p class="font-bold my-5 text-lg">
-          Edit Organizer club
-        </p>
         <Select :options="clubOptions" v-model:value="selectedClub" label="Organizer club" class="mb-4"
                 ref="clubSelect"/>
         <CheckBox

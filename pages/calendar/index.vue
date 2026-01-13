@@ -17,7 +17,7 @@
             <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center flex-1">
               <div class="flex items-center gap-3 relative z-30">
                 <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary/10 to-brand-primary/5 border border-brand-primary/20 shadow-sm hover:shadow-sm hover:border-brand-primary/30 transition-all duration-200">
-                  <font-awesome :icon="['fas', 'filter']" class="text-brand-primary text-sm"/>
+                  <font-awesome :icon="['fas', 'filter']" class="text-brand-primary-color text-sm"/>
                   <span class="text-nowrap text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider whitespace-nowrap transition-colors duration-200">Filters</span>
                 </div>
                 <div class="relative z-30">

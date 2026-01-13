@@ -46,7 +46,6 @@ const mainPageRef = ref(null)
 const showDropdowns = ref(false)
 const showFullSidebar = ref(window.innerWidth > 1024)
 
-
 onMounted(() => {
   if(mainPageRef.value) {
     mainPageRef.value.addEventListener("click", () => {

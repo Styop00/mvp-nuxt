@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4">
+  <BaseModalComponent v-model:visible="modal" :width="4" title="Check Game">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <font-awesome
           v-if="loading"
           :icon="['fas', 'spinner']"

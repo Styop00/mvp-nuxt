@@ -1,16 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
+  <BaseModalComponent v-model:visible="modal" :width="3" :title="id ? 'Edit Sport' : 'Create a new Sport'">
     <div class="p-4">
-      <div class="flex justify-between items-center mb-3 pb-3 border-b">
-        <p class="font-bold">
-          {{ id ? 'Edit Sport' : 'Create a new Sport' }}
-        </p>
-        <font-awesome
-          :icon="['fas', 'xmark']"
-          @click="() => modal = false"
-          class="cursor-pointer"
-        />
-      </div>
       <form
         action="#"
         @submit.prevent="createOrUpdate"

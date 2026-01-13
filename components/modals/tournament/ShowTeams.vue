@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4" name="_tournament_teams">
+  <BaseModalComponent v-model:visible="modal" :width="4" name="_tournament_teams" title="Tournament Teams">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <div class="flex items-center justify-end my-5">
         <BaseButton @on-click="() => showAddTeamForm=true"
                     class="!py-1 !px-1 !text-sm sm:text-base sm:!px-4 block">

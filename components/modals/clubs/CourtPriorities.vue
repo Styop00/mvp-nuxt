@@ -1,17 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
-    <div class="p-4  ">
-      <div
-        class="flex justify-between items-center mb-3 py-3 border-b !overflow-y-visible"
-      >
-        <p class="font-bold">Court Assignment</p>
-        <font-awesome
-          :icon="['fas', 'xmark']"
-          @click="() => modal = false"
-          class="cursor-pointer"
-        />
-      </div>
-
+  <BaseModalComponent v-model:visible="modal" :width="3" title="Court Assignment">
+    <div class="p-4">
       <template v-if="loading" class="">
         <font-awesome
           :icon="['fas', 'spinner']"

@@ -83,6 +83,8 @@ export default defineNuxtConfig({
         "key",
         "sun",
         "moon",
+        "check-circle",
+        "sync-alt",
       ],
       regular: ["user", "circle-user", "clock", "comments", "paper-plane", "note-sticky"],
       brands: ["google"],

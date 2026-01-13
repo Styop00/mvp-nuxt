@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4">
+  <BaseModalComponent v-model:visible="modal" :width="4" title="Cancel/Postpone Match">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => closeModal()" class="cursor-pointer ml-auto block"/>
       <p class="font-bold my-5">
         Do you want to cancel/postpone the match?.
       </p>

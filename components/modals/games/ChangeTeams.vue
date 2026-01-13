@@ -1,12 +1,8 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4">
+  <BaseModalComponent v-model:visible="modal" :width="4" :title="`Correct teams at match #${game.number}`">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <div class="min-h-[70vh] flex flex-col justify-between ">
         <div>
-          <p class="font-bold my-5 text-center mb-4">
-            Correct teams at match #{{ game.number }}
-          </p>
           <Select :options="teams" v-model:value="teamHome"/>
           <p class="my-2">
             Against
@@ -87,17 +83,17 @@ watch(() => props.game, () => {
 
 async function fetchTeams() {
   teams.value = [];
-  const res = await fetchTournamentById(props.game.tournamentId ? props.game.tournamentId : 0)
+  const res = await fetchTournamentById(props.game?.tournament_id ? props.game?.tournament_id : 0)
   res?.teams?.forEach(team => {
     teams.value.push({
-      label: team.tournamentName ? team.tournamentName : team.localName,
+      label: team.tournament_name ? team.tournament_name : team.local_name,
       value: team.id,
       disabled: false
     })
   })
 
-  teamHome.value = teams.value.find(team => team.value === props.game.teamIdHome) as SelectOptions
-  teamAway.value = teams.value.find(team => team.value === props.game.teamIdAway) as SelectOptions
+  teamHome.value = teams.value.find(team => team.value === props.game?.team_id_home) as SelectOptions
+  teamAway.value = teams.value.find(team => team.value === props.game?.team_id_away) as SelectOptions
 }
 
 async function saveChanges() {

@@ -1,14 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
-    <div class="p-4  ">
-      <div class="flex justify-between items-center mb-3 py-3 border-b">
-        <p class="font-bold">Create a new Coach</p>
-        <font-awesome
-          :icon="['fas', 'xmark']"
-          @click="() => modal = false"
-          class="cursor-pointer"
-        />
-      </div>
+  <BaseModalComponent v-model:visible="modal" :width="3" title="Create a new Coach">
+    <div class="p-4">
       <form action="#" @submit.prevent="create">
         <div class="flex-col ">
           <TextInput

@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="3">
+  <BaseModalComponent v-model:visible="modal" :width="3" title="Add to Team">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <template v-if="!selectedComponent">
         <div class="min-h-40 flex flex-col items-center justify-center">
           <p class="text-center mb-7 text-xl">

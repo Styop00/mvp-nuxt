@@ -1,14 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4" name="_coach_edit">
+  <BaseModalComponent v-model:visible="modal" :width="4" name="_coach_edit" title="Edit Master Data">
     <div class="pb-4">
-      <div class="flex m-6 justify-between items-center mb-3 py-3 border-b">
-        <p class="font-bold">Edit Master Data</p>
-        <font-awesome
-          :icon="['fas', 'xmark']"
-          @click="closeModal"
-          class="cursor-pointer"
-        />
-      </div>
       <div class="flex flex-col gap-4 m-6">
         <Select
           label="Module Name"

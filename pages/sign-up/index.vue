@@ -125,7 +125,6 @@
           </BaseButton>
         </form>
 
-        <VerifyEmailModal v-model:visible="showModal" :width="3" />
         <div class="text-dark-text-tertiary text-[12px] text-center mb-4">
           <p>
             Already have an account?
@@ -140,6 +139,7 @@
         </div>
       </div>
     </div>
+    <VerifyEmailModal v-model:visible="showModal" :width="4" />
   </div>
 </template>
 

@@ -32,10 +32,15 @@ const handleOnSuccess = async (response: AuthCodeFlowSuccessResponse) => {
       jwt.value = accessToken;
       userStore.setToken(accessToken);
       userStore.setUser(user);
-      if (user.season_sports.length) {
-        userStore.setSeasonSportId(user.season_sports[0].id)
+      
+      const seasonSports = user.season_sports || [];
+      if (seasonSports.length) {
+        userStore.setSeasonSportId(seasonSports[0].id)
+        navigateTo('/')
+      } else {
+        // Redirect to complete profile if no season_sports
+        navigateTo('/complete-profile')
       }
-      navigateTo('/')
     }
 
   }

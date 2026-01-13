@@ -14,11 +14,11 @@ export function useLeagueFetch() {
         const response = await useApiV5Fetch('leagues',
             {
                 query: {
-                    orderBy: orderBy,
-                    orderDirection: orderDirection,
+                    order_by: orderBy,
+                    order_direction: orderDirection,
                     page: page,
                     limit: limit,
-                    searchTerm: searchQuery,
+                    search_term: searchQuery,
                     ...conditions
                 }
             })

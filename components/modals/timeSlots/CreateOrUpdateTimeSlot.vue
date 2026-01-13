@@ -1,10 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="5" name="_time_slots">
+  <BaseModalComponent v-model:visible="modal" :width="5" name="_time_slots" :title="timeSlotId ? 'Update time' : 'Add new time'">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-      <p class="font-bold mb-5 border-b">
-        {{ timeSlotId ? 'Update time' : 'Add new time' }}
-      </p>
       <form action="#"
             class="min-h-[60vh] flex flex-col justify-between"
             @submit.prevent="createOrUpdate">

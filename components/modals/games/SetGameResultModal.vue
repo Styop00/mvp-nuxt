@@ -1,11 +1,7 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4">
+  <BaseModalComponent v-model:visible="modal" :width="4" title="Set Match Result">
     <form class="p-4 min-h-[70vh] flex flex-col justify-between" @submit.prevent="() => save()">
       <div>
-        <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-        <p class="font-bold my-5 text-lg text-dark-text-primary">
-          Set Match Result
-        </p>
         <div class="grid grid-cols-7 gap-4">
           <p class="col-span-3 text-dark-text-primary">Team</p>
           <p class="text-dark-text-primary">Score/Goal</p>

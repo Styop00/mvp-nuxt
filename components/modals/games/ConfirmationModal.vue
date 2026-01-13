@@ -1,7 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="width">
+  <BaseModalComponent v-model:visible="modal" :width="width" title="Confirmation">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
       <p class="font-bold my-5 text-center" v-html="modalBody"/>
       <div class="flex gap-6 items-center justify-center">
         <BaseButton class="text-white font-bold py-2 px-4 rounded-xl"  @onClick="() => modal=false">

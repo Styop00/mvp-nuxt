@@ -1,10 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="5">
+  <BaseModalComponent v-model:visible="modal" :width="5" :title="id ? 'Update a league' : 'Create a new league'">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-      <p class="font-bold mb-5 border-b">
-        {{ id ? 'Update a league' : 'Create a new league' }}
-      </p>
       <form action="#" @submit.prevent="createOrUpdate">
         <div class="grid-cols-2 grid gap-8">
           <TextInput v-model:value="name" label="Name" :required="true" placeholder="Name"/>

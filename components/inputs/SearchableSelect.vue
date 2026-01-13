@@ -24,8 +24,7 @@
     <Transition name="dropdown">
       <div
         v-if="dropdownOpened && (filteredOptions.length > 0 || searchQuery.length > 0)"
-        class="absolute shadow-sm border border-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-surface-elevated rounded-lg mt-1 z-50"
-        style="z-index: 99999 !important;"
+        class="absolute shadow-sm border border-border-default w-full text-sm max-h-52 overflow-y-auto small-scrollbar bg-surface-elevated rounded-lg mt-1 !z-[9999]"
       >
         <div
           v-if="isLoading"

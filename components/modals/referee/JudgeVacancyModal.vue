@@ -3,16 +3,9 @@
       v-model:visible="modal"
       :width="4"
       :isOverflowVisible="props.isOverflowVisible"
+      title="Auto Apply"
     >
       <div class="p-3 relative ">
-        <div class="flex justify-between items-center mb-3 py-3 border-b">
-          <p class="font-bold">Auto Apply</p>
-          <font-awesome
-            :icon="['fas', 'xmark']"
-            @click="cancelAction"
-            class="cursor-pointer"
-          />
-        </div>
         <div class="flex mt-4 flex-col gap-6 justify-center">
           <div class="flex gap-6">
             <Select

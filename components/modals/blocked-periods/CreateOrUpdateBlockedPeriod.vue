@@ -1,10 +1,6 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="5" name="_blocked_period">
+  <BaseModalComponent v-model:visible="modal" :width="5" name="_blocked_period" :title="blockedPeriodId ? 'Update blocked period' : 'Create blocked period'">
     <div class="p-4">
-      <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-      <p class="font-bold mb-5 border-b">
-        {{ blockedPeriodId ? 'Update blocked period' : 'Create blocked period' }}
-      </p>
       <form action="#"
             class="min-h-[60vh] flex flex-col justify-between"
             @submit.prevent="createOrUpdate">

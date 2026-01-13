@@ -1,11 +1,7 @@
 <template>
-  <BaseModalComponent v-model:visible="modal" :width="4" name="_game_time_edit">
+  <BaseModalComponent v-model:visible="modal" :width="4" name="_game_time_edit" title="Edit Time and Place">
     <form class="p-4 min-h-[70vh] flex flex-col justify-between" @submit.prevent="() => save()">
       <div>
-        <font-awesome :icon="['fas', 'xmark']" @click="() => modal=false" class="cursor-pointer ml-auto block"/>
-        <p class="font-bold my-5 text-lg">
-          Edit Time and Place
-        </p>
         <Select :options="courtOptions" v-model:value="selectedCourt" label="Court" class="mb-4" ref="courtSelect"/>
         <div class="grid grid-cols-2 gap-4">
           <div class="relative">

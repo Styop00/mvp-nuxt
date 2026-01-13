@@ -12,7 +12,7 @@
     />
     <button
       @click="changeInputType"
-      class="absolute inset-y-0 right-0 flex items-center p-3 rounded-tr-[0.35rem] rounded-br-[0.35rem] bg-bg-secondary hover:bg-bg-hover transition-colors duration-200"
+      class="absolute inset-y-0 right-0 flex items-center p-3 rounded-tr-[0.35rem] rounded-br-[0.35rem] bg-transparent transition-colors duration-200"
       type="button"
     >
       <font-awesome

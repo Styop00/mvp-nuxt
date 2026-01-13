@@ -1,40 +1,62 @@
 <template>
-  <div
-    v-if="position === 'top'"
-    class="fixed top-0 left-0 right-0 z-[10000] flex justify-center pt-4"
-    style="pointer-events: none;"
-  >
-    <div
-      @click.stop
-      :id="'modal-body' + name"
-      :class="[
-        'bg-surface-default border border-border-default text-text-primary p-3 rounded-2xl small-scrollbar shadow-sm transition-[background-color,border-color,color] duration-200',
-        widthStyles,
-        isOverflowVisible ? 'overflow-visible' : 'overflow-hidden'
-      ]"
-      style="pointer-events: auto; max-width: calc(100vw - 2rem);"
-      v-show="visible">
-      <slot />
-    </div>
-  </div>
-  <div
-    v-else
-    class="fixed top-0 left-0 w-screen h-screen bg-black/50 dark:bg-black/60 z-[9999] overflow-hidden transition-opacity duration-200"
-    v-show="visible"
-    @click="() => modal = false"
-  >
-    <div
-      @click.stop
-      :id="'modal-body' + name"
-      :class="[
-        'bg-surface-default border border-border-default text-text-primary absolute p-3 rounded-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 small-scrollbar shadow-sm transition-[background-color,border-color,color] duration-200',
-        widthStyles,
-        isOverflowVisible ? 'overflow-visible' : 'overflow-hidden'
-      ]"
-      style="max-height: 80vh; max-width: calc(100vw - 2rem);">
-      <slot />
-    </div>
-  </div>
+  <Teleport to="body">
+    <Transition name="modal">
+      <div 
+        v-if="visible" 
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      >
+        <!-- Backdrop -->
+        <div 
+          class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          @click="closeModal"
+        ></div>
+        
+        <!-- Modal Content -->
+        <div
+          @click.stop
+          :id="'modal-body' + name"
+          :class="[
+            'relative bg-dark-surface-default rounded-2xl shadow-2xl border border-dark-border-default animate-fade-in',
+            widthStyles,
+            isOverflowVisible ? 'overflow-visible' : 'overflow-hidden'
+          ]"
+          :style="{ maxHeight: '90vh', maxWidth: 'calc(100vw - 2rem)' }"
+        >
+          <!-- Modal Header -->
+          <div 
+            v-if="title || showCloseButton" 
+            class="flex items-center justify-between px-5 py-3 border-b border-dark-border-default"
+          >
+            <h3 v-if="title" class="text-base font-bold text-dark-text-primary flex items-center gap-2">
+              <slot name="icon"></slot>
+              {{ title }}
+            </h3>
+            <div v-else></div>
+            <button 
+              v-if="showCloseButton"
+              @click="closeModal"
+              class="w-7 h-7 rounded-lg hover:bg-dark-bg-hover flex items-center justify-center text-dark-text-tertiary hover:text-dark-text-primary transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div 
+            :class="[
+              'small-scrollbar',
+              noPadding ? '' : 'p-5'
+            ]"
+            :style="{ maxHeight: title || showCloseButton ? 'calc(90vh - 52px)' : '90vh', overflowY: 'auto' }"
+          >
+            <slot />
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -52,31 +74,40 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  title: {
+    type: String,
+    default: '',
+  },
   isOverflowVisible: {
     type: Boolean,
     default: false
   },
-  position: {
-    type: String,
-    default: 'center', // 'center' or 'top'
-  }
+  showCloseButton: {
+    type: Boolean,
+    default: true,
+  },
+  noPadding: {
+    type: Boolean,
+    default: false,
+  },
+  closeOnBackdrop: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const emit = defineEmits([
-  'update:visible'
+  'update:visible',
+  'close'
 ])
 
-const modal = ref(false)
-
-watch(() => props.visible, () => {
-  modal.value = props.visible
-})
-
-watch(() => modal.value, () => {
-  if (!modal.value) {
+function closeModal() {
+  if (props.closeOnBackdrop) {
     emit('update:visible', false)
+    emit('close')
   }
-})
+}
+
 const widthStyles = computed(() => {
   switch (props.width) {
     case 1 :
@@ -94,3 +125,27 @@ const widthStyles = computed(() => {
   }
 })
 </script>
+
+<style scoped>
+/* Modal transition animations */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-active .relative,
+.modal-leave-active .relative {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.modal-enter-from .relative,
+.modal-leave-to .relative {
+  transform: scale(0.95);
+  opacity: 0;
+}
+</style>

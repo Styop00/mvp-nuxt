@@ -82,6 +82,107 @@
             </div>
           </div>
 
+          <!-- Current Season Sport Section -->
+          <div class="p-6 border-b border-dark-border-default">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-base font-semibold text-dark-text-primary flex items-center gap-2">
+                <font-awesome :icon="['fas', 'calendar-alt']" class="text-brand-primary-color"/>
+                Current Season Sport
+              </h3>
+              <button
+                @click="showSwitchSeasonModal = true"
+                class="px-3 py-1.5 rounded-lg bg-brand-primary-color/10 hover:bg-brand-primary-color/20 text-brand-primary-color border border-brand-primary-color/30 text-sm font-medium transition-all flex items-center gap-2"
+              >
+                <font-awesome :icon="['fas', 'sync-alt']" class="text-xs"/>
+                Switch Season
+              </button>
+            </div>
+            
+            <!-- Current Active Season Sport -->
+            <div v-if="currentActiveSeasonSport" class="p-4 rounded-xl bg-gradient-to-br from-brand-primary-color/10 to-brand-primary-color/5 border border-brand-primary-color/20">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-lg bg-brand-primary-color/20 flex items-center justify-center">
+                  <font-awesome :icon="['fas', 'trophy']" class="text-brand-primary-color text-lg"/>
+                </div>
+                <div>
+                  <p class="font-semibold text-dark-text-primary">
+                    {{ currentActiveSeasonSport.season?.name }} {{ currentActiveSeasonSport.sport?.name }}
+                  </p>
+                  <p class="text-xs text-dark-text-tertiary mt-0.5">
+                    Currently Active
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div v-else class="text-center py-4">
+              <p class="text-sm text-dark-text-tertiary">No active season sport selected</p>
+            </div>
+          </div>
+
+          <!-- Sport & Role Section -->
+          <div class="p-6 border-b border-dark-border-default">
+            <h3 class="text-base font-semibold text-dark-text-primary mb-4 flex items-center gap-2">
+              <font-awesome :icon="['fas', 'futbol']" class="text-brand-primary-color"/>
+              Sport & Role
+            </h3>
+            
+            <!-- Current Sport & Roles -->
+            <div class="space-y-4">
+              <div v-if="userSeasonSports.length > 0">
+                <div 
+                  v-for="(seasonSport, index) in userSeasonSports" 
+                  :key="index"
+                  class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-dark-bg-primary/50 border border-dark-border-default"
+                >
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-primary-color/20 to-brand-primary-color/5 flex items-center justify-center">
+                      <font-awesome :icon="['fas', 'trophy']" class="text-brand-primary-color"/>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-dark-text-primary">
+                        {{ seasonSport.season_sport?.sport?.name || 'Unknown Sport' }}
+                      </p>
+                      <p class="text-xs text-dark-text-tertiary">
+                        Season: {{ seasonSport.season_sport?.season?.name || 'Current Season' }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      v-for="(role, roleIndex) in getUserRolesForSeasonSport(seasonSport.season_sport_id)"
+                      :key="roleIndex"
+                      class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20"
+                    >
+                      {{ role.description }}
+                    </span>
+                    <span 
+                      v-if="getUserRolesForSeasonSport(seasonSport.season_sport_id).length === 0"
+                      class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-dark-surface-elevated text-dark-text-tertiary border border-dark-border-default"
+                    >
+                      No role assigned
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div v-else class="text-center py-6">
+                <div class="w-16 h-16 rounded-full bg-dark-bg-primary mx-auto mb-3 flex items-center justify-center">
+                  <font-awesome :icon="['fas', 'futbol']" class="text-2xl text-dark-text-tertiary"/>
+                </div>
+                <p class="text-dark-text-tertiary text-sm">No sport assigned yet</p>
+              </div>
+
+              <!-- Add Sport Button -->
+              <button
+                @click="showAddSportModal = true"
+                class="w-full mt-4 py-3 px-4 rounded-xl border-2 border-dashed border-dark-border-default hover:border-brand-primary-color text-dark-text-secondary hover:text-brand-primary-color transition-all duration-200 flex items-center justify-center gap-2"
+              >
+                <font-awesome :icon="['fas', 'plus']"/>
+                <span class="font-medium">Add Sport & Role</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Error Messages -->
           <div class="px-6 pt-4 space-y-2">
             <div
@@ -207,6 +308,24 @@
         v-model:visible="showSuccessAlertUpdate"
         text="Your password has been successfully changed."
       />
+
+      <SuccessAlert
+        v-model:visible="showSuccessAlertSport"
+        text="Sport and role have been added successfully."
+      />
+
+      <!-- Add Sport Modal -->
+      <AddSportRoleModal
+        v-model:visible="showAddSportModal"
+        :existingSportIds="existingSportIds"
+        @success="handleAddSportSuccess"
+      />
+
+      <!-- Switch Season Sport Modal -->
+      <SwitchSeasonSportModal
+        v-model:visible="showSwitchSeasonModal"
+        @success="handleSeasonSportSwitched"
+      />
     </div>
   </div>
 </template>
@@ -218,6 +337,9 @@ import Breadcrumb from '~/components/breadcrumb/Breadcrumb.vue';
 import PasswordInput from '~/components/inputs/PasswordInput.vue';
 import BaseButton from '~/components/buttons/BaseButton.vue';
 import SuccessAlert from '~/components/alerts/SuccessAlert.vue';
+import AddSportRoleModal from '~/components/modals/profile/AddSportRoleModal.vue';
+import SwitchSeasonSportModal from '~/components/modals/season-sport/SwitchSeasonSportModal.vue';
+import { useApiV5Fetch } from '~/composables/useApiV5Fetch';
 
 const config = useRuntimeConfig()
 
@@ -232,7 +354,40 @@ const userData = computed(() => {
   return useUserStore().user
 })
 
-const fileInput =ref()
+// Sport & Role modal
+const showAddSportModal = ref(false);
+const showSuccessAlertSport = ref(false);
+
+// Switch Season Sport modal
+const showSwitchSeasonModal = ref(false);
+
+// User's season sports with details
+const userSeasonSports = ref<any[]>([]);
+const loadingUserSeasonSports = ref(false);
+
+// Existing sport IDs for filtering in modal
+const existingSportIds = computed(() => {
+  return userSeasonSports.value.map(
+    (uss: any) => uss.season_sport?.sport_id || uss.season_sport?.sport?.id
+  ).filter(Boolean);
+});
+
+// Current active season sport
+const currentActiveSeasonSport = computed(() => {
+  if (!userStore.seasonSportId || !userSeasonSports.value.length) {
+    return null;
+  }
+  
+  // Find the season sport that matches the current active one
+  const activeUserSeasonSport = userSeasonSports.value.find((uss: any) => {
+    const ssId = uss.season_sport?.id || uss.season_sport_id;
+    return ssId === userStore.seasonSportId;
+  });
+  
+  return activeUserSeasonSport?.season_sport || null;
+});
+
+const fileInput = ref()
 const selectedFile = ref()
 const errorMessageInvalidTypeOfPicture = ref(false)
 const errorMessageInvalidSize = ref(false)
@@ -242,6 +397,74 @@ const confirmPassword = ref("")
 const currentPassword = ref("")
 const showSuccessAlertUpdate = ref(false)
 const errorMessage = ref("");
+
+// Get roles for a specific season_sport
+function getUserRolesForSeasonSport(seasonSportId: number) {
+  // Check both user_roles and userRoles (camelCase)
+  const userRoles = user.user_roles || user.userRoles || [];
+  if (!Array.isArray(userRoles)) {
+    return [];
+  }
+  return userRoles
+    .filter((ur: any) => ur.season_sport_id === seasonSportId && ur.user_role_approved_by_user_id >= 0)
+    .map((ur: any) => ur.role)
+    .filter(Boolean);
+}
+
+// Fetch user's season sports with details
+async function fetchUserSeasonSports() {
+  if (!user.id) return;
+  
+  loadingUserSeasonSports.value = true;
+  try {
+    const response = await useApiV5Fetch(`user-season-sports`, {
+      query: {
+        user_id: user.id,
+        include: 'seasonSport.sport,seasonSport.season',
+      },
+    });
+
+    if (response.data?.value && Array.isArray(response.data.value) && response.data.value.length > 0) {
+      userSeasonSports.value = response.data.value as any[];
+    } else {
+      // Fallback to user's season_sports from store
+      const seasonSports = user.season_sports || [];
+      userSeasonSports.value = seasonSports.map((ss: any) => ({
+        user_id: user.id,
+        season_sport_id: ss.id,
+        season_sport: ss,
+        is_active: true,
+      }));
+    }
+  } catch (e) {
+    console.error('Failed to fetch user season sports:', e);
+    const seasonSports = user.season_sports || [];
+    userSeasonSports.value = seasonSports.map((ss: any) => ({
+      user_id: user.id,
+      season_sport_id: ss.id,
+      season_sport: ss,
+      is_active: true,
+    }));
+  } finally {
+    loadingUserSeasonSports.value = false;
+  }
+}
+
+// Handle successful sport addition
+async function handleAddSportSuccess() {
+  showSuccessAlertSport.value = true;
+  await fetchUserSeasonSports();
+}
+
+async function handleSeasonSportSwitched() {
+  await userStore.getMe();
+  await fetchUserSeasonSports();
+}
+
+// Initialize data on mount
+onMounted(() => {
+  fetchUserSeasonSports();
+});
 
 async function selectFiles() {
     fileInput.value.click()
@@ -302,7 +525,7 @@ errorMessage.value = ""
   }
 
   try {
-    const response = await userStore.changePassword(
+    const response: any = await userStore.changePassword(
       user.email as string,
       currentPassword.value,
       password.value
