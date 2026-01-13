@@ -17,7 +17,7 @@
             <BaseButton
                 @on-click="() => selectedComponent = AddMvpUserForm"
                 class="bg-dark-surface-default border hover:!bg-brand-primary-color !py-3 !px-6 border-brand-primary-color !text-brand-primary-color hover:!text-white">
-              Add MVP User
+              Add Tourney User
             </BaseButton>
           </div>
         </div>

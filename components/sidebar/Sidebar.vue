@@ -1,45 +1,48 @@
 <template>
   <div
-    class="bg-surface-default border-r border-border-default transition-all font-montserrat font-medium shadow-sm"
-    :class="props.showFullSidebar ? 'w-60' : 'w-20'"
-    @mouseover="() => hovered = true"
-    @mouseleave="() => hovered = false"
+      class="bg-surface-default border-r border-border-default transition-all font-montserrat font-medium shadow-sm"
+      :class="props.showFullSidebar ? 'w-60' : 'w-20'"
+      @mouseover="() => hovered = true"
+      @mouseleave="() => hovered = false"
   >
     <div
-      class="h-14 fixed z-50 top-0 bg-surface-default left-0 border-b border-border-default flex items-center justify-center backdrop-blur-sm"
-      :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20'"
+        class="h-14 fixed z-50 top-0 bg-surface-default left-0 border-b border-border-default flex items-center justify-center backdrop-blur-sm"
+        :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20'"
     >
       <p
-        class="text-text-primary text-3xl uppercase hover:text-brand-primary cursor-pointer font-bold flex items-center justify-center gap-4 transition-colors duration-200 group"
-        @click="navigateTo('/')"
+          class="text-text-primary text-3xl uppercase hover:text-brand-primary cursor-pointer font-bold flex items-center justify-center gap-2 transition-colors duration-200 group"
+          @click="navigateTo('/')"
       >
-        <img src="/images/logo.png" alt="#" class="w-8 transition-transform duration-200 group-hover:scale-110">
-        <span class="text-xl" v-if="(props.showFullSidebar || hovered)">
-          MVP 5.0
+        <p class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-xl">T</span>
+        </p>
+        <span class="text-xl bg-gradient-to-r from-red-500 via-orange-500 to-pink-500 bg-clip-text text-transparent"
+              v-if="(props.showFullSidebar || hovered)">
+          Tourney
         </span>
       </p>
     </div>
     <div
-      class="fixed z-50 top-[56px] left-0 bg-surface-default overflow-y-auto sidebar px-3"
-      :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20 flex flex-col items-center'"
+        class="fixed z-50 top-[56px] left-0 bg-surface-default overflow-y-auto sidebar px-3"
+        :class="(props.showFullSidebar || hovered) ? 'w-60' : 'w-20 flex flex-col items-center'"
     >
       <p class="text-xxs text-text-tertiary py-3 px-3 font-bold uppercase tracking-wider">
         <template v-if="props.showFullSidebar || hovered">
           <span> Main </span>
         </template>
         <template v-else>
-          <span class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5" />
+          <span class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5"/>
         </template>
       </p>
       <template v-for="navigation in navigations" :key="navigation.label">
         <template v-if="navigation.type === 'route'">
           <NavigationButton
-            @click="handleClick(navigation)"
-            :icon="navigation.icon"
-            :label="navigation.label"
-            :showLabel="props.showFullSidebar"
-            :hovered="hovered"
-            :activeTab="sidebarStore.activeTab"
+              @click="handleClick(navigation)"
+              :icon="navigation.icon"
+              :label="navigation.label"
+              :showLabel="props.showFullSidebar"
+              :hovered="hovered"
+              :activeTab="sidebarStore.activeTab"
           />
         </template>
         <template v-else-if="navigation.type === 'group_name'">
@@ -49,32 +52,32 @@
             </template>
             <template v-else>
               <span
-                class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5"
+                  class="block w-1 h-1 rounded-full border border-text-tertiary my-1.5"
               />
             </template>
           </p>
           <template v-for="child in navigation.children" :key="child.label">
             <template v-if="child.type === 'route'">
               <NavigationButton
-                @click="handleClick(child)"
-                :icon="child.icon"
-                :label="child.label"
-                :showLabel="props.showFullSidebar"
-                :hovered="hovered"
-                :activeTab="sidebarStore.activeTab"
+                  @click="handleClick(child)"
+                  :icon="child.icon"
+                  :label="child.label"
+                  :showLabel="props.showFullSidebar"
+                  :hovered="hovered"
+                  :activeTab="sidebarStore.activeTab"
               />
             </template>
             <template v-else-if="child.type === 'route_group'">
               <GroupNavigation
-                :icon="child.icon"
-                :label="child.label"
-                :children="child.children"
-                :opened-navigations="openedNavigations"
-                @click="handleClick(child)"
-                @child-click="(data) => handleClick(data, child.label)"
-                :showLabel="props.showFullSidebar"
-                :hovered="hovered"
-                :activeTab="sidebarStore.activeTab"
+                  :icon="child.icon"
+                  :label="child.label"
+                  :children="child.children"
+                  :opened-navigations="openedNavigations"
+                  @click="handleClick(child)"
+                  @child-click="(data) => handleClick(data, child.label)"
+                  :showLabel="props.showFullSidebar"
+                  :hovered="hovered"
+                  :activeTab="sidebarStore.activeTab"
               />
             </template>
           </template>
@@ -89,7 +92,7 @@
 import NavigationButton from "~/components/sidebar/navbars/NavigationButton.vue";
 import GroupNavigation from "~/components/sidebar/navbars/GroupNavigation.vue";
 import {useSidebarStore} from "~/store/sidebar";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 import {useUserStore} from "~/store/user";
 
 const props = defineProps({
@@ -127,14 +130,14 @@ function setActiveTabFromRoute() {
         navItem.children.forEach((childNav: any) => {
           if (childNav.type === 'route_group' && childNav.children && Array.isArray(childNav.children)) {
             const childRoute = childNav.children.find(
-              (routeChild: any) => routeChild && routeChild.route && routeChild.route.includes(route.path.split('/')[2])
+                (routeChild: any) => routeChild && routeChild.route && routeChild.route.includes(route.path.split('/')[2])
             );
             if (childRoute) {
               openedNavigations.value = [childNav.label];
               sidebarStore.setActiveTab(childRoute.label);
             }
           } else if (childNav.route && childNav.route.includes(activePage)) {
-              sidebarStore.setActiveTab(childNav.label);
+            sidebarStore.setActiveTab(childNav.label);
           }
         });
       }

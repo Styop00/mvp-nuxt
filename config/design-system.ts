@@ -1,6 +1,6 @@
 /**
  * Design System Configuration
- * Centralized theme configuration for the MVP application
+ * Centralized theme configuration for the Tourney application
  */
 
 export const designSystem = {
@@ -32,7 +32,7 @@ export const designSystem = {
     
     // Brand Colors
     brand: {
-      primary: '#6366F1',       // Indigo 500 - Primary brand
+      primary: '#ef4444',       // Indigo 500 - Primary brand
       secondary: '#00D9C0',     // Teal accent
       accent: '#8B5CF6',        // Purple accent
       hover: '#4F46E5',         // Indigo 600
@@ -52,14 +52,14 @@ export const designSystem = {
       default: '#334155',       // Slate 700
       light: '#475569',         // Slate 600
       dark: '#1E293B',         // Slate 800
-      focus: '#6366F1',        // Indigo 500
+      focus: '#ef4444',        // Indigo 500
     },
     
     // Sidebar Colors
     sidebar: {
       background: '#1E293B',    // Slate 800
       hover: '#334155',         // Slate 700
-      active: '#6366F1',        // Indigo 500
+      active: '#ef4444',        // Indigo 500
       text: '#F8FAFC',         // Slate 50
     },
   },

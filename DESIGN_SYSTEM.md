@@ -23,7 +23,7 @@ The design system uses a carefully crafted dark color palette:
   - Disabled: `#64748B` (Slate 500) - Disabled text
 
 - **Brand Colors:**
-  - Primary: `#6366F1` (Indigo 500)
+  - Primary: `#ef4444` (Indigo 500)
   - Secondary: `#00D9C0` (Teal accent)
   - Hover: `#4F46E5` (Indigo 600)
   - Active: `#4338CA` (Indigo 700)

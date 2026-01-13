@@ -88,7 +88,7 @@ watch(inputValue, (value, oldValue) => {
 }
 
 .form-check-input:focus {
-  border-color: var(--tw-brand-primary, #6366F1);
+  border-color: var(--tw-brand-primary, #ef4444);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
   outline: none;
 }
@@ -98,8 +98,8 @@ watch(inputValue, (value, oldValue) => {
 }
 
 .form-check-input:checked {
-  background-color: var(--tw-brand-primary, #6366F1);
-  border-color: var(--tw-brand-primary, #6366F1);
+  background-color: var(--tw-brand-primary, #ef4444);
+  border-color: var(--tw-brand-primary, #ef4444);
 }
 
 .form-check-input:checked:hover {

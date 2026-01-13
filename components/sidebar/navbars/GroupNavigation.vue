@@ -1,24 +1,24 @@
 <template>
   <div>
     <div
-      class="flex justify-between group items-center my-px p-3 rounded-lg text-sm cursor-pointer
+        class="flex justify-between group items-center my-px p-3 rounded-lg text-sm cursor-pointer
              text-text-secondary
              hover:text-brand-primary hover:font-semibold
              hover:bg-bg-hover
              transition-all duration-200"
-      :class="{
-        'text-brand-primary bg-bg-hover font-semibold border-l-4 border-brand-primary shadow-sm': props.activeTab === props.label,
+        :class="{
+        '!text-brand-primary bg-bg-hover font-semibold border-l-4 border-brand-primary shadow-sm': props.activeTab === props.label,
         'w-[213px]': props.showLabel || props.hovered,
         'w-full': !(props.showLabel || props.hovered),
       }"
-      @click="toggleNavigation"
+        @click="toggleNavigation"
     >
       <div class="flex gap-2 items-center">
-        <font-awesome 
-          :icon="props.icon" 
-          class="py-1 transition-colors duration-200"
-          :class="props.activeTab === props.label 
-            ? 'text-brand-primary' 
+        <font-awesome
+            :icon="props.icon"
+            class="py-1 transition-colors duration-200"
+            :class="props.activeTab === props.label
+            ? 'text-brand-primary'
             : 'text-text-tertiary group-hover:text-brand-primary'"
         />
         <template v-if="props.showLabel || props.hovered">
@@ -26,13 +26,13 @@
         </template>
       </div>
       <font-awesome
-        :icon="['fas', 'chevron-right']"
-        :class="{
+          :icon="['fas', 'chevron-right']"
+          :class="{
           'rotate-90': isGroupOpen, 
           'text-brand-primary': props.activeTab === props.label, 
           'hidden': !(showLabel || hovered)
         }"
-        class="group-hover:text-brand-primary 
+          class="group-hover:text-brand-primary
                text-text-tertiary 
                text-xxs transition-all duration-200"
       />
@@ -41,22 +41,22 @@
     <div class="overflow-hidden ml-3" v-if="isGroupOpen">
       <template v-for="childRoute in props.children" :key="childRoute.label">
         <button
-          @click="handleChildClick(childRoute)"
-          class="p-2 px-3 my-px text-xs group rounded-lg text-start w-full flex items-center gap-4
+            @click="handleChildClick(childRoute)"
+            class="p-2 px-3 my-px text-xs group rounded-lg text-start w-full flex items-center gap-4
                  text-text-secondary
                  hover:text-brand-primary hover:font-semibold
                  hover:bg-bg-hover
                  transition-all duration-200"
-          :class="{
-            'text-brand-primary bg-bg-hover font-semibold': props.activeTab === childRoute.label
+            :class="{
+            '!text-brand-primary bg-bg-hover font-semibold': props.activeTab === childRoute.label
           }"
         >
-          <span 
-            class="block w-1 h-1 rounded-full border 
+          <span
+              class="block w-1 h-1 rounded-full border
                    border-text-tertiary
                    group-hover:border-brand-primary
                    transition-colors duration-200"
-            :class="{'border-brand-primary': props.activeTab === childRoute.label}"
+              :class="{'!border-brand-primary': props.activeTab === childRoute.label}"
           />
           {{ $t(childRoute.label.toLowerCase()) }}
         </button>
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import {ref, watch} from 'vue';
 
 const props = defineProps({
   openedNavigations: {

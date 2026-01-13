@@ -21,7 +21,7 @@
 
 .spinner {
   border: 8px solid #1E293B;
-  border-top: 6px solid #6366F1;
+  border-top: 6px solid #ef4444;
   border-radius: 50%;
   width: 60px;
   height: 60px;

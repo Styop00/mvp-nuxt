@@ -11,7 +11,7 @@
           <div class="bg-dark-surface-default mt-4 border border-dark-border-default rounded-2xl overflow-hidden">
             <p class="border-b border-dark-border-default text-lg p-4 flex items-center font-medium text-dark-text-primary">
               <span
-                  class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
+                  class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-red-500/50 to-pink-500/50 mr-3"
               />
               {{ game.home_team?.tournament_name }} - {{ game.guest_team?.tournament_name }}
             </p>

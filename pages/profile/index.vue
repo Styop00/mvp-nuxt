@@ -8,7 +8,7 @@
           <!-- Header -->
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-dark-border-default bg-gradient-to-r from-dark-surface-default/50 to-dark-bg-primary/30 rounded-t-2xl">
             <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-dark-text-primary">
-              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
+              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-red-500 via-orange-500 to-pink-500 mr-3 shadow-sm"/>
               Profile Information
             </p>
           </div>
@@ -111,7 +111,7 @@
           <!-- Header -->
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-dark-border-default bg-gradient-to-r from-dark-surface-default/50 to-dark-bg-primary/30 rounded-t-2xl">
             <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-dark-text-primary">
-              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
+              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-red-500 via-orange-500 to-pink-500 mr-3 shadow-sm"/>
               Change Password
             </p>
           </div>

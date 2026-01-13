@@ -91,7 +91,7 @@ export default defineNuxtConfig({
   components: false,
   app: {
     head: {
-      title: "MVPApp",
+      title: "Tourney",
       link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
       script: [
         {

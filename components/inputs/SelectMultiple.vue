@@ -107,7 +107,7 @@ function clickBody() {
 }
 
 .multiselect__tags:focus-within {
-  border-color: var(--tw-brand-primary, #6366F1) !important;
+  border-color: var(--tw-brand-primary, #ef4444) !important;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
 }
 
@@ -196,8 +196,8 @@ function clickBody() {
 /* Selected checkmark */
 .multiselect__option--selected::after {
   background-color: transparent !important;
-  color: #6366F1 !important;
-  border-color: #6366F1 !important;
+  color: #ef4444 !important;
+  border-color: #ef4444 !important;
 }
 
 /* Tag (selected item chip) */
@@ -246,7 +246,7 @@ function clickBody() {
 /* Spinner */
 .multiselect__spinner {
   background-color: #1E293B !important;
-  border-top-color: #6366F1 !important;
+  border-top-color: #ef4444 !important;
 }
 
 /* Clear button */
@@ -302,7 +302,7 @@ function clickBody() {
 
 /* Active state */
 .multiselect--active .multiselect__tags {
-  border-color: #6366F1 !important;
+  border-color: #ef4444 !important;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
 }
 

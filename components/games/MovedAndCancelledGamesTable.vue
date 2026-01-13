@@ -6,7 +6,7 @@
             class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-text-primary transition-colors duration-200"
         >
         <span
-            class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"
+            class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-red-500 via-orange-500 to-pink-500 mr-3 shadow-sm"
         />
           {{ type === 'moves' ? 'Moves' : 'Cancellation / No-shows' }}
         </p>

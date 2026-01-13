@@ -215,10 +215,10 @@ export default {
       "border-dark": "var(--color-border-dark)",
       
       // Brand colors (same in both themes)
-      "brand-primary": "#6366F1",
+      "brand-primary": "#ef4444",
       "brand-secondary": "#00D9C0",
-      "brand-hover": "#4F46E5",
-      "brand-active": "#4338CA",
+      "brand-hover": "#ea580c",
+      "brand-active": "#ea580c",
       "brand-green": "#10B981",
     }),
     columns: {

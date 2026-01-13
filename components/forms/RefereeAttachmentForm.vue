@@ -4,7 +4,7 @@
       <!-- Title -->
       <p class="text-lg font-bold flex items-center gap-3">
         <span
-          class="inline-block w-1 h-6 rounded bg-gradient-to-b from-violet-500 to-sky-400"
+          class="inline-block w-1 h-6 rounded bg-gradient-to-b from-red-500 via-orange-500 to-pink-500"
         ></span>
         {{ props.refId
           ? `Correct referee ${props.pos} at match #${game?.number}`

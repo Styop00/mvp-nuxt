@@ -7,7 +7,7 @@
            hover:text-brand-primary hover:bg-bg-hover hover:font-semibold"
     :class="{
             'w-52' : (props.showLabel || props.hovered),
-            'text-brand-primary bg-bg-hover font-semibold border-l-4 border-brand-primary shadow-sm' : props.activeTab === props.label
+            '!text-brand-primary bg-bg-hover font-semibold border-l-4 border-brand-primary shadow-sm' : props.activeTab === props.label
           }"
   >
     <template v-if="props.icon">

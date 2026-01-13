@@ -8,7 +8,7 @@
         class="text-base font-bold py-4 flex items-center justify-start tracking-widest"
       >
         <span
-          class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-violet-500/50 to-sky-400/50 mr-3"
+          class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-red-500/50 to-pink-500/50 mr-3"
         />
         Judge List
       </p>

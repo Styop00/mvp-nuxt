@@ -7,7 +7,7 @@
           <!-- Header Section -->
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-4 sm:px-6 py-5 border-b border-border-default bg-gradient-to-r from-surface-default/50 to-bg-primary/30 transition-[background-color,border-color] duration-200">
             <p class="text-lg sm:text-xl font-bold flex items-center justify-start tracking-wide text-text-primary transition-colors duration-200">
-              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-violet-500 via-indigo-500 to-sky-400 mr-3 shadow-sm"/>
+              <span class="inline-block w-1 h-7 rounded-full bg-gradient-to-b from-red-500 via-orange-500 to-pink-500 mr-3 shadow-sm"/>
               Calendar
             </p>
           </div>
@@ -511,8 +511,8 @@ onMounted(() => {
 
 :deep(.fc-button-primary:hover) {
   background: var(--color-bg-hover) !important;
-  border-color: #6366F1 !important; /* brand-primary color */
-  color: #6366F1 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
+  color: #ef4444 !important; /* brand-primary color */
   transform: translateY(-1px);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
@@ -523,8 +523,8 @@ onMounted(() => {
 }
 
 :deep(.fc-button-primary:not(:disabled).fc-button-active) {
-  background: #6366F1 !important; /* brand-primary color */
-  border-color: #6366F1 !important; /* brand-primary color */
+  background: #ef4444 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
   color: #FFFFFF !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   transform: translateY(-1px);
@@ -577,8 +577,8 @@ onMounted(() => {
 
 :deep(.fc-prev-button:hover),
 :deep(.fc-next-button:hover) {
-  background: #6366F1 !important; /* brand-primary color */
-  border-color: #6366F1 !important; /* brand-primary color */
+  background: #ef4444 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
   color: #FFFFFF !important;
 }
 
@@ -590,8 +590,8 @@ onMounted(() => {
 
 /* View Toggle Buttons - Theme-aware */
 :deep(.fc-button-group .fc-button-primary.fc-button-active) {
-  background: #6366F1 !important; /* brand-primary color */
-  border-color: #6366F1 !important; /* brand-primary color */
+  background: #ef4444 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
   color: #FFFFFF !important;
   font-weight: 700 !important;
   position: relative !important;
@@ -728,7 +728,7 @@ onMounted(() => {
 
 :deep(.fc-daygrid-day.fc-day-today) {
   background-color: rgba(99, 102, 241, 0.1) !important;
-  border-color: #6366F1 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
 }
 
 :deep(.fc-daygrid-day-number) {
@@ -739,7 +739,7 @@ onMounted(() => {
 }
 
 :deep(.fc-daygrid-day.fc-day-today .fc-daygrid-day-number) {
-  color: #6366F1 !important; /* brand-primary color */
+  color: #ef4444 !important; /* brand-primary color */
   font-weight: 700;
 }
 
@@ -751,8 +751,8 @@ onMounted(() => {
 
 /* Events - Brand color (same in both themes) */
 :deep(.fc-event) {
-  background-color: #6366F1 !important; /* brand-primary color */
-  border-color: #6366F1 !important; /* brand-primary color */
+  background-color: #ef4444 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
   color: #FFFFFF !important;
   border-radius: 0.375rem !important;
   padding: 0.25rem 0.5rem !important;
@@ -809,7 +809,7 @@ onMounted(() => {
 }
 
 :deep(.fc-timegrid-now-indicator-line) {
-  border-color: #6366F1 !important; /* brand-primary color */
+  border-color: #ef4444 !important; /* brand-primary color */
 }
 
 /* List View - Theme-aware */
@@ -842,7 +842,7 @@ onMounted(() => {
 
 /* More Link - Brand color */
 :deep(.fc-more-link) {
-  color: #6366F1 !important; /* brand-primary color */
+  color: #ef4444 !important; /* brand-primary color */
   font-weight: 500 !important;
 }
 

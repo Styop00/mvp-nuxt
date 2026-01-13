@@ -4,9 +4,9 @@
   >
     <div class="w-full max-w-lg p-4 sm:p-8 md:p-12 rounded-lg animate-fade-in">
       <div class="mb-6 sm:mb-8 md:mb-12">
-        <NuxtLink class="flex justify-center items-center gap-1.5 group" to="/">
-          <img src="/images/logo.png" alt="#" class="w-8 transition-transform duration-300 group-hover:scale-110">
-          <span class="text-xl text-dark-text-primary font-semibold"> MVP 5.0 </span>
+        <NuxtLink class="flex justify-center items-center gap-2 group" to="/">
+          <span class="text-2xl font-bold bg-gradient-to-br from-white via-red-500 to-red-950 bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110">T</span>
+          <span class="text-xl text-white font-semibold"> Tourney </span>
         </NuxtLink>
       </div>
       <div
