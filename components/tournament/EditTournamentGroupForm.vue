@@ -30,7 +30,6 @@
                 />
               </div>
             </div>
-            <TextInput v-model:value="tournamentGroup.levels" label="Levels" type="number"/>
           </div>
           <div class="flex flex-col gap-4">
             <TextInput v-model:value="tournamentGroup.short_name as string"
@@ -72,11 +71,6 @@
             </span>
           </div>
         </div>
-        <CheckBox
-            v-model:value="tournamentGroup.show_birth_in_score_sheet"
-            label="Show mm-yy in protocol"
-            name="show_birth_in_scoreSheet"
-            class="mt-6"/>
       </div>
       <div class="flex flex-col gap-4 items-top justify-start">
         <div class="flex gap-4 items-top justify-between flex-wrap">
@@ -84,39 +78,21 @@
                   class="w-72"
                   v-model:value="ageGroup"
                   label="Year"/>
-          <Select :options="genders"
-                  class="w-72"
-                  v-model:value="gender"
-                  label="Gender"/>
+
         </div>
-        <Select :options="refereeAttachments"
-                v-model:value="refereeAttachment"
-                label="Referee Attachment"/>
         <Select :options="matchTimes"
                 v-model:value="matchTime"
                 label="Match Time"/>
+
+      </div>
+      <div class="flex flex-col gap-4 items-top justify-start">
+        <Select :options="genders"
+                class="w-72"
+                v-model:value="gender"
+                label="Gender"/>
         <Select :options="combatMoves"
                 v-model:value="combatMove"
                 label="Combat moves"/>
-      </div>
-      <div class="flex flex-col gap-4 items-top justify-start">
-        <TextInput
-            v-model:value="tournamentGroup.star_rating"
-            label="Star Rating"
-            type="number"
-        />
-        <Select :options="refereeBoards"
-                v-model:value="refereeBoard"
-                label="Requirement Referee Board"/>
-        <Select :options="scoreSheetTypes"
-                v-model:value="scoreSheetType"
-                label="Protocol"/>
-        <Select :options="playerLicenseTypes"
-                v-model:value="playerLicenseType"
-                label="Player Requirements"/>
-        <Select :options="penaltyTypes"
-                v-model:value="penaltyType"
-                label="Charges"/>
       </div>
     </div>
     <TextArea v-model:value="tournamentGroup.information"
@@ -148,7 +124,6 @@ const props = defineProps<{
 
 const route = useRoute()
 const leagueId = route.params.leagueId
-const tournamentGroupId = route.params.tournamentGroupId
 const tournamentGroup = ref({} as TournamentGroup)
 const ageGroup = ref({} as SelectOptions)
 const gender = ref({} as SelectOptions)
@@ -156,13 +131,8 @@ const showStartDateCalendar = ref(false)
 const showEndDateCalendar = ref(false)
 const structure = ref({} as SelectOptions)
 const registrationType = ref({} as SelectOptions)
-const refereeAttachment = ref({} as SelectOptions)
 const matchTime = ref({} as SelectOptions)
 const combatMove = ref({} as SelectOptions)
-const refereeBoard = ref({} as SelectOptions)
-const scoreSheetType = ref({} as SelectOptions)
-const playerLicenseType = ref({} as SelectOptions)
-const penaltyType = ref({} as SelectOptions)
 const tournamentType = ref({} as SelectOptions)
 const league = ref({} as League)
 
@@ -298,29 +268,6 @@ const genders = [
   },
 ] as Array<SelectOptions>
 
-const refereeAttachments = [
-  {
-    label: 'Organizer',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Organizer and Conductor',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Bonding without automatic attachment',
-    value: 2,
-    disabled: false
-  },
-  {
-    label: 'Bandage with automatic attachment',
-    value: 3,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
 const matchTimes = [
   {
     label: 'Can only be set by the organizer',
@@ -330,29 +277,6 @@ const matchTimes = [
   {
     label: 'Liquidator can determine before the deadline',
     value: 1,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
-const refereeBoards = [
-  {
-    label: 'No',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Elite',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Other Danish tournament',
-    value: 2,
-    disabled: false
-  },
-  {
-    label: 'Grand Prix',
-    value: 3,
     disabled: false
   },
 ] as Array<SelectOptions>
@@ -371,85 +295,6 @@ const combatMoves = [
   {
     label: 'Free until the deadline, then only with opponent acceptance',
     value: 2,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
-const playerLicenseTypes = [
-  {
-    label: 'No',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Play-eligible',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Full Profile',
-    value: 2,
-    disabled: false
-  },
-  {
-    label: 'Federal license',
-    value: 3,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
-const penaltyTypes = [
-  {
-    label: 'No',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Elite',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Other Danish tournament',
-    value: 2,
-    disabled: false
-  },
-  {
-    label: 'Grand Prix',
-    value: 3,
-    disabled: false
-  },
-  {
-    label: 'Others',
-    value: 4,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
-const scoreSheetTypes = [
-  {
-    label: 'Fiba',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Grand Prix 5x5',
-    value: 2,
-    disabled: false
-  },
-  {
-    label: 'U13 5x8',
-    value: 3,
-    disabled: false
-  },
-  {
-    label: 'U15 Grand Prix 5x6',
-    value: 4,
-    disabled: false
-  },
-  {
-    label: 'U15 Champion 5x8',
-    value: 5,
     disabled: false
   },
 ] as Array<SelectOptions>
@@ -563,13 +408,8 @@ watch(() => props.tournamentGroup, () => {
   ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === tournamentGroup.value.age_group) as SelectOptions
   structure.value = structures.value.find(structure => structure.value === tournamentGroup.value.tournament_structure_id) as SelectOptions
   registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === tournamentGroup.value.tournament_registration_type_id) as SelectOptions
-  refereeAttachment.value = refereeAttachments.find(refereeAttachment => refereeAttachment.value === tournamentGroup.value.ref_nomination_id) as SelectOptions
   matchTime.value = matchTimes.find(matchTime => matchTime.value == tournamentGroup.value.set_game_strategy_id) as SelectOptions
   combatMove.value = combatMoves.find(combatMove => combatMove.value === tournamentGroup.value.moving_strategy_id) as SelectOptions
-  refereeBoard.value = refereeBoards.find(refereeBoard => refereeBoard.value === tournamentGroup.value.officials_type_id) as SelectOptions
-  scoreSheetType.value = scoreSheetTypes.find(scoreSheetType => scoreSheetType.value === tournamentGroup.value.score_sheet_type_id) as SelectOptions
-  playerLicenseType.value = playerLicenseTypes.find(playerLicenseType => playerLicenseType.value === tournamentGroup.value.player_license_type_id) as SelectOptions
-  penaltyType.value = penaltyTypes.find(penaltyType => penaltyType.value === tournamentGroup.value.penalty_type_id) as SelectOptions
   const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournament_type_id) as SelectOptions
   if (type) {
     tournamentType.value = type
@@ -597,13 +437,8 @@ const editData = computed(() => {
     gender: gender.value?.value ? gender.value?.value : null,
     ageGroup: ageGroup.value?.value ? ageGroup.value?.value : null,
     tournament_structure_id: structure.value?.value ? structure.value?.value : null,
-    refNominationId: refereeAttachment.value?.value ? refereeAttachment.value?.value : null,
     setGameStrategyId: matchTime.value?.value ? matchTime.value?.value : 0,
     movingStrategyId: combatMove.value?.value ? combatMove.value?.value : null,
-    officialsTypeId: refereeBoard.value?.value ? refereeBoard.value?.value : null,
-    scoreSheetTypeId: scoreSheetType.value?.value ? scoreSheetType.value?.value : null,
-    playerLicenseTypeId: playerLicenseType.value?.value ? playerLicenseType.value?.value : null,
-    penaltyTypeId: penaltyType.value?.value ? penaltyType.value?.value : null,
     tournament_type_id: tournamentType.value?.value !== undefined ? tournamentType.value?.value : null,
   }
 })

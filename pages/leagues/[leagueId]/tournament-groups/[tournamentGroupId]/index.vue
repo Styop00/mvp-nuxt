@@ -150,7 +150,6 @@ async function fetchTournamentGroup() {
 async function fetchTournamentConfigs() {
   const response = await fetchTournamentConfigNames({
     season_sport_id: userStore.seasonSportId,
-    deleted: false,
   }) as Array<TournamentConfigs>
 
   if (response.length) {

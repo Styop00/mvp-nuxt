@@ -13,7 +13,6 @@ export default interface Users {
   name?: string;
   picture?: string;
   disableEmails?: boolean;
-  license?: number;
   gender?: string;
   birthYear?: number | null;
   birthMonth?: number | null;
