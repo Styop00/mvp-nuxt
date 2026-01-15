@@ -1,7 +1,6 @@
 import { useUserStore } from "~/store/user";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  // Skip for public routes and complete-profile page itself
   if (to.meta.publicRoute || to.path === '/complete-profile') {
     return;
   }

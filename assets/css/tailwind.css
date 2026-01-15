@@ -310,12 +310,11 @@ body {
 .vc-header {
   background-color: var(--color-surface-elevated) !important;
   border-bottom: 1px solid var(--color-border-default) !important;
-  color: var(--color-text-primary) !important;
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .vc-title {
-  color: var(--color-text-primary) !important;
+  opacity: 0.99;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 

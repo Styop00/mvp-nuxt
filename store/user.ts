@@ -143,7 +143,7 @@ export const useUserStore = defineStore(
             });
             jwt.value = accessToken;
             setToken(accessToken);
-            setUser(user);
+            setUser({...user, season_sports: season_sports});
             if (!seasonSportId.value && season_sports.length) {
               setSeasonSportId(season_sports[0].id);
             }

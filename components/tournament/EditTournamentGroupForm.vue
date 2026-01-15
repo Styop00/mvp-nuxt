@@ -61,7 +61,6 @@
           </div>
         </div>
         <Select :options="structures" v-model:value="structure" label="Structure"/>
-        <Select :options="tournamentTypes" v-model:value="tournamentType" label="Tournament Type"/>
         <div class="flex gap-4 flex-wrap items-top justify-start">
           <TextInput v-model:value="tournamentGroup.min_teams" label="Min Teams" :required="true" type="number"/>
           <div>
@@ -103,7 +102,6 @@
 
 <script setup lang="ts">
 
-import CheckBox from "~/components/inputs/CheckBox.vue";
 import TextArea from "~/components/inputs/TextArea.vue";
 import TextInput from "~/components/inputs/TextInput.vue";
 import DatePicker from "~/components/datePicker/DatePicker.vue";
@@ -112,7 +110,6 @@ import type SelectOptions from "~/interfaces/inputs/selectOptions";
 import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 import {useTournamentStructureStore} from "~/store/tournamentStructure";
 import {useTournamentRegistrationTypeStore} from "~/store/tournamentRegistrationTypes";
-import {useTournamentTypeStore} from "~/store/tournamentTypes";
 import moment from "moment/moment";
 import {useLeagueFetch} from "~/composables/useLeaguesFetch/useLeaguesFetch";
 import type League from "~/interfaces/league/leagues";
@@ -137,7 +134,6 @@ const tournamentType = ref({} as SelectOptions)
 const league = ref({} as League)
 
 const structuresStore = useTournamentStructureStore()
-const tournamentTypesStore = useTournamentTypeStore()
 const registrationTypesStore = useTournamentRegistrationTypeStore()
 
 const {fetchLeagueById} = useLeagueFetch()
@@ -320,19 +316,6 @@ const structures = computed(() => {
   return []
 })
 
-const tournamentTypes = computed(() => {
-  if (tournamentTypesStore.types.length) {
-    return tournamentTypesStore.types.map((type) => {
-      return {
-        label: type.name,
-        value: type.id,
-        disabled: false
-      } as SelectOptions
-    })
-  }
-  return []
-})
-
 const registrationTypes = computed(() => {
   if (registrationTypesStore.registrationTypes.length) {
     return registrationTypesStore.registrationTypes.map((registrationType) => {
@@ -366,26 +349,6 @@ watch(() => structures.value, () => {
   immediate: true
 })
 
-watch(() => tournamentTypes.value, () => {
-  if (!tournamentTypes.value.length) {
-    tournamentTypesStore.fetchTournamentTypes()
-  } else if (props.tournamentGroup?.tournament_type_id !== undefined) {
-    const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournament_type_id) as SelectOptions
-    if (type) {
-      tournamentType.value = type
-    } else {
-      tournamentType.value = {
-        label: '',
-        value: props.tournamentGroup?.tournament_type_id,
-        disabled: false
-      }
-    }
-  }
-}, {
-  deep: true,
-  immediate: true
-})
-
 watch(() => registrationTypes.value, () => {
   if (!registrationTypes.value.length) {
     registrationTypesStore.fetchTournamentRegistrationTypes()
@@ -410,16 +373,6 @@ watch(() => props.tournamentGroup, () => {
   registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === tournamentGroup.value.tournament_registration_type_id) as SelectOptions
   matchTime.value = matchTimes.find(matchTime => matchTime.value == tournamentGroup.value.set_game_strategy_id) as SelectOptions
   combatMove.value = combatMoves.find(combatMove => combatMove.value === tournamentGroup.value.moving_strategy_id) as SelectOptions
-  const type = tournamentTypes.value.find(type => type.value === props.tournamentGroup?.tournament_type_id) as SelectOptions
-  if (type) {
-    tournamentType.value = type
-  } else if (props.tournamentGroup?.tournament_type_id !== undefined) {
-    tournamentType.value = {
-      label: '',
-      value: props.tournamentGroup?.tournament_type_id,
-      disabled: false
-    }
-  }
 }, {
   deep: true,
   immediate: true

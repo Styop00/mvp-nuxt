@@ -146,7 +146,6 @@ async function fetchTournamentConfigs() {
   const response = await useApiV5Fetch(`tournament-configs/names`, {
     query: {
       season_sport_id: userStore.seasonSportId,
-      deleted: false,
     }
   })
   if (response.data?.value) {
