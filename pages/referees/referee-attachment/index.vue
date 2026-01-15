@@ -92,7 +92,7 @@
                   Level:
                   {{
                     row.starRating || 0
-                  }}/{{ row.tournament.tournamentGroup.tournamentConfig.refPrio || 0 }}
+                  }}/0
                 </div>
                 <div class="table-cell text-xs p-2 border-r border-dark-border-default">
                   <font-awesome
@@ -104,7 +104,7 @@
                     v-for="(gamePlan, pos) in getProcessedGamePlans(row.id)"
                     :key="`gamePlan_${gamePlan.id}_${pos}`"
                     class="table-cell flex items-center text-xs justify-center p-2 border-r border-dark-border-default"
-                    :class="['table-cell', 'card', 'flex', 'flex-col', 'items-center', 'justify-center', getBgColor(gamePlan.gameRoleId, row.tournament.tournamentGroup.tournamentConfig.refsPerGame, gamePlan.statusId, gamePlan.userId), getColor(gamePlan.gameRoleId, row.tournament.tournamentGroup.tournamentConfig.refsPerGame, gamePlan.statusId, gamePlan.userId)]"
+                    :class="['table-cell', 'card', 'flex', 'flex-col', 'items-center', 'justify-center', getBgColor(gamePlan.gameRoleId, 3, gamePlan.statusId, gamePlan.userId), getColor(gamePlan.gameRoleId, 3, gamePlan.statusId, gamePlan.userId)]"
                     @click="refBoxClick(row.id, gamePlan.user?.referee?.id || 0, gamePlan.gameRoleId)"
                 >
                   <span>{{ gamePlan.user?.name || 'Referee' }}</span>
@@ -215,7 +215,7 @@ const levelOptions = computed(() => {
 function getProcessedGamePlans(rowId: number) {
   const row = games.value.find((game) => game.id === rowId);
 
-  const refsPerGame = row?.tournament?.tournamentGroup?.tournamentConfig?.refsPerGame || 3;
+  const refsPerGame = 3; // Default value, refsPerGame was removed from tournament_configs
 
   const positions = Array.from({length: Number(refsPerGame)}, (_, index) => index + 1);
 

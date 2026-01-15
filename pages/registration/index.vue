@@ -254,7 +254,7 @@ async function fetchTournamentGroupsNames() {
   tableData.value.push({
     id: Number(tournamentGroup.id),
     tournamentGroupNames: String(tournamentGroup.name),
-    deadline: String(tournamentGroup.tournamentConfig.registrationDeadLine),
+    deadline: String(tournamentGroup.registration_dead_line),
     yourSubscribers: tournamentGroup.registrations
       .filter((item) => item.clubId === clubId.value.value)
       .reduce((acc, item) => acc + item.count, 0),

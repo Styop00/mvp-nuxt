@@ -135,7 +135,7 @@ import type BlockedPeriod from "~/interfaces/blockedPeriods/blockedPeriod";
 import type BlockedPeriodsTable from "~/interfaces/blockedPeriods/blockedPeriodsTable";
 import CreateOrUpdateBlockedPeriod from "~/components/modals/blocked-periods/CreateOrUpdateBlockedPeriod.vue";
 import DeleteBlockedPeriod from "~/components/modals/blocked-periods/DeleteBlockedPeriod.vue";
-import type TournamentConfigs from "~/interfaces/tournament/config/tournamentConfigs";
+import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
 import {useUserStore} from "~/store/user";
 import FilterSelect from "~/components/inputs/FilterSelect.vue";
@@ -310,7 +310,7 @@ async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
     season_sport_id: userStore.seasonSportId,
     is_active: true,
-  }) as Array<TournamentConfigs>
+  }) as Array<TournamentGroup>
 
   if (response.length) {
     tournamentGroups.value = response.map((group: any) => {

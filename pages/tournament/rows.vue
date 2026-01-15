@@ -225,3 +225,4 @@ function openEditModal(id: number) {
   showModal.value = true
 }
 </script>
+

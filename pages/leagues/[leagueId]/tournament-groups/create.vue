@@ -9,37 +9,6 @@
             ref="editTournamentGroupRef"
             :errors="errors"
         />
-        <Switch
-            v-model:value="selectExistingTournamentConfig"
-            unchecked-label="Tournament Group Config"
-            labelStyles="!text-xl"
-            class="pt-8 border-t mt-8"
-        />
-        <span v-if="errors?.tournamentConfig" class="text-xs text-red-600">
-          {{ errors.tournamentConfig }}
-        </span>
-        <template v-if="selectExistingTournamentConfig">
-          <Select
-              class="xl:!w-96 mt-4"
-              label="Select Tournament Config"
-              :direction="selectedTournamentConfig?.value ? 'bottom' : 'top'"
-              :options="tournamentConfigs"
-              v-model:value="selectedTournamentConfig"
-          />
-        </template>
-        <div
-            v-if="!selectExistingTournamentConfig || selectedTournamentConfig?.value"
-        >
-          <p class="my-3 text-base" v-if="!selectExistingTournamentConfig">
-            Create New Tournament Group Config
-          </p>
-          <EditTournamentConfigForm
-              ref="editTournamentConfigRef"
-              :data="tournamentConfig"
-              :show-disabled-inputs="selectExistingTournamentConfig"
-              :show-update-button="false"
-          />
-        </div>
         <BaseButton
             class="!py-2 block mt-3 mx-auto"
             :class="loading ? 'opacity-40 cursor-not-allowed' : ''"
@@ -58,152 +27,70 @@
 <script setup lang="ts">
 import {useApiV5Fetch} from "~/composables/useApiV5Fetch";
 import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
-import EditTournamentConfigForm from "~/components/tournament/EditTournamentConfigForm.vue";
-import Switch from "~/components/inputs/Switch.vue";
-import Select from "~/components/inputs/Select.vue";
-import type SelectOptions from "~/interfaces/inputs/selectOptions";
-import type TournamentConfigs from "~/interfaces/tournament/config/tournamentConfigs";
 import BaseButton from "~/components/buttons/BaseButton.vue";
 import EditTournamentGroupForm from "~/components/tournament/EditTournamentGroupForm.vue";
 import SuccessAlert from "~/components/alerts/SuccessAlert.vue";
-import {useUserStore} from "~/store/user";
-import type TournamentConfigsErrors from "~/interfaces/tournament/config/tournamentConfigsErrors";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 import {camelToSnake} from "~/utils/camelToSnake";
 
 const route = useRoute()
 const leagueId = route.params.leagueId
-const tournamentGroup = ref({} as TournamentGroup)
-const tournamentConfig = ref({} as TournamentConfigs)
-const selectExistingTournamentConfig = ref(true)
-const tournamentConfigs = ref([] as Array<SelectOptions>)
-const selectedTournamentConfig = ref({} as SelectOptions)
-const editTournamentConfigRef = ref<InstanceType<typeof EditTournamentConfigForm> | null>(null)
 const editTournamentGroupRef = ref<InstanceType<typeof EditTournamentGroupForm> | null>(null)
-const loading = ref(true)
+const loading = ref(false)
 const showSuccessAlert = ref(false)
 const groupBaseData = ref({
-  ageGroup: null,
+  age_group: null,
   gender: null,
-  movingStrategyId: null,
-  officialsTypeId: null,
-  penaltyTypeId: null,
-  playerLicenseTypeId: null,
-  refNominationId: null,
-  scoreSheetTypeId: null,
-  setGameStrategyId: 0,
-  tournamentRegistrationTypeId: null,
-  tournamentStructureId: null,
-  tournamentTypeId: null,
+  moving_strategy_id: null,
+  set_game_strategy_id: 0,
+  tournament_registration_type_id: null,
+  tournament_structure_id: null,
   id: 0,
   name: '',
-  shortName: '',
-  hideFromRankings: false,
-  allowMentorProspect: false,
-  starRating: 0,
-  isActive: false,
-  minTeams: 0,
-  maxTeams: 0,
-  regionId: 0,
-  registrationFee: 0,
+  short_name: '',
+  is_active: true,
+  min_teams: 0,
+  max_teams: 0,
+  region_id: null,
   information: '',
-  startDate: '',
-  endDate: '',
-  levels: 0,
-  showBirthInScoreSheet: false,
-  tournamentConfigsId: 0,
+  start_date: '',
+  end_date: '',
+  free_reschedule_until_date: null,
+  registration_dead_line: null,
+  minimum_warmup_minutes: 0,
+  expected_duration_minutes: 90,
+  earliest_start: null,
+  latest_start: null,
 } as TournamentGroup);
-const userStore = useUserStore()
-const errors = ref({} as TournamentConfigsErrors)
+const errors = ref({})
 
 onMounted(() => {
   document.body.addEventListener('click', closeCalendars)
-  fetchTournamentConfigs()
-})
-
-watch([selectedTournamentConfig, selectExistingTournamentConfig], () => {
-  fetchSelectedTournamentConfigs()
 })
 
 function closeCalendars() {
-  editTournamentConfigRef.value?.closeCalendars()
   editTournamentGroupRef.value?.closeCalendars()
-}
-
-async function fetchSelectedTournamentConfigs() {
-  if (!selectExistingTournamentConfig.value) {
-    if (editTournamentConfigRef.value) {
-      editTournamentConfigRef.value.resetForm()
-    }
-    return
-  } else if (selectedTournamentConfig.value.value) {
-    const response = await useApiV5Fetch(`tournament-configs/${selectedTournamentConfig.value.value}`)
-    tournamentConfig.value = response.data.value as TournamentConfigs
-  }
-}
-
-async function fetchTournamentConfigs() {
-  const response = await useApiV5Fetch(`tournament-configs/names`, {
-    query: {
-      season_sport_id: userStore.seasonSportId,
-    }
-  })
-  if (response.data?.value) {
-    tournamentConfigs.value = response.data.value.map((tournamentConfig: any) => {
-      return {
-        label: tournamentConfig.name,
-        value: tournamentConfig.id,
-        disabled: false,
-      }
-    })
-    let alreadySelected = tournamentConfigs.value.find((tournamentConfig: any) => {
-      return tournamentConfig.value === tournamentGroup.value.tournamentConfigsId
-    }) as SelectOptions
-
-    if (alreadySelected) {
-      selectedTournamentConfig.value = alreadySelected
-    }
-  }
-  loading.value = false
 }
 
 async function createTournamentGroup() {
   if (loading.value) return;
 
-  if (editTournamentConfigRef.value?.startTimeError || editTournamentConfigRef.value?.endTimeError) {
+  if (editTournamentGroupRef.value?.startTimeError || editTournamentGroupRef.value?.endTimeError) {
     return
   }
-  errors.value = {} as TournamentConfigsErrors
+  errors.value = {}
   let requestData = {
     ...editTournamentGroupRef.value?.editData,
-    leagueId: +leagueId
+    league_id: +leagueId
   }
 
-  if (requestData.maxTeams && requestData.maxTeams < requestData.minTeams) {
+  if (requestData.max_teams && requestData.max_teams < requestData.min_teams) {
     errors.value.maxTeams = 'Max Teams count should be larger than Min Teams count.'
-    return
-  }
-
-  if ((selectExistingTournamentConfig.value && !selectedTournamentConfig.value.value)
-      || (!selectExistingTournamentConfig.value && !editTournamentConfigRef.value?.editData.name)) {
-    errors.value.tournamentConfig = 'Tournament Config is required.'
     return
   }
 
   loading.value = true
 
-  if (selectExistingTournamentConfig.value) {
-    requestData.tournamentConfigsId = selectedTournamentConfig.value.value as Number
-  } else if (!selectExistingTournamentConfig.value) {
-    let tournamentConfig = await useApiV5Fetch(`tournament-configs`, {
-      method: 'POST',
-      body: {
-        ...editTournamentConfigRef.value?.editData,
-        seasonSportId: userStore.seasonSportId,
-      }
-    })
-    requestData.tournamentConfigsId = tournamentConfig.data?.value.id as Number
-  }
   let response = await useApiV5Fetch(`tournament-group`, {
     method: 'POST',
     body: camelToSnake(requestData),

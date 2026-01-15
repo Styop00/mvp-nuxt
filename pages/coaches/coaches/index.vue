@@ -127,7 +127,7 @@ import SearchInput from '~/components/inputs/SearchInput.vue';
 import BaseButton from '~/components/buttons/BaseButton.vue';
 import CreateCoachModal from '~/components/modals/coach/CreateCoachModal.vue';
 import {useTournamentGroupFetch} from '~/composables/useTournamentGroupFetch/useTournamentGroupFetch';
-import type TournamentConfigs from '~/interfaces/tournament/config/tournamentConfigs';
+import type TournamentGroup from '~/interfaces/tournamentGroup/tournamentGroup';
 import {ageGroups} from '~/constants/ageGroups';
 import FilterSelect from "~/components/inputs/FilterSelect.vue";
 
@@ -197,7 +197,7 @@ async function fetchTournamentGroups() {
   const response = await fetchTournamentGroupsNames({
     season_sport_id: userStore.seasonSportId,
     is_active: true,
-  }) as Array<TournamentConfigs>
+  }) as Array<TournamentGroup>
 
   if (response.length) {
     tournamentGroupNames.value = response.map((group: any) => {

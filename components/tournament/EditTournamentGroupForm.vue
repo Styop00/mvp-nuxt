@@ -94,6 +94,75 @@
                 label="Combat moves"/>
       </div>
     </div>
+    <div class="grid-cols-1 grid lg:grid-cols-2 gap-8 mt-8">
+      <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 items-center justify-start">
+          <div class="relative">
+            <TextInput
+                v-model:value="tournamentGroup.registration_dead_line"
+                label="Registration Deadline"
+                placeholder="Registration Deadline"
+                @click.stop.prevent="() => {closeCalendars(); showRegistrationDeadlineCalendar = true}"
+                :prevent-input="true"
+            />
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow" @click.stop
+                 v-if="showRegistrationDeadlineCalendar">
+              <DatePicker v-model:model-value="tournamentGroup.registration_dead_line" color="blue"/>
+            </div>
+          </div>
+          <div class="relative">
+            <TextInput
+                v-model:value="tournamentGroup.free_reschedule_until_date"
+                label="Free movement until"
+                placeholder="Free movement until"
+                @click.stop.prevent="() => {closeCalendars(); showFreeRescheduleCalendar = true}"
+                :prevent-input="true"
+            />
+            <div class="absolute top-full left-1/2 -translate-x-1/2 bg-dark-surface-default z-[100] shadow"
+                 @click.stop
+                 v-if="showFreeRescheduleCalendar">
+              <DatePicker v-model:model-value="tournamentGroup.free_reschedule_until_date" color="blue"/>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 items-start justify-start">
+          <div>
+            <TextInput v-model:value="tournamentGroup.earliest_start as string"
+                       label="Earliest Start"
+                       :required="true"
+                       placeholder="Earliest Start"/>
+            <p v-if="startTimeError" class="text-xs text-red-500">
+              {{ startTimeError }}
+            </p>
+          </div>
+          <div>
+            <TextInput v-model:value="tournamentGroup.latest_start as string"
+                       label="Latest Start"
+                       :required="true"
+                       placeholder="Latest Start"/>
+            <p v-if="endTimeError" class="text-xs text-red-500">
+              {{ endTimeError }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <div class="flex gap-4 items-center justify-start">
+          <TextInput
+              type="number"
+              v-model:value="tournamentGroup.expected_duration_minutes"
+              :required="true"
+              :min="0"
+              label="Expected Match Duration In Minutes"/>
+          <TextInput
+              type="number"
+              v-model:value="tournamentGroup.minimum_warmup_minutes"
+              :required="true"
+              :min="0"
+              label="Minimum Warmup Minutes"/>
+        </div>
+      </div>
+    </div>
     <TextArea v-model:value="tournamentGroup.information"
               label="Public Information"
               class="mt-8"/>
@@ -126,6 +195,10 @@ const ageGroup = ref({} as SelectOptions)
 const gender = ref({} as SelectOptions)
 const showStartDateCalendar = ref(false)
 const showEndDateCalendar = ref(false)
+const showRegistrationDeadlineCalendar = ref(false)
+const showFreeRescheduleCalendar = ref(false)
+const startTimeError = ref('')
+const endTimeError = ref('')
 const structure = ref({} as SelectOptions)
 const registrationType = ref({} as SelectOptions)
 const matchTime = ref({} as SelectOptions)
@@ -367,6 +440,13 @@ watch(() => props.tournamentGroup, () => {
 
   tournamentGroup.value = {...props.tournamentGroup}
 
+  if (tournamentGroup.value?.registration_dead_line) {
+    tournamentGroup.value.registration_dead_line = moment(tournamentGroup.value.registration_dead_line as string).format('YYYY-MM-DD')
+  }
+  if (tournamentGroup.value?.free_reschedule_until_date) {
+    tournamentGroup.value.free_reschedule_until_date = moment(tournamentGroup.value.free_reschedule_until_date as string).format('YYYY-MM-DD')
+  }
+
   gender.value = genders.find(gender => gender.value === tournamentGroup.value.gender) as SelectOptions
   ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === tournamentGroup.value.age_group) as SelectOptions
   structure.value = structures.value.find(structure => structure.value === tournamentGroup.value.tournament_structure_id) as SelectOptions
@@ -378,9 +458,69 @@ watch(() => props.tournamentGroup, () => {
   immediate: true
 })
 
+watch(() => tournamentGroup.value.earliest_start, (newVal, oldVal) => {
+  if (oldVal && newVal && newVal?.length > oldVal?.length && newVal?.length === 2) {
+    tournamentGroup.value.earliest_start += ':'
+    return
+  }
+  startTimeError.value = '';
+  if (tournamentGroup.value.earliest_start) {
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const errorMessage = "Time is not valid. Please use time format like '00:00'.";
+    if (!timeRegex.test(tournamentGroup.value.earliest_start as string)) {
+      startTimeError.value = errorMessage
+    } else if (tournamentGroup.value.latest_start && endTimeError.value !== errorMessage) {
+      compareTimes()
+    }
+  }
+})
+
+watch(() => tournamentGroup.value.latest_start, (newVal, oldVal) => {
+  if (oldVal && newVal && newVal?.length > oldVal?.length && newVal?.length === 2) {
+    tournamentGroup.value.latest_start += ':'
+    return
+  }
+  endTimeError.value = ''
+  if (tournamentGroup.value.latest_start) {
+    const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const errorMessage = "Time is not valid. Please use time format like '00:00'.";
+    if (!timeRegex.test(tournamentGroup.value.latest_start as string)) {
+      endTimeError.value = errorMessage
+    } else if (tournamentGroup.value.earliest_start && startTimeError.value !== errorMessage) {
+      compareTimes()
+    }
+  }
+})
+
+function compareTimes() {
+  if (!tournamentGroup.value.latest_start || !tournamentGroup.value.earliest_start) {
+    return
+  }
+  startTimeError.value = '';
+  endTimeError.value = '';
+
+  const referenceDate = new Date();
+
+  const date1 = new Date(referenceDate);
+  const date2 = new Date(referenceDate);
+
+  const [hours1, minutes1] = tournamentGroup.value.earliest_start.split(':').map(Number);
+  const [hours2, minutes2] = tournamentGroup.value.latest_start.split(':').map(Number);
+
+  date1.setHours(hours1, minutes1, 0, 0);
+  date2.setHours(hours2, minutes2, 0, 0);
+
+  if (date1 > date2) {
+    startTimeError.value = 'Earliest start time should be earlier.'
+    endTimeError.value = 'Latest start time should be later.'
+  }
+}
+
 function closeCalendars() {
   showStartDateCalendar.value = false
   showEndDateCalendar.value = false
+  showRegistrationDeadlineCalendar.value = false
+  showFreeRescheduleCalendar.value = false
 }
 
 const editData = computed(() => {
@@ -388,11 +528,10 @@ const editData = computed(() => {
     ...tournamentGroup.value,
     tournament_registration_type_id: registrationType.value?.value ? registrationType.value?.value : null,
     gender: gender.value?.value ? gender.value?.value : null,
-    ageGroup: ageGroup.value?.value ? ageGroup.value?.value : null,
+    age_group: ageGroup.value?.value ? ageGroup.value?.value : null,
     tournament_structure_id: structure.value?.value ? structure.value?.value : null,
-    setGameStrategyId: matchTime.value?.value ? matchTime.value?.value : 0,
-    movingStrategyId: combatMove.value?.value ? combatMove.value?.value : null,
-    tournament_type_id: tournamentType.value?.value !== undefined ? tournamentType.value?.value : null,
+    set_game_strategy_id: matchTime.value?.value ? matchTime.value?.value : 0,
+    moving_strategy_id: combatMove.value?.value ? combatMove.value?.value : null,
   }
 })
 
@@ -402,7 +541,9 @@ onMounted(async () => {
 
 defineExpose({
   closeCalendars,
-  editData
+  editData,
+  startTimeError,
+  endTimeError
 })
 
 </script>
