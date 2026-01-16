@@ -12,7 +12,7 @@ export function useCoachesFetch() {
   const orderBy = ref("id");
   const orderDirection = ref("asc");
   const page = ref(1);
-  const tournamentGroupId = ref();
+  const tournamentId = ref();
   const ageGroup = ref();
 
   const userStore = useUserStore();
@@ -39,7 +39,7 @@ export function useCoachesFetch() {
           orderDirection: orderDirection.value,
           searchTerm: searchQuery.value,
           deleted: false,
-          tournamentGroupId: tournamentGroupId.value,
+          tournamentId: tournamentId.value,
           ageGroup: ageGroup.value,
         },
       });
@@ -196,7 +196,7 @@ export function useCoachesFetch() {
     loading,
     deleteCoach,
     createCoach,
-    tournamentGroupId,
+    tournamentId,
     ageGroup,
     fetchCoachById,
     editCoachInfo,

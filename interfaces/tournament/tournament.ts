@@ -1,29 +1,44 @@
 import type Pools from "~/interfaces/pools/pools";
 import type Rounds from "~/interfaces/rounds/rounds";
 import type Team from "~/interfaces/teams/team";
-import type TournamentGroup from "../tournamentGroup/tournamentGroup";
+import type League from "~/interfaces/league/leagues";
 
 export default interface Tournament {
-    id: Number,
-    alias: String,
-    short_name: String,
-    pool_count: Number,
-    cross_pool_game_count: Number,
-    cross_standing_group_game_count: Number,
-    deleted: Boolean,
-    end_date: Date | String,
-    information: String,
-    region: any,
-    region_id: Number | null,
-    round_type: Number
-    standing_group_count: Number,
-    start_date: Date | String,
-    team_count: Number | null,
-    tournament_group_id: Number,
-    tournament_program_id: Number,
-    pools: Array<Pools>,
-    rounds: Array<Rounds>,
-    teams?: Array<Team>,
-    TeamTournament?: any
-    tournament_group: TournamentGroup
+    id: number;
+    name: string;
+    alias: string;
+    short_name: string;
+    gender: string | null;
+    age_group: string | null;
+    is_active: boolean;
+    pool_count: number;
+    cross_pool_game_count: number;
+    cross_standing_group_game_count: number;
+    deleted: boolean;
+    end_date: Date | string;
+    information: string;
+    region: any;
+    region_id: number | null;
+    round_type: number;
+    standing_group_count: number;
+    start_date: Date | string;
+    team_count: number | null;
+    tournament_program_id: number;
+    tournament_structure_id: number | null;
+    tournament_registration_type_id: number | null;
+    set_game_strategy_id: number | null;
+    moving_strategy_id: number | null;
+    league_id?: number;
+    league?: League;
+    free_reschedule_until_date: Date | string | null;
+    registration_dead_line: Date | string | null;
+    minimum_warmup_minutes: number | null;
+    expected_duration_minutes: number;
+    earliest_start: string | null;
+    latest_start: string | null;
+    season_sport_id?: number;
+    pools?: Array<Pools>;
+    rounds?: Array<Rounds>;
+    teams?: Array<Team>;
+    TeamTournament?: any;
 }

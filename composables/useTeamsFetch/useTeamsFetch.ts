@@ -103,16 +103,21 @@ export const useTeamsFetch = () => {
         return {} as Team
     }
 
-    async function attachGroupsToTeam(teamId: number, groups: (String | Number | null)[]) {
-        const response = await useApiV5Fetch(`teams/${teamId}/attach-groups`, {
+    async function attachTournamentsToTeam(teamId: number, tournaments: (String | Number | null)[]) {
+        const response = await useApiV5Fetch(`teams/${teamId}/attach-tournaments`, {
             method: 'POST',
-            body: groups
+            body: tournaments
         })
 
         if (response.data?.value) {
             return response.data.value
         }
         return null
+    }
+
+    // Alias for backward compatibility
+    async function attachGroupsToTeam(teamId: number, groups: (String | Number | null)[]) {
+        return attachTournamentsToTeam(teamId, groups)
     }
 
     async function attachTournamentToTeam(teamId: number, tournamentId: number, data: any) {
@@ -190,6 +195,7 @@ export const useTeamsFetch = () => {
         fetchTeams,
         fetchTeamById,
         fetchTeamNames,
+        attachTournamentsToTeam,
         attachGroupsToTeam,
         updateTeam,
         deleteTeamById,

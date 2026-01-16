@@ -41,8 +41,8 @@
                 </label>
                 <div class="w-1/2">
                   <FilterSelect
-                      :options="tournamentGroupNames"
-                      v-model:value="selectedTournamentGroup"
+                      :options="tournamentNames"
+                      v-model:value="selectedTournament"
                       class="min-w-64 w-full mr-3"
                   />
                 </div>
@@ -126,8 +126,8 @@ import Breadcrumb from '~/components/breadcrumb/Breadcrumb.vue';
 import SearchInput from '~/components/inputs/SearchInput.vue';
 import BaseButton from '~/components/buttons/BaseButton.vue';
 import CreateCoachModal from '~/components/modals/coach/CreateCoachModal.vue';
-import {useTournamentGroupFetch} from '~/composables/useTournamentGroupFetch/useTournamentGroupFetch';
-import type TournamentGroup from '~/interfaces/tournamentGroup/tournamentGroup';
+import {useTournamentFetch} from '~/composables/useTournamentFetch/useTournamentFetch';
+import type Tournament from '~/interfaces/tournament/tournament';
 import {ageGroups} from '~/constants/ageGroups';
 import FilterSelect from "~/components/inputs/FilterSelect.vue";
 
@@ -141,7 +141,7 @@ const {
   limit,
   page,
   searchQuery,
-  tournamentGroupId,
+  tournamentId,
   ageGroup
 } = useCoachesFetch();
 const isShowCreateModal = ref(false)
@@ -166,12 +166,12 @@ const headers = [
 const userStore = useUserStore();
 const isAdmin = computed(() => userStore.getUserRoleNames().includes('Super Admin', 'Association Admin'));
 
-const tournamentGroupNames = ref([] as SelectOptions[]);
+const tournamentNames = ref([] as SelectOptions[]);
 
-const {fetchTournamentGroupsNames} = useTournamentGroupFetch()
+const {fetchTournamentsNames} = useTournamentFetch()
 
-const selectedTournamentGroup = ref({
-  label: "--- All Tournament Groups ---",
+const selectedTournament = ref({
+  label: "--- All Tournaments ---",
   value: null,
   disabled: false
 } as unknown as SelectOptions)
@@ -193,22 +193,22 @@ const ageOptions = computed(() => {
   ]
 })
 
-async function fetchTournamentGroups() {
-  const response = await fetchTournamentGroupsNames({
+async function fetchTournaments() {
+  const response = await fetchTournamentsNames({
     season_sport_id: userStore.seasonSportId,
     is_active: true,
-  }) as Array<TournamentGroup>
+  }) as Array<Tournament>
 
   if (response.length) {
-    tournamentGroupNames.value = response.map((group: any) => {
+    tournamentNames.value = response.map((tournament: any) => {
       return {
-        label: group.name,
-        value: group.id,
+        label: tournament.name,
+        value: tournament.id,
         disabled: false,
       }
     })
-    tournamentGroupNames.value.unshift({
-      label: '--- All Tournament Groups ---',
+    tournamentNames.value.unshift({
+      label: '--- All Tournaments ---',
       value: null,
       disabled: false,
     } as SelectOptions)
@@ -267,15 +267,15 @@ watch(page, () => {
 });
 
 watch(
-    [tournamentGroupId, ageGroup, searchQuery, limit],
+    [tournamentId, ageGroup, searchQuery, limit],
     debounce(() => {
       fetchAllCoaches();
     }, 500),
     {immediate: true}
 );
 
-watch(selectedTournamentGroup, () => {
-  tournamentGroupId.value = selectedTournamentGroup.value.value
+watch(selectedTournament, () => {
+  tournamentId.value = selectedTournament.value.value
 })
 
 watch(selectedAgeGroup, () => {
@@ -283,6 +283,6 @@ watch(selectedAgeGroup, () => {
 })
 
 onMounted(() => {
-  fetchTournamentGroups()
+  fetchTournaments()
 })
 </script>

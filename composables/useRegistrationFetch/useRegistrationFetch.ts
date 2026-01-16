@@ -22,10 +22,10 @@ export function useRegistrationFetch() {
   const count = ref(0 as Number);
   const clubNames = ref("");
 
-  async function fetchRegistrationsByTournamentGroupId(id: number) {
+  async function fetchRegistrationsByTournamentId(id: number) {
     const response = await useApiV5Fetch("/registration", {
       query: {
-        tournamentGroupId: id,
+        tournamentId: id,
       },
     });
 
@@ -77,7 +77,7 @@ export function useRegistrationFetch() {
     count,
     limit,
     searchQuery,
-    fetchRegistrationsByTournamentGroupId,
+    fetchRegistrationsByTournamentId,
     clubNames,
   };
 }

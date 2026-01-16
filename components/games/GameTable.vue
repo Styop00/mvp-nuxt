@@ -34,7 +34,7 @@
           <div class="hidden lg:block w-px h-8 bg-gradient-to-b from-transparent via-border-default to-transparent mx-1 transition-colors duration-200"></div>
 
           <!-- Club Filter (Conditional) -->
-          <div class="flex items-center gap-3 w-full sm:w-auto group relative" v-if="tournamentGroupId || tournamentId">
+          <div class="flex items-center gap-3 w-full sm:w-auto group relative" v-if="tournamentId">
             <div class="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg bg-surface-elevated border border-border-default group-hover:border-brand-primary-color/50 group-hover:bg-brand-primary-color/10 transition-all duration-200 flex-shrink-0">
               <font-awesome :icon="['fas', 'landmark']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
             </div>
@@ -216,7 +216,6 @@ const {fetchAllClubs} = useClubsFetch()
 const {fetchAllCourts} = useCourtsFetch()
 
 const tournamentId = route.params.tournamentId
-const tournamentGroupId = route.params.tournamentGroupId
 const tableData = ref([] as Array<GamesTable>)
 const count = ref(0 as Number)
 const page = ref(1)
@@ -456,13 +455,9 @@ const pagesCount = computed(() => {
 })
 
 async function fetchClubs() {
-  const res = await fetchAllClubs(tournamentId ?
-      {
-        tournamentId: +tournamentId
-      } : {
-        tournamentGroupId: +tournamentGroupId
-      }
-  )
+  const res = await fetchAllClubs({
+    tournamentId: +tournamentId
+  })
   clubs.value.push({
     label: 'All Clubs',
     value: null,
@@ -568,7 +563,7 @@ function showDatePicker() {
 
 onMounted(() => {
   document.body.addEventListener('click', () => showRangeCalendar.value = false)
-  if (tournamentId || tournamentGroupId) {
+  if (tournamentId) {
     fetchClubs()
   }
 

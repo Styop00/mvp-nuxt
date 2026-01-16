@@ -23,7 +23,7 @@ import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 import {useGamesFetch} from "~/composables/useGamesFetch/useGamesFetch";
 
 const route = useRoute()
-const groupId = route.params.tournamentGroupId
+const tournamentId = route.params.tournamentId
 const {getGames} = useGamesFetch()
 const games = ref([] as Array<Game>)
 const orderBy = ref('date')
@@ -37,7 +37,7 @@ async function fetchGames(data?: any) {
       {
         order_by: orderBy.value,
         order_direction: orderDirection.value,
-        tournament_group_id: +groupId,
+        tournament_id: +tournamentId,
         ...(data ? data : {limit: 10, page: 1})
       }
   )

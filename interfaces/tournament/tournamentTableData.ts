@@ -1,7 +1,7 @@
 export default interface TournamentTableData {
-    id: Number,
-    alias: String,
-    shortName: String,
-    pools: Number,
-    period: String,
+    id: number;
+    name: string;
+    shortName: string;
+    ageAndGender: string;
+    period: string;
 }

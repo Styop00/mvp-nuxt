@@ -22,7 +22,7 @@ export default interface Coach {
           localName: string;
           deleted: boolean;
           [key: string]: any;
-          tournamentGroups: {
+          tournaments: {
             name: string;
             shortName: string;
             [key: string]: any;

@@ -290,7 +290,7 @@ async function fetchTeamData() {
       name: team.club?.name ? team.club?.name : '',
       license: '' + team.license,
       localName: team.local_name,
-      enough: team.tournament_groups?.map(group => group.name)?.join(', '),
+      enough: team.tournaments?.map(tournament => tournament.name)?.join(', '),
       coaches: coaches?.join('')
     })
   })

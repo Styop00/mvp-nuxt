@@ -68,27 +68,27 @@
 
 <script setup lang="ts">
 import TableStriped from "~/components/tables/TableStriped.vue";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
+import type Tournament from "~/interfaces/tournament/tournament";
 import {useUserStore} from "~/store/user";
 import TablePagination from "~/components/pagination/TablePagination.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
 import Select from "~/components/inputs/Select.vue";
-import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
+import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournamentFetch";
 import SearchInput from "~/components/inputs/SearchInput.vue";
 import type RegistrationTableData from "~/interfaces/registration/registrationTableData";
 import { useClubsFetch } from "~/composables/useClubsFetch/useClubsFetch";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 
 const count = ref(0 as Number)
-const tournamentGroups = ref([] as Array<TournamentGroup>)
+const tournaments = ref([] as Array<Tournament>)
 const tableData = ref([] as Array<RegistrationTableData>)
 const orderBy = ref('name')
 const orderDirection = ref('asc')
 const page = ref(1 as Number)
-const showDeleteGroupConfirmation = ref(false)
+const showDeleteTournamentConfirmation = ref(false)
 const searchQuery = ref('')
 
-const { fetchTournamentGroupsWithoutLeagueId, loading } = useTournamentGroupFetch()
+const { fetchTournamentsWithoutLeagueId, loading } = useTournamentFetch()
 
 const userStore = useUserStore()
 
@@ -120,7 +120,7 @@ const headers = [
       label: 'Name',
       sortable: true,
       sortValue: 'name',
-      dataKey: 'tournamentGroupNames',
+      dataKey: 'tournamentNames',
     },
     {
       label: 'Deadline',
@@ -172,27 +172,27 @@ const currentShowCount = computed(() => {
 
 watch(page, () => {
   tableData.value = []
-  fetchTournamentGroupsNames()
+  fetchTournamentsNames()
 })
 
 watch([searchQuery, limit], () => {
   tableData.value = []
 
   if (page.value === 1) {
-    fetchTournamentGroupsNames()
+    fetchTournamentsNames()
   } else {
     page.value = 1
   }
 })
 
-watch(showDeleteGroupConfirmation, () => {
-  if (!showDeleteGroupConfirmation.value) {
-    fetchTournamentGroupsNames()
+watch(showDeleteTournamentConfirmation, () => {
+  if (!showDeleteTournamentConfirmation.value) {
+    fetchTournamentsNames()
   }
 })
 
 onMounted(() => {
-  fetchTournamentGroupsNames();
+  fetchTournamentsNames();
 });
 
 function sort(column: string) {
@@ -203,7 +203,7 @@ function sort(column: string) {
     orderBy.value = column
     orderDirection.value = 'asc'
   }
-  fetchTournamentGroupsNames()
+  fetchTournamentsNames()
 }
 const clubIds = ref<string[]>([])
 
@@ -235,30 +235,30 @@ if(clubIds.value.length > 1) {
   }
 }
 watch(clubId, () => {
-  fetchTournamentGroupsNames();
+  fetchTournamentsNames();
 });
 
-async function fetchTournamentGroupsNames() {
-  const response = await fetchTournamentGroupsWithoutLeagueId( orderBy.value, orderDirection.value, +page.value, +limit.value.value, searchQuery.value)
+async function fetchTournamentsNames() {
+  const response = await fetchTournamentsWithoutLeagueId( orderBy.value, orderDirection.value, +page.value, +limit.value.value, searchQuery.value)
   if (!response) {
     return
   }
 
-  const res = response as { count: Number, rows: Array<TournamentGroup> }
+  const res = response as { count: Number, rows: Array<Tournament> }
   count.value = res.count
-  tournamentGroups.value = res.rows
+  tournaments.value = res.rows
 
   tableData.value = []
 
-  tournamentGroups.value.forEach(tournamentGroup => {
+  tournaments.value.forEach(tournament => {
   tableData.value.push({
-    id: Number(tournamentGroup.id),
-    tournamentGroupNames: String(tournamentGroup.name),
-    deadline: String(tournamentGroup.registration_dead_line),
-    yourSubscribers: tournamentGroup.registrations
-      .filter((item) => item.clubId === clubId.value.value)
-      .reduce((acc, item) => acc + item.count, 0),
-    otherRegistants: tournamentGroup.registrations.reduce((acc, item) => acc += item.count, 0),
+    id: Number(tournament.id),
+    tournamentNames: String(tournament.name),
+    deadline: String(tournament.registration_dead_line),
+    yourSubscribers: tournament.registrations
+      ?.filter((item) => item.clubId === clubId.value.value)
+      .reduce((acc, item) => acc + item.count, 0) || 0,
+    otherRegistants: tournament.registrations?.reduce((acc, item) => acc += item.count, 0) || 0,
     })
   })
 }

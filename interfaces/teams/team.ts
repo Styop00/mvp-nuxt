@@ -1,5 +1,4 @@
 import type Users from "~/interfaces/users/users";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
 import type Tournament from "~/interfaces/tournament/tournament";
 import type Clubs from "~/interfaces/clubs/club";
 import type UserRole from "~/interfaces/users/userRole";
@@ -16,10 +15,9 @@ export default interface Team {
     gender: String | null;
     club_rank: Number | null;
     team_staff?: Array<Users> | []
-    tournament_groups?: Array<TournamentGroup> | []
     tournaments?: Array<Tournament> | []
     TeamTournament?: Array<any>
-    team_tournament_groups?: Array<any> | []
+    team_tournament_assignments?: Array<any> | []
     age_group: String | null;
     official_type_id: Number;
     official_team_id: Number;

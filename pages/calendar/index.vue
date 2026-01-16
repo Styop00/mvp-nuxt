@@ -387,7 +387,7 @@ onMounted(() => {
   color: var(--color-text-primary) !important;
   font-family: inherit;
   border-color: var(--color-border-default) !important;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Theme-aware borders using CSS variables */
@@ -401,7 +401,7 @@ onMounted(() => {
 :deep(.fc-timegrid),
 :deep(.fc-timegrid *) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc table td),
@@ -409,7 +409,7 @@ onMounted(() => {
 :deep(.fc-scrollgrid td),
 :deep(.fc-scrollgrid th) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section),
@@ -417,7 +417,7 @@ onMounted(() => {
 :deep(.fc-scrollgrid-section-body),
 :deep(.fc-scrollgrid-sync-table) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-daygrid-body),
@@ -425,7 +425,7 @@ onMounted(() => {
 :deep(.fc-daygrid-day-frame),
 :deep(.fc-daygrid-day-top) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Header Toolbar - Theme-aware */
@@ -444,7 +444,7 @@ onMounted(() => {
   gap: 1rem !important;
   position: relative !important;
   z-index: 1 !important;
-  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-toolbar-title) {
@@ -453,7 +453,7 @@ onMounted(() => {
   color: var(--color-text-primary) !important;
   text-transform: capitalize;
   letter-spacing: 0.025em;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Toolbar Chunks */
@@ -552,7 +552,7 @@ onMounted(() => {
   padding: 0.25rem !important;
   background: var(--color-bg-tertiary) !important;
   border: 1px solid var(--color-border-default) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-button-group .fc-button) {
@@ -661,7 +661,7 @@ onMounted(() => {
   background-color: var(--color-surface-elevated) !important;
   border-color: var(--color-border-default) !important;
   padding: 0.75rem !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-col-header-cell-cushion) {
@@ -669,14 +669,14 @@ onMounted(() => {
   font-weight: 600 !important;
   text-transform: capitalize;
   font-size: 0.875rem;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Calendar Grid - Theme-aware */
 :deep(.fc-daygrid-day) {
   background-color: var(--color-surface-default) !important;
   border-color: var(--color-border-default) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Remove any white borders */
@@ -691,35 +691,35 @@ onMounted(() => {
 /* Table borders - Theme-aware */
 :deep(.fc-scrollgrid) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-sync-table) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-sync-table td),
 :deep(.fc-scrollgrid-sync-table th) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section-header td),
 :deep(.fc-scrollgrid-section-header th) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-scrollgrid-section-body td),
 :deep(.fc-scrollgrid-section-body th) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-daygrid-day:hover) {
@@ -735,7 +735,7 @@ onMounted(() => {
   color: var(--color-text-primary) !important;
   padding: 0.5rem !important;
   font-weight: 500;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-daygrid-day.fc-day-today .fc-daygrid-day-number) {
@@ -778,34 +778,34 @@ onMounted(() => {
 /* Time Grid (Week/Day View) - Theme-aware */
 :deep(.fc-timegrid-slot) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-slot-label) {
   color: var(--color-text-tertiary) !important;
   font-size: 0.75rem !important;
   border-color: var(--color-border-default) !important;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-col) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-col-frame) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-axis) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-divider) {
   border-color: var(--color-border-default) !important;
-  transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-timegrid-now-indicator-line) {
@@ -817,13 +817,13 @@ onMounted(() => {
   background-color: var(--color-surface-elevated) !important;
   color: var(--color-text-primary) !important;
   font-weight: 600 !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event) {
   background-color: var(--color-surface-default) !important;
   border-color: var(--color-border-default) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event:hover) {
@@ -832,12 +832,12 @@ onMounted(() => {
 
 :deep(.fc-list-event-title) {
   color: var(--color-text-primary) !important;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-list-event-time) {
   color: var(--color-text-tertiary) !important;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* More Link - Brand color */
@@ -864,13 +864,13 @@ onMounted(() => {
 
 :deep(.fc-scroller::-webkit-scrollbar-track) {
   background: var(--color-surface-elevated);
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :deep(.fc-scroller::-webkit-scrollbar-thumb) {
   background: var(--color-border-light);
   border-radius: 3px;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :deep(.fc-scroller::-webkit-scrollbar-thumb:hover) {
@@ -882,20 +882,20 @@ onMounted(() => {
   background-color: var(--color-surface-elevated) !important;
   border-color: var(--color-border-default) !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-popover-header) {
   background-color: var(--color-surface-default) !important;
   color: var(--color-text-primary) !important;
   border-color: var(--color-border-default) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 :deep(.fc-popover-body) {
   background-color: var(--color-surface-elevated) !important;
   color: var(--color-text-primary) !important;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Responsive adjustments */

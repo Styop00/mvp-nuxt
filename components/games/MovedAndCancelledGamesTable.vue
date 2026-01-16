@@ -27,8 +27,8 @@
                 <font-awesome :icon="['fas', 'layer-group']" class="text-xs text-text-tertiary group-hover:text-brand-primary-color transition-colors"/>
               </div>
               <SelectMultiple
-                  v-model:value="selectedTournamentGroup"
-                  :options="tournamentGroups"
+                  v-model:value="selectedTournament"
+                  :options="tournaments"
                   :multiple="false"
                   :close-on-select="true"
                   :clear-on-select="false"
@@ -247,8 +247,8 @@ import TextInput from "~/components/inputs/TextInput.vue";
 import {useGamePenaltiesFetch} from "~/composables/useGamePenaltiesFetch/useGamePenaltiesFetch";
 import {useGamesFetch} from "~/composables/useGamesFetch/useGamesFetch";
 import type Penalty from "~/interfaces/games/penalty";
-import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
+import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournamentFetch";
+import type Tournament from "~/interfaces/tournament/tournament";
 import SelectMultiple from "~/components/inputs/SelectMultiple.vue";
 
 const props = defineProps({
@@ -279,17 +279,15 @@ const userStore = useUserStore()
 const {fetchAllClubs} = useClubsFetch()
 const {createOrUpdate} = useGamePenaltiesFetch()
 const {updateGame} = useGamesFetch()
-const {fetchTournamentGroupsNames} = useTournamentGroupFetch()
+const {fetchTournamentsNames} = useTournamentFetch()
 
 const tableData = ref([] as Array<GamesEditableTable>)
 const count = ref(0 as Number)
 const page = ref(1)
 const clubs = ref([] as Array<SelectOptions>)
-const tournamentGroups = ref([] as Array<SelectOptions>)
-const allGroups = ref([] as Array<TournamentGroup>)
+const tournaments = ref([] as Array<SelectOptions>)
+const allTournaments = ref([] as Array<Tournament>)
 const selectedClub = ref({} as SelectOptions)
-
-const selectedTournamentGroup = ref({} as SelectOptions)
 
 const selectedTournament = ref({
   label: 'All Tournaments',
@@ -395,8 +393,8 @@ const emitData = computed(() => {
     ...(selectedClub.value.value ? {
       clubId: selectedClub.value.value,
     } : {}),
-    ...(selectedTournamentGroup.value.value ? {
-      tournamentGroupId: selectedTournamentGroup.value.value,
+    ...(selectedTournament.value.value ? {
+      tournamentId: selectedTournament.value.value,
     } : {}),
     ...(selectedTournament.value.value ? {
       tournamentId: selectedTournament.value.value,
@@ -410,9 +408,9 @@ const emitData = computed(() => {
 const tournamentOptions = computed(() => {
   let tournaments = [] as SelectOptions[]
 
-  if (selectedTournamentGroup.value.value) {
+  if (selectedTournament.value.value) {
 
-    const selectedGroup = allGroups.value.find(group => group.id === selectedTournamentGroup.value.value)
+    const selectedGroup = allTournaments.value.find(tournament => tournament.id === selectedTournament.value.value)
     if (selectedGroup && selectedGroup.tournaments?.length) {
       tournaments = selectedGroup.tournaments.map(tournament => {
         return {
@@ -488,7 +486,7 @@ watch([limit, selectedClub, selectedTournament, penaltyStatus], () => {
   }
 })
 
-watch(selectedTournamentGroup, () => {
+watch(selectedTournament, () => {
   if (selectedTournament.value.value) {
     selectedTournament.value = {
       label: 'All Tournaments',
@@ -558,28 +556,28 @@ async function updatePenaltyStatus(gameId: number, value: boolean) {
   })
 }
 
-async function fetchTournamentGroups() {
-  const res = await fetchTournamentGroupsNames({seasonSportId: userStore.seasonSportId, withTournaments: true})
-  allGroups.value = res
-  tournamentGroups.value = res.map(group => {
+async function fetchTournaments() {
+  const res = await fetchTournamentsNames({seasonSportId: userStore.seasonSportId})
+  allTournaments.value = res
+  tournaments.value = res.map(tournament => {
     return {
-      label: group.name,
-      value: group.id,
+      label: tournament.name,
+      value: tournament.id,
       disabled: false
     } as SelectOptions
   })
-  tournamentGroups.value.unshift({
-    label: 'All Tournament Groups ',
+  tournaments.value.unshift({
+    label: 'All Tournaments ',
     value: null,
     disabled: false
   } as SelectOptions)
 
-  selectedTournamentGroup.value = tournamentGroups.value[0]
+  selectedTournament.value = tournaments.value[0]
 }
 
 onMounted(() => {
   fetchClubs()
-  fetchTournamentGroups()
+  fetchTournaments()
 })
 </script>
 

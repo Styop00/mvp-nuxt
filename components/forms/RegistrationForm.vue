@@ -6,7 +6,7 @@
       <span
         class="inline-block w-1 h-6 rounded-2xl bg-gradient-to-b from-red-500/50 to-pink-500/50 mr-3 "
       />
-      {{ tournamentGroupName }} - Registration
+      {{ tournamentName }} - Registration
     </p>
     <form @submit.prevent="saveRegistration" class="space-y-6">
       <div class="flex flex-col w-full">
@@ -96,7 +96,7 @@
 import {ref, onMounted} from 'vue';
 import BaseButton from '~/components/buttons/BaseButton.vue';
 import {useRegistrationFetch} from "~/composables/useRegistrationFetch/useRegistrationFetch";
-import {useTournamentGroupFetch} from '~/composables/useTournamentGroupFetch/useTournamentGroupFetch';
+import {useTournamentFetch} from '~/composables/useTournamentFetch/useTournamentFetch';
 import SuccessAlert from '../alerts/SuccessAlert.vue';
 
 const tableData = ref<{
@@ -108,30 +108,30 @@ const tableData = ref<{
 }[]>([]);
 
 const props = defineProps({
-  tournamentGroupId: Number,
-  tournamentGroupLevel: Number,
+  tournamentId: Number,
+  tournamentLevel: Number,
   clubName: String,
   clubId: Number
 });
 
 const isAccordionOpen = ref(false);
 const showSuccessAlertCreate = ref(false)
-const tournamentGroupName = ref("")
+const tournamentName = ref("")
 const loading = ref(false)
 
 function toggleAccordion() {
   isAccordionOpen.value = !isAccordionOpen.value;
 }
 
-const {fetchRegistrationsByTournamentGroupId, createOrEditBulkRegistration, clubNames} = useRegistrationFetch();
+const {fetchRegistrationsByTournamentId, createOrEditBulkRegistration, clubNames} = useRegistrationFetch();
 
-const {fetchTournamentGroupById} = useTournamentGroupFetch();
+const {fetchTournamentById} = useTournamentFetch();
 
 async function fetchRegistration(id: number) {
   try {
-    const response = await fetchRegistrationsByTournamentGroupId(props.tournamentGroupId as number);
-    const responseTournament = await fetchTournamentGroupById(props.tournamentGroupId as number);
-    tournamentGroupName.value = responseTournament.name
+    const response = await fetchRegistrationsByTournamentId(props.tournamentId as number);
+    const responseTournament = await fetchTournamentById(props.tournamentId as number);
+    tournamentName.value = responseTournament.name
     if (response && response.rows) {
       const selectedClubRegistrations = response.rows.filter(item => item.clubId == props.clubId);
 
@@ -183,7 +183,7 @@ async function saveRegistration() {
     if (hasError) return;
     const registrationData = tableData.value.map(row => ({
       clubId: props.clubId,
-      tournamentGroupId: props.tournamentGroupId,
+      tournamentId: props.tournamentId,
       level: row.level ? parseInt(row.level.replace('Pool ', '')) : null,
       count: row.teams === 0 ? 0 : row.teams || null
     }));
@@ -244,8 +244,8 @@ function getErrorMessage(message: string) {
 }
 
 onMounted(() => {
-  if (props.tournamentGroupId) {
-    fetchRegistration(props.tournamentGroupId);
+  if (props.tournamentId) {
+    fetchRegistration(props.tournamentId);
   }
 });
 </script>

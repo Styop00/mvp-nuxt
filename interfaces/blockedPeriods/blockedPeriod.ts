@@ -1,4 +1,4 @@
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
+import type Tournament from "~/interfaces/tournament/tournament";
 
 export default interface BlockedPeriod {
     id: number;
@@ -10,5 +10,5 @@ export default interface BlockedPeriod {
     teamId: number;
     seasonSportId: number;
     isDeleted: boolean;
-    tournamentGroups: TournamentGroup[];
+    tournaments?: Tournament[];
 }

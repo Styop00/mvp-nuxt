@@ -89,7 +89,7 @@
 
 html {
   scroll-behavior: smooth;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
 }
@@ -101,7 +101,7 @@ html.dark {
 body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
 }
 
@@ -109,7 +109,7 @@ body {
 #__nuxt {
   background-color: var(--color-bg-primary);
   min-height: 100vh;
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Page transitions */
@@ -118,7 +118,7 @@ body {
 .layout-enter-active,
 .layout-leave-active {
   background-color: var(--color-bg-primary);
-  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Custom scrollbar - using CSS variables */

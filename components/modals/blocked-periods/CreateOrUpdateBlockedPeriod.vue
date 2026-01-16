@@ -33,17 +33,17 @@
               </div>
               <div>
                 <span class="font-inter-medium flex gap-1 text-sm">
-                  Tournament Groups
+                  Tournaments
                   <span class="text-red-600">
                     *
                   </span>
                 </span>
                 <SelectMultiple v-model:value="groups"
-                             :options="tournamentGroups"
+                             :options="tournaments"
                              :multiple="true"
                              :close-on-select="false"
                              :clear-on-select="false"
-                             placeholder="Select Tournament Groups"
+                             placeholder="Select Tournaments"
                              label="name"
                              track-by="value"
                              :preselect-first="true"
@@ -106,7 +106,7 @@ const props = defineProps({
     type: Number,
     default: 0
   },
-  tournamentGroups: {
+  tournaments: {
     type: Array<any>,
     default: 0
   }
@@ -180,13 +180,13 @@ const range = computed({
   }
 })
 
-const tournamentGroups = computed(() => {
+const tournaments = computed(() => {
   return [
     {
       name: 'All',
       value: null,
     },
-      ...props.tournamentGroups
+      ...props.tournaments
   ]
 })
 
@@ -203,15 +203,15 @@ async function fetchPeriod() {
       value: null
     })
   } else {
-    const periodGroups = res.tournamentGroups.map(group => group.id)
-    groups.value = tournamentGroups.value.filter(group => periodGroups.includes(group.value))
+    const periodTournaments = res.tournaments?.map(tournament => tournament.id) || []
+    groups.value = tournaments.value.filter(tournament => periodTournaments.includes(tournament.value))
   }
 }
 
 async function createOrUpdate() {
   groupError.value = ''
   if (!groups.value.length) {
-    groupError.value = 'Tournament group is required!'
+    groupError.value = 'Tournament is required!'
     return
   }
   if (props.blockedPeriodId) {
@@ -222,7 +222,7 @@ async function createOrUpdate() {
       startDate: startDate.value,
       endDate: endDate.value,
       blockAll: !!groups.value.find(group => !group.value),
-      groups: groups.value.filter(group => group.value).map(group => group.value)
+      tournaments: groups.value.filter(group => group.value).map(group => group.value)
     })
   } else {
     await createBlockedPeriod({
@@ -232,7 +232,7 @@ async function createOrUpdate() {
       startDate: startDate.value,
       endDate: endDate.value,
       blockAll: !!groups.value.find(group => !group.value),
-      groups: groups.value.filter(group => group.value).map(group => group.value)
+      tournaments: groups.value.filter(group => group.value).map(group => group.value)
     })
   }
   emit('reFetch')

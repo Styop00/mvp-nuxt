@@ -115,7 +115,7 @@
     <CreateOrUpdateBlockedPeriod
         v-model:visible="showEditPeriodModal"
         v-model:blocked-period-id="periodIdForUpdate"
-        :tournament-groups="tournamentGroups"
+        :tournaments="tournaments"
         @re-fetch="fetchPeriods"
     />
   </div>
@@ -135,14 +135,14 @@ import type BlockedPeriod from "~/interfaces/blockedPeriods/blockedPeriod";
 import type BlockedPeriodsTable from "~/interfaces/blockedPeriods/blockedPeriodsTable";
 import CreateOrUpdateBlockedPeriod from "~/components/modals/blocked-periods/CreateOrUpdateBlockedPeriod.vue";
 import DeleteBlockedPeriod from "~/components/modals/blocked-periods/DeleteBlockedPeriod.vue";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
-import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
+import type Tournament from "~/interfaces/tournament/tournament";
+import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournamentFetch";
 import {useUserStore} from "~/store/user";
 import FilterSelect from "~/components/inputs/FilterSelect.vue";
 
 const userStore = useUserStore()
 
-const tournamentGroups = ref([] as Array<any>)
+const tournaments = ref([] as Array<any>)
 const orderBy = ref('title')
 const orderDirection = ref('asc')
 const page = ref(1)
@@ -159,13 +159,13 @@ const showConfirmModal = ref(false)
 const showEditPeriodModal = ref(false)
 const showRangeCalendar = ref(false)
 const filter = ref({
-  label: '--- Select Tournament Group ---',
+  label: '--- Select Tournament ---',
   value: null,
   disabled: false,
 } as SelectOptions)
 
 const {fetchBlockedPeriods} = useBlockedPeriodsFetch()
-const {fetchTournamentGroupsNames} = useTournamentGroupFetch()
+const {fetchTournamentsNames} = useTournamentFetch()
 
 const filterOptions = [
   {
@@ -254,10 +254,10 @@ watch([searchQuery, limit, range, filter], () => {
 })
 
 const groupOptions = computed(() => {
-  const data = tournamentGroups.value.map(group => {
+  const data = tournaments.value.map(tournament => {
     return {
-      label: group.name,
-      value: group.value,
+      label: tournament.name,
+      value: tournament.value,
       disabled: false,
     }
   })
@@ -306,17 +306,17 @@ function showCalendar() {
   setTimeout(() => showRangeCalendar.value = true)
 }
 
-async function fetchTournamentGroups() {
-  const response = await fetchTournamentGroupsNames({
+async function fetchTournaments() {
+  const response = await fetchTournamentsNames({
     season_sport_id: userStore.seasonSportId,
     is_active: true,
-  }) as Array<TournamentGroup>
+  }) as Array<Tournament>
 
   if (response.length) {
-    tournamentGroups.value = response.map((group: any) => {
+    tournaments.value = response.map((tournament: any) => {
       return {
-        name: group.name,
-        value: group.id,
+        name: tournament.name,
+        value: tournament.id,
       }
     })
   }
@@ -333,7 +333,7 @@ async function fetchPeriods() {
     ...(range.value ? {
       range: range.value
     } : {}),
-    ...(filter.value.value ? filter.value.value === 'all' ? {blockAll: true} : {groupId: filter.value.value} : {})
+    ...(filter.value.value ? filter.value.value === 'all' ? {blockAll: true} : {tournamentId: filter.value.value} : {})
   })
 
   blockedPeriods.value = res.rows
@@ -342,7 +342,7 @@ async function fetchPeriods() {
     let tournamentsCount = 'All'
     if (!period.blockAll) {
       tournamentsCount = `
-      <div> ${period.tournamentGroups.length} groups
+      <div> ${period.tournaments?.length || 0} tournaments
         <span class="relative group text-nowrap ">
           <span class="w-4 inline-block align-middle">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#00d9c0" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
@@ -350,14 +350,14 @@ async function fetchPeriods() {
           <span
               class="absolute z-[999] top-full text-xs mb-1 tracking-wider group-hover:!inline-block hidden inline-block w-fit !bg-dark-surface-default left-1/2 shadow-2xl -translate-x-1/2 p-3 ml-1 rounded-md"
           >
-            ${period.tournamentGroups.map(group =>
+            ${period.tournaments?.map(tournament =>
           `
           <span class="text-nowrap flex items-center justify-start gap-2">
           <svg class="w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#00d9c0" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
-          ${group.name}
+          ${tournament.name}
           </span>
           `
-      ).join(' ')}
+      ).join(' ') || ''}
           </span>
         </span>
         </div>
@@ -378,6 +378,6 @@ async function fetchPeriods() {
 onMounted(() => {
   document.body.addEventListener('click', () => showRangeCalendar.value = false)
   fetchPeriods()
-  fetchTournamentGroups()
+  fetchTournaments()
 })
 </script>

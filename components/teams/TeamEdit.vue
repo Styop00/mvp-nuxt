@@ -74,15 +74,15 @@
             </div>
           </div>
           <div>
-            <p class="-mb-2 mt-4">Groups</p>
+            <p class="-mb-2 mt-4">Tournaments</p>
             <div class="sm:grid sm:grid-flow-col sm:grid-rows-5 gap-4">
-              <template v-for="i in selectedGroups.length">
-                <template v-if="i !== tournamentGroups.length">
+              <template v-for="i in selectedTournaments.length">
+                <template v-if="i !== tournaments.length">
                   <Select
                       class="!w-96 !max-w-full mt-4"
-                      :options="tournamentGroupOptions"
+                      :options="tournamentOptions"
                       :disable-auto-select="true"
-                      v-model:value="selectedGroups[i-1]"
+                      v-model:value="selectedTournaments[i-1]"
                   />
                 </template>
               </template>
@@ -114,25 +114,25 @@ import {useTeamsFetch} from "~/composables/useTeamsFetch/useTeamsFetch";
 import Select from "~/components/inputs/Select.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
 import {useUserStore} from "~/store/user";
-import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
+import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournamentFetch";
 import {ageGroups} from "~/constants/ageGroups";
 import {genders} from "~/constants/genders";
 import {officialTypes} from "~/constants/officialTypes";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
+import type Tournament from "~/interfaces/tournament/tournament";
 
 const route = useRoute()
 const teamId = route.params.teamId
 const clubId = route.params.clubId
 const userStore = useUserStore()
-const {fetchTeamById, fetchTeamNames, updateTeam, attachGroupsToTeam} = useTeamsFetch()
-const {fetchTournamentGroupsNames} = useTournamentGroupFetch()
+const {fetchTeamById, fetchTeamNames, updateTeam, attachTournamentsToTeam} = useTeamsFetch()
+const {fetchTournamentsNames} = useTournamentFetch()
 
 const showSuccessAlert = ref(false)
 const loading = ref(false)
 const team = ref({} as Team)
-const tournamentGroups = ref([] as Array<SelectOptions>)
-const selectedGroups = ref([] as Array<SelectOptions>)
+const tournaments = ref([] as Array<SelectOptions>)
+const selectedTournaments = ref([] as Array<SelectOptions>)
 const ageGroup = ref({} as SelectOptions)
 const gender = ref({} as SelectOptions)
 const officialType = ref({
@@ -147,27 +147,27 @@ const genderError = ref('')
 const officialTypeError = ref('')
 const officialTeamError = ref('')
 
-watch(() => selectedGroups.value, () => {
-  let groups = selectedGroups.value.filter((group, index) => !!group?.value || index === selectedGroups.value.length - 1)
-  if (groups.length && !!groups[groups.length - 1].value && groups.length < 10) {
-    groups.push({
+watch(() => selectedTournaments.value, () => {
+  let tournaments = selectedTournaments.value.filter((tournament, index) => !!tournament?.value || index === selectedTournaments.value.length - 1)
+  if (tournaments.length && !!tournaments[tournaments.length - 1].value && tournaments.length < 10) {
+    tournaments.push({
       label: '---select---',
       value: null,
       disabled: false,
     } as SelectOptions)
   }
 
-  if (JSON.stringify(groups) !== JSON.stringify(selectedGroups.value)) {
-    selectedGroups.value = groups
+  if (JSON.stringify(tournaments) !== JSON.stringify(selectedTournaments.value)) {
+    selectedTournaments.value = tournaments
   }
 }, {
   deep: true,
   immediate: true
 })
 
-const tournamentGroupOptions = computed(() => {
-  return tournamentGroups.value.filter((group) => {
-    return !group.value || (selectedGroups.value.map(group => group.value)).indexOf(group.value) < 0
+const tournamentOptions = computed(() => {
+  return tournaments.value.filter((tournament) => {
+    return !tournament.value || (selectedTournaments.value.map(tournament => tournament.value)).indexOf(tournament.value) < 0
   })
 })
 
@@ -184,31 +184,31 @@ async function getTeamById() {
   }
 }
 
-async function fetchTournamentGroups() {
-  const response = await fetchTournamentGroupsNames({
+async function fetchTournaments() {
+  const response = await fetchTournamentsNames({
     season_sport_id: userStore.seasonSportId,
     is_active: true,
-  }) as Array<TournamentGroup>
+  }) as Array<Tournament>
 
   if (response.length) {
-    tournamentGroups.value = response.map((group: any) => {
+    tournaments.value = response.map((tournament: any) => {
       return {
-        label: group.name,
-        value: group.id,
+        label: tournament.name,
+        value: tournament.id,
         disabled: false,
       }
     })
-    tournamentGroups.value.unshift({
+    tournaments.value.unshift({
       label: '---select---',
       value: null,
       disabled: false,
     } as SelectOptions)
 
-    team.value.tournament_groups.map((group, index) => {
-      selectedGroups.value.push(tournamentGroups.value.find(tournamentGroup => tournamentGroup.value === group.id) as SelectOptions)
+    team.value.tournaments?.map((tournament, index) => {
+      selectedTournaments.value.push(tournaments.value.find(t => t.value === tournament.id) as SelectOptions)
     })
 
-    selectedGroups.value.push({
+    selectedTournaments.value.push({
       label: '---select---',
       value: null,
       disabled: false,
@@ -273,8 +273,8 @@ async function updateTeamData() {
     })
   }
 
-  const attachedGroups = selectedGroups.value.filter(group => !!group?.value).map(group => group.value)
-  const response = await attachGroupsToTeam(+teamId, attachedGroups)
+  const attachedTournaments = selectedTournaments.value.filter(tournament => !!tournament?.value).map(tournament => tournament.value)
+  const response = await attachTournamentsToTeam(+teamId, attachedTournaments)
   loading.value = false
   if (response) {
     showSuccessAlert.value = true
@@ -285,9 +285,9 @@ async function updateTeamData() {
 watch(() => route.params.teamId, (newId, oldId) => {
   if (newId && newId !== oldId) {
     team.value = {} as Team
-    selectedGroups.value = []
+    selectedTournaments.value = []
     getTeamById()
-    fetchTournamentGroups()
+    fetchTournaments()
     if (clubId) {
       fetchClubTeams()
     }
@@ -296,7 +296,7 @@ watch(() => route.params.teamId, (newId, oldId) => {
 
 onMounted(async () => {
   await getTeamById()
-  fetchTournamentGroups()
+  fetchTournaments()
   if (clubId) {
     fetchClubTeams()
   }

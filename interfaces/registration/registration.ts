@@ -2,7 +2,7 @@ export default interface Registration {
   id: number;
   count: number;
   level: number;
-  tournamentGroupId: number;
+  tournamentId: number;
   clubId: number;
   club: { name: string };
 }

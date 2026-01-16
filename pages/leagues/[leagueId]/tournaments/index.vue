@@ -8,13 +8,13 @@
             :clickable="false"
             :data="tableData"
             :loading="loading"
-            title="Tournament Groups"
+            title="Tournaments"
             class="bg-dark-surface-default"
             :show-edit="canEdit"
             :show-delete="canEdit"
             @sorted="sort"
-            @edit-icon-clicked="(rowId) => navigateTo(`tournament-groups/${rowId}`)"
-            @delete-icon-clicked="(rowId) => {selectedGroupIdForDelete = rowId; showDeleteGroupConfirmation = true}"
+            @edit-icon-clicked="(rowId) => navigateTo(`tournaments/${rowId}`)"
+            @delete-icon-clicked="(rowId) => {selectedTournamentIdForDelete = rowId; showDeleteTournamentConfirmation = true}"
             :show-actions="true"
             :fixed-table="false"
             action-column-classes="w-72"
@@ -22,25 +22,16 @@
           <template #actions="{ row }">
             <span class="relative group text-nowrap" v-if="canEdit">
               <font-awesome :icon="['fas', 'users']"
-                            @click="() => {selectedGroupToShowTeams=row.id; showGroupsTeams = true}"
+                            @click="() => {selectedTournamentToShowTeams=row.id; showTournamentTeams = true}"
                             class="p-1.5 text-base rounded-full hover:text-orange-300 transition text-orange-400 cursor-pointer"/>
               <span
                   class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
                 Teams
               </span>
             </span>
-            <span class="relative group text-nowrap" v-if="canEdit">
-              <font-awesome :icon="['fas', 'bars']"
-                            @click="() => navigateTo(`tournament-groups/${row.id}/tournaments`)"
-                            class="p-1.5 text-base rounded-full hover:text-purple-400 transition text-purple-500 cursor-pointer"/>
-              <span
-                  class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
-                Tournaments
-              </span>
-            </span>
             <span class="relative group text-nowrap">
               <font-awesome :icon="['fas', 'volleyball']"
-                            @click="() => navigateTo(`tournament-groups/${row.id}/games`)"
+                            @click="() => navigateTo(`tournaments/${row.id}/games`)"
                             class="p-1.5 text-base rounded-full hover:text-sky-500 transition text-sky-600 cursor-pointer"/>
               <span
                   class="absolute z-10 bottom-full mb-1 text-xxs tracking-wider group-hover:!inline-block hidden !bg-surface-elevated text-text-primary border-border-default left-1/2 p-1.5 shadow-sm px-3 -translate-x-1/2 border rounded-lg transition-[background-color,border-color,color,box-shadow] duration-200">
@@ -52,8 +43,8 @@
             <div class="flex gap-6 items-center justify-end">
               <template v-if="canEdit">
                 <BaseButton class="!py-2 !px-2 text-sm sm:text-base sm:!px-8 block text-nowrap"
-                            @onClick="() => navigateTo('tournament-groups/create')">
-                  Create Tournament Group
+                            @onClick="() => navigateTo('tournaments/create')">
+                  Create Tournament
                 </BaseButton>
               </template>
             </div>
@@ -90,26 +81,26 @@
         </TableStriped>
       </div>
     </div>
-    <DeleteTournamentGroup v-model:visible="showDeleteGroupConfirmation"
-                           v-model:tournamentGroupId="selectedGroupIdForDelete"/>
-    <ShowTeams :tournament-group-id="selectedGroupToShowTeams" v-model:visible="showGroupsTeams"/>
+    <DeleteTournament v-model:visible="showDeleteTournamentConfirmation"
+                           v-model:tournamentId="selectedTournamentIdForDelete"/>
+    <ShowTeams :tournament-id="selectedTournamentToShowTeams" v-model:visible="showTournamentTeams"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import TableStriped from "~/components/tables/TableStriped.vue";
 import BaseButton from "~/components/buttons/BaseButton.vue";
-import type TournamentGroup from "~/interfaces/tournamentGroup/tournamentGroup";
-import type TournamentGroupTableData from "~/interfaces/tournamentGroup/tournamentGroupTableData";
+import type Tournament from "~/interfaces/tournament/tournament";
+import type TournamentTableData from "~/interfaces/tournament/tournamentTableData";
 import {useUserStore} from "~/store/user";
 import moment from "moment";
 import TablePagination from "~/components/pagination/TablePagination.vue";
 import type SelectOptions from "~/interfaces/inputs/selectOptions";
 import Select from "~/components/inputs/Select.vue";
-import {useTournamentGroupFetch} from "~/composables/useTournamentGroupFetch/useTournamentGroupFetch";
-import DeleteTournamentGroup from "~/components/modals/tournament-groups/DeleteTournamentGroup.vue";
+import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournamentFetch";
+import DeleteTournament from "~/components/modals/tournaments/DeleteTournament.vue";
 import SearchInput from "~/components/inputs/SearchInput.vue";
-import ShowTeams from "~/components/modals/tournament-groups/ShowTeams.vue";
+import ShowTeams from "~/components/modals/tournaments/ShowTeams.vue";
 import Breadcrumb from "~/components/breadcrumb/Breadcrumb.vue";
 import {useLeagueFetch} from "~/composables/useLeaguesFetch/useLeaguesFetch";
 import type League from "~/interfaces/league/leagues";
@@ -118,20 +109,20 @@ import type TableHeader from "~/interfaces/table/tableHeader";
 const route = useRoute()
 const id = route.params.leagueId
 const count = ref(0 as Number)
-const tournamentGroups = ref([] as Array<TournamentGroup>)
-const tableData = ref([] as Array<TournamentGroupTableData>)
+const tournaments = ref([] as Array<Tournament>)
+const tableData = ref([] as Array<TournamentTableData>)
 const orderBy = ref('name')
 const orderDirection = ref('asc')
 const page = ref(1 as Number)
-const showDeleteGroupConfirmation = ref(false)
-const selectedGroupIdForDelete = ref(0)
+const showDeleteTournamentConfirmation = ref(false)
+const selectedTournamentIdForDelete = ref(0)
 const searchQuery = ref('')
 const loading = ref(false)
-const showGroupsTeams = ref(false)
-const selectedGroupToShowTeams = ref(0)
+const showTournamentTeams = ref(false)
+const selectedTournamentToShowTeams = ref(0)
 const league = ref({} as League)
 
-const {fetchTournamentGroups} = useTournamentGroupFetch()
+const {fetchTournaments} = useTournamentFetch()
 const {fetchLeagueById} = useLeagueFetch()
 
 const userStore = useUserStore()
@@ -220,26 +211,26 @@ const currentShowCount = computed(() => {
 })
 
 watch(page, () => {
-  fetchGroups()
+  fetchTournamentsList()
 })
 
 watch([searchQuery, limit], () => {
   if (page.value === 1) {
-    fetchGroups()
+    fetchTournamentsList()
   } else {
     page.value = 1
   }
 })
 
-watch(showDeleteGroupConfirmation, () => {
-  if (!showDeleteGroupConfirmation.value) {
-    fetchGroups()
+watch(showDeleteTournamentConfirmation, () => {
+  if (!showDeleteTournamentConfirmation.value) {
+    fetchTournamentsList()
   }
 })
 
 onMounted(() => {
   fetchLeague()
-  fetchGroups()
+  fetchTournamentsList()
 })
 
 async function fetchLeague() {
@@ -256,40 +247,41 @@ function sort(column: string) {
   fetchGroups()
 }
 
-async function fetchGroups() {
+async function fetchTournamentsList() {
   if (loading.value) {
     return
   }
-  tournamentGroups.value = []
+  tournaments.value = []
   loading.value = true
 
-  const response = await fetchTournamentGroups(+id, orderBy.value, orderDirection.value, +page.value, +(limit.value.value ?? 0), searchQuery.value)
+  const response = await fetchTournaments(+id, orderBy.value, orderDirection.value, +page.value, +(limit.value.value ?? 0), searchQuery.value)
 
   if (!response) {
+    loading.value = false
     return
   }
 
-  const res = response as { count: Number, rows: Array<TournamentGroup> }
+  const res = response as { count: Number, rows: Array<Tournament> }
   count.value = res.count
-  tournamentGroups.value = res.rows
+  tournaments.value = res.rows
 
   tableData.value = []
 
-  tournamentGroups.value.forEach(tournamentGroup => {
+  tournaments.value.forEach(tournament => {
     let period = ''
-    if (tournamentGroup.start_date) {
-      period = moment(tournamentGroup.start_date + '').format('DD-MM-YYYY').toString() + ' - '
+    if (tournament.start_date) {
+      period = moment(tournament.start_date + '').format('DD-MM-YYYY').toString() + ' - '
     }
 
-    if (tournamentGroup.end_date) {
-      period = !period ? moment(tournamentGroup.end_date + '').format('DD-MM-YYYY').toString() : period + moment(tournamentGroup.end_date + '').format('DD-MM-YYYY').toString()
+    if (tournament.end_date) {
+      period = !period ? moment(tournament.end_date + '').format('DD-MM-YYYY').toString() : period + moment(tournament.end_date + '').format('DD-MM-YYYY').toString()
     }
 
     tableData.value.push({
-      id: tournamentGroup.id,
-      name: tournamentGroup.name,
-      shortName: tournamentGroup.short_name,
-      ageAndGender: (tournamentGroup.age_group ?? '-') + ' ' + (tournamentGroup.gender ?? '-'),
+      id: tournament.id,
+      name: tournament.name,
+      shortName: tournament.short_name,
+      ageAndGender: (tournament.age_group ?? '-') + ' ' + (tournament.gender ?? '-'),
       period: period
     })
   })

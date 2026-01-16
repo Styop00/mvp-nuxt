@@ -290,7 +290,7 @@ const animateThemeSwitch = (clickX: number, clickY: number, newMode: 'dark' | 'l
     backgroundColor: newBgColor,
     pointerEvents: 'none',
     zIndex: '999998', // Below dropdown but above page content
-    transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1), height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-out',
+    transition: 'width 0.2s cubic-bezier(0.4, 0, 0.2, 1), height 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-out',
     opacity: '0.6', // Semi-transparent so components transitioning are visible underneath
     mixBlendMode: 'normal',
   }

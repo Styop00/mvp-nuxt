@@ -4,7 +4,7 @@
     <div class="rounded-lg overflow-hidden p-6 bg-dark-surface-default">
       <div>
         <RegistrationForm
-          :tournamentGroupId="tournamentGroupId"
+          :tournamentId="tournamentId"
           :clubName="clubName"
           :clubId="clubId"
         />
@@ -26,5 +26,5 @@ const clubId = ref(route.query.clubId);
 if(!clubName || !clubId) {
   navigateTo("/registration")
 }
-const tournamentGroupId = Number(route.params.id);
+const tournamentId = Number(route.params.id);
 </script>
