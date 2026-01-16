@@ -148,6 +148,7 @@ interface Round {
 
 const props = defineProps<{
   teams: Array<Team>
+  matches?: Array<any>
 }>()
 
 function getRoundName(totalTeamsInRound: number): string {
@@ -172,7 +173,131 @@ function createMatch(team1?: Team, team2?: Team, seed1?: number, seed2?: number)
   };
 }
 
-// Calculate bracket rounds dynamically
+// Process actual matches from backend
+function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds: Round[], finalMatch: Match } {
+  if (!matches || matches.length === 0) {
+    // Fallback to team-based generation if no matches
+    return {
+      leftRounds: generateBracketRounds(leftTeams.value, 0),
+      rightRounds: generateBracketRounds(rightTeams.value, Math.ceil(props.teams.length / 2)),
+      finalMatch: createMatch()
+    }
+  }
+
+  // Group matches by round_number
+  const matchesByRound = new Map<number, Array<any>>()
+  matches.forEach(match => {
+    const roundNum = match.round_number || 0
+    if (!matchesByRound.has(roundNum)) {
+      matchesByRound.set(roundNum, [])
+    }
+    matchesByRound.get(roundNum)!.push(match)
+  })
+  
+
+  // Sort rounds
+  const sortedRounds = Array.from(matchesByRound.keys()).sort((a, b) => a - b)
+  
+  // Find final match (is_final = true or highest round_number)
+  const finalMatchData = matches.find(m => m.is_final) || 
+    matches.filter(m => m.round_number === sortedRounds[sortedRounds.length - 1])[0]
+  
+  const finalMatch: Match = finalMatchData ? {
+    team1: (() => {
+      const homeTeam = finalMatchData.home_team || finalMatchData.homeTeam || 
+                      (finalMatchData.team_id_home ? props.teams.find(t => t.id === finalMatchData.team_id_home) : null)
+      return homeTeam?.tournament_name || homeTeam?.name || null
+    })(),
+    team2: (() => {
+      const guestTeam = finalMatchData.guest_team || finalMatchData.guestTeam || 
+                       (finalMatchData.team_id_away ? props.teams.find(t => t.id === finalMatchData.team_id_away) : null)
+      return guestTeam?.tournament_name || guestTeam?.name || null
+    })(),
+    seed1: null,
+    seed2: null,
+    score1: finalMatchData.points_home ?? null,
+    score2: finalMatchData.points_away ?? null,
+    winner: finalMatchData.team_id_winner === finalMatchData.team_id_home ? 1 : 
+            finalMatchData.team_id_winner === finalMatchData.team_id_away ? 2 : null
+  } : createMatch()
+
+  // Separate left and right bracket matches
+  // Matches with position = 1 or lower match_number go to left, position = 2 or higher go to right
+  const leftRounds: Round[] = []
+  const rightRounds: Round[] = []
+  
+  // Process each round (excluding final)
+  sortedRounds.forEach(roundNum => {
+    const roundMatches = matchesByRound.get(roundNum) || []
+    if (roundMatches.length === 0) return
+    
+    // Skip final round (handled separately)
+    if (roundMatches.some(m => m.is_final)) return
+    
+    // Sort matches by match_number
+    roundMatches.sort((a, b) => (a.match_number || 0) - (b.match_number || 0))
+    
+    // Determine if this is semi-final (4 teams total in round)
+    const isSemiFinal = roundMatches.length === 2 && roundNum === sortedRounds[sortedRounds.length - 1]
+    
+    // Split matches into left and right based on match_number
+    // First half of matches go to left bracket, second half to right bracket
+    const leftMatches: Match[] = []
+    const rightMatches: Match[] = []
+    const halfPoint = Math.ceil(roundMatches.length / 2)
+    
+    roundMatches.forEach((match, idx) => {
+      // Get team names - try multiple possible field names and also lookup from props.teams
+      const homeTeam = match.home_team || match.homeTeam || 
+                     (match.team_id_home ? props.teams.find(t => t.id === match.team_id_home) : null)
+      const guestTeam = match.guest_team || match.guestTeam || 
+                       (match.team_id_away ? props.teams.find(t => t.id === match.team_id_away) : null)
+      
+      const team1Name = homeTeam?.tournament_name || homeTeam?.name || null
+      const team2Name = guestTeam?.tournament_name || guestTeam?.name || null
+      
+      const matchData: Match = {
+        team1: team1Name,
+        team2: team2Name,
+        seed1: null,
+        seed2: null,
+        score1: match.points_home ?? null,
+        score2: match.points_away ?? null,
+        winner: match.team_id_winner === match.team_id_home ? 1 : 
+                match.team_id_winner === match.team_id_away ? 2 : null
+      }
+      
+      // Split by match_number: lower numbers go to left, higher to right
+      if (idx < halfPoint) {
+        leftMatches.push(matchData)
+      } else {
+        rightMatches.push(matchData)
+      }
+    })
+    
+    const roundName = roundMatches[0]?.round_name || getRoundName(roundMatches.length * 2)
+    
+    if (leftMatches.length > 0) {
+      leftRounds.push({
+        name: roundName,
+        matches: leftMatches,
+        isSemiFinal
+      })
+    }
+    
+    if (rightMatches.length > 0) {
+      rightRounds.push({
+        name: roundName,
+        matches: rightMatches,
+        isSemiFinal
+      })
+    }
+  })
+  
+  return { leftRounds, rightRounds, finalMatch }
+}
+
+// Calculate bracket rounds dynamically (fallback when no matches)
 function generateBracketRounds(teams: Team[], seedOffset: number = 0): Round[] {
   const teamCount = teams.length;
   if (teamCount === 0) return [];
@@ -235,22 +360,38 @@ const rightTeams = computed(() => {
   return props.teams.slice(half);
 })
 
-// Generate rounds for each side
+// Process matches to build bracket
+const bracketData = computed(() => {
+  if (props.matches && props.matches.length > 0) {
+    return processMatches(props.matches)
+  }
+  // Fallback to team-based generation
+  return {
+    leftRounds: generateBracketRounds(leftTeams.value, 0),
+    rightRounds: generateBracketRounds(rightTeams.value, Math.ceil(props.teams.length / 2)),
+    finalMatch: createMatch()
+  }
+})
+
 const leftRounds = computed((): Round[] => {
-  return generateBracketRounds(leftTeams.value, 0);
+  return bracketData.value.leftRounds
 })
 
 const rightRounds = computed((): Round[] => {
-  const offset = Math.ceil(props.teams.length / 2);
-  return generateBracketRounds(rightTeams.value, offset);
+  return bracketData.value.rightRounds
 })
 
 const finalMatch = computed((): Match => {
-  return createMatch();
+  return bracketData.value.finalMatch
 })
 
 const champion = computed(() => {
-  return null;
+  if (finalMatch.value.winner === 1) {
+    return finalMatch.value.team1
+  } else if (finalMatch.value.winner === 2) {
+    return finalMatch.value.team2
+  }
+  return null
 })
 </script>
 

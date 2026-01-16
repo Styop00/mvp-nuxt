@@ -120,7 +120,7 @@ export const useTeamsFetch = () => {
         return attachTournamentsToTeam(teamId, groups)
     }
 
-    async function attachTournamentToTeam(teamId: number, tournamentId: number, data: any) {
+    async function attachTournamentToTeam(teamId: number, tournamentId: number, data?: any) {
         const response = await useApiV5Fetch(`teams/${teamId}/attach-tournament/${tournamentId}`, {
             method: 'POST',
             body: data

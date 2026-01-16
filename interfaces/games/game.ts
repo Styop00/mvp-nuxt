@@ -1,5 +1,4 @@
 import type Tournament from "~/interfaces/tournament/tournament";
-import type Pools from "~/interfaces/pools/pools";
 import type Rounds from "~/interfaces/rounds/rounds";
 import type Team from "~/interfaces/teams/team";
 import type Venues from "~/interfaces/venues/venues";
@@ -26,7 +25,6 @@ export default interface Game {
     team_id_home?: number | null;
     team_id_away?: number | null;
     tournament_id?: number | null;
-    pool_id?: number | null;
     group_id?: number | null;
     round_id?: number | null;
     is_deleted?: boolean | null;
@@ -58,12 +56,11 @@ export default interface Game {
     away_key?: number | null;
     draft_id?: number | null;
     auto_time?: boolean | null;
-    pool_points_fixed_home?: number | null;
-    pool_points_fixed_away?: number | null;
-    pool_bonus_fixed_home?: number | null;
-    pool_bonus_fixed_away?: number | null;
+    points_fixed_home?: number | null;
+    points_fixed_away?: number | null;
+    bonus_fixed_home?: number | null;
+    bonus_fixed_away?: number | null;
     tournament?: Tournament;
-    pool?: Pools;
     Round?: Rounds;
     home_team: Team;
     guest_team: Team;

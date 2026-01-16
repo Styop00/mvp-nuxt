@@ -143,7 +143,6 @@ async function fetchRegistration(id: number) {
 
           tableData.value.push({
             club: props.clubName as string,
-            level: `Pool ${i}`,
             teams: matchingRegistration ? matchingRegistration.count : null,
             error: "",
             successMessage: ""
@@ -184,7 +183,7 @@ async function saveRegistration() {
     const registrationData = tableData.value.map(row => ({
       clubId: props.clubId,
       tournamentId: props.tournamentId,
-      level: row.level ? parseInt(row.level.replace('Pool ', '')) : null,
+      level: null,
       count: row.teams === 0 ? 0 : row.teams || null
     }));
 

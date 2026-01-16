@@ -23,8 +23,8 @@
           </thead>
           <tbody>
             <tr 
-                v-for="(team, index) in teams" 
-                :key="team.id"
+                v-for="(standing, index) in standings" 
+                :key="standing.team.id"
                 :class="getRowClass(index)"
             >
               <td class="pos">
@@ -32,17 +32,17 @@
               </td>
               <td class="team">
                 <div class="team-info">
-                  <span class="team-name">{{ team.tournament_name }}</span>
+                  <span class="team-name">{{ standing.team.tournament_name || standing.team.local_name || 'TBD' }}</span>
                 </div>
               </td>
-              <td class="stat">-</td>
-              <td class="stat">-</td>
-              <td class="stat">-</td>
-              <td class="stat">-</td>
-              <td class="stat">-</td>
-              <td class="stat">-</td>
-              <td class="stat gd">-</td>
-              <td class="stat pts">-</td>
+              <td class="stat">{{ standing.played || '-' }}</td>
+              <td class="stat">{{ standing.wins || '-' }}</td>
+              <td class="stat">{{ standing.draws || '-' }}</td>
+              <td class="stat">{{ standing.losses || '-' }}</td>
+              <td class="stat">{{ standing.goalsFor || '-' }}</td>
+              <td class="stat">{{ standing.goalsAgainst || '-' }}</td>
+              <td class="stat gd">{{ standing.played > 0 ? formatGD(standing.goalDifference) : '-' }}</td>
+              <td class="stat pts">{{ standing.points || '-' }}</td>
             </tr>
           </tbody>
         </table>
@@ -69,13 +69,109 @@
 
 <script setup lang="ts">
 import type Team from "~/interfaces/teams/team";
+import { computed } from 'vue';
+
+interface TeamStanding {
+  team: Team
+  played: number
+  wins: number
+  draws: number
+  losses: number
+  goalsFor: number
+  goalsAgainst: number
+  goalDifference: number
+  points: number
+}
 
 const props = defineProps<{
   teams: Array<Team>
+  matches?: Array<any>
 }>()
 
+// Calculate standings from matches
+const standings = computed((): TeamStanding[] => {
+  const standingsMap = new Map<number, TeamStanding>()
+  
+  // Initialize standings for all teams
+  props.teams.forEach(team => {
+    standingsMap.set(team.id, {
+      team,
+      played: 0,
+      wins: 0,
+      draws: 0,
+      losses: 0,
+      goalsFor: 0,
+      goalsAgainst: 0,
+      goalDifference: 0,
+      points: 0
+    })
+  })
+  
+  // Process matches to calculate standings
+  if (props.matches && props.matches.length > 0) {
+    props.matches.forEach(match => {
+      const homeId = match.team_id_home
+      const awayId = match.team_id_away
+      const homeScore = match.points_home
+      const awayScore = match.points_away
+      
+      // Skip matches without scores or teams
+      if (homeId === null || awayId === null || homeScore === null || awayScore === null) {
+        return
+      }
+      
+      const homeStanding = standingsMap.get(homeId)
+      const awayStanding = standingsMap.get(awayId)
+      
+      if (homeStanding) {
+        homeStanding.played++
+        homeStanding.goalsFor += homeScore
+        homeStanding.goalsAgainst += awayScore
+        
+        if (homeScore > awayScore) {
+          homeStanding.wins++
+          homeStanding.points += 3
+        } else if (homeScore === awayScore) {
+          homeStanding.draws++
+          homeStanding.points += 1
+        } else {
+          homeStanding.losses++
+        }
+      }
+      
+      if (awayStanding) {
+        awayStanding.played++
+        awayStanding.goalsFor += awayScore
+        awayStanding.goalsAgainst += homeScore
+        
+        if (awayScore > homeScore) {
+          awayStanding.wins++
+          awayStanding.points += 3
+        } else if (awayScore === homeScore) {
+          awayStanding.draws++
+          awayStanding.points += 1
+        } else {
+          awayStanding.losses++
+        }
+      }
+    })
+  }
+  
+  // Calculate goal difference
+  standingsMap.forEach(standing => {
+    standing.goalDifference = standing.goalsFor - standing.goalsAgainst
+  })
+  
+  // Sort by points, then goal difference, then goals for
+  return Array.from(standingsMap.values()).sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points
+    if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference
+    return b.goalsFor - a.goalsFor
+  })
+})
+
 function getRowClass(index: number): string {
-  const totalTeams = props.teams.length;
+  const totalTeams = standings.value.length
   
   // Champion zone (top 1-3)
   if (index < 1) return 'champion';
@@ -91,7 +187,7 @@ function getRowClass(index: number): string {
 }
 
 function getPositionClass(index: number): string {
-  const totalTeams = props.teams.length;
+  const totalTeams = standings.value.length
   
   if (index === 0) return 'gold';
   if (index === 1) return 'silver';
@@ -99,6 +195,12 @@ function getPositionClass(index: number): string {
   if (index >= totalTeams - 3) return 'danger';
   
   return '';
+}
+
+// Format goal difference with +/- sign
+function formatGD(gd: number): string {
+  if (gd === 0) return '0'
+  return gd > 0 ? `+${gd}` : `${gd}`
 }
 </script>
 

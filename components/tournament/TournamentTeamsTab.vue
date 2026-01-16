@@ -1,6 +1,16 @@
 <template>
   <div class="p-4">
-    <div class="flex items-center justify-end my-5">
+    <div class="flex items-center justify-between my-5">
+      <BaseButton 
+          v-if="structureValue && teams.length > 0"
+          @on-click="generateStructure"
+          :disabled="generatingStructure"
+          class="!py-1 !px-1 !text-sm sm:text-base sm:!px-4 block"
+          :class="generatingStructure ? 'opacity-50 cursor-not-allowed' : ''"
+      >
+        {{ generatingStructure ? 'Generating...' : 'Generate Structure' }}
+      </BaseButton>
+      <div v-else></div>
       <BaseButton @on-click="() => showAddTeamForm=true"
                   class="!py-1 !px-1 !text-sm sm:text-base sm:!px-4 block">
         Add Team
@@ -9,7 +19,6 @@
     <template v-if="showAddTeamForm">
       <form @click.prevent class="border rounded-2xl p-3 mb-4">
         <Select :options="teamOptions" v-model:value="selectedTeam" label="Select Team" ref="teamsSelect"/>
-        <Select :options="pools" v-model:value="pool" class="mt-4" label="Select Pool" ref="poolsSelect"/>
         <div class="flex items-center justify-center gap-6 mt-3">
           <BaseButton @on-click="addTeam"
                       class="!py-1 !px-1 !text-sm border sm:text-base sm:!px-4 block">
@@ -26,17 +35,11 @@
       <span class="font-bold text-lg tracking-widest">
         Teams
       </span>
-      <span class="font-bold text-lg tracking-widest text-center">
-        Pools
-      </span>
     </div>
     <template v-for="team in teams">
       <div class="grid grid-cols-3 gap-6 items-center justify-between mb-2 text-center">
         <span class="text-start">
           {{ team.tournament_name }}
-        </span>
-        <span>
-          {{ pools.find((tournamentPool) => tournamentPool.value === team.pivot?.pool_id)?.label || 'None' }}
         </span>
         <span class="relative group text-nowrap">
           <font-awesome
@@ -54,12 +57,21 @@
     </template>
 
     <!-- Tournament Structure Views -->
-    <LeagueTable v-if="structureValue === 'regular_league'" :teams="teams" />
-    <PlayoffBracket v-if="structureValue === 'playoffs'" :teams="teams" />
+    <LeagueTable 
+        v-if="structureValue === 'regular_league'" 
+        :teams="teams" 
+        :matches="props.tournament.tournamentMatches || []"
+    />
+    <PlayoffBracket 
+        v-if="structureValue === 'playoffs'" 
+        :teams="teams" 
+        :matches="props.tournament.tournamentMatches || []"
+    />
     <GroupStageAndPlayoffs 
         v-if="structureValue === 'group_stage_and_playoffs'" 
         :teams="teams" 
-        :pools="props.tournament.pools || []"
+        :groups="props.tournament.tournament_groups || []"
+        :matches="props.tournament.tournamentMatches || []"
     />
   </div>
 </template>
@@ -77,6 +89,8 @@ import LeagueTable from "~/components/tournament/LeagueTable.vue";
 import PlayoffBracket from "~/components/tournament/PlayoffBracket.vue";
 import GroupStageAndPlayoffs from "~/components/tournament/GroupStageAndPlayoffs.vue";
 import {useTournamentStructureStore} from "~/store/tournamentStructure";
+import {useApiV5Fetch} from "~/composables/useApiV5Fetch";
+import {camelToSnake} from "~/utils/camelToSnake";
 
 const props = defineProps({
   tournamentId: {
@@ -95,15 +109,13 @@ const {fetchTournamentById, fetchPossibleTeams} = useTournamentFetch()
 const {removeTeamFromTournament, fetchTeamById, attachTournamentToTeam} = useTeamsFetch()
 const tournamentStructureStore = useTournamentStructureStore()
 
-const teams = ref([] as Array<Team>)
+const teams = ref(props.tournament?.teams as Array<Team>)
 const teamOptions = ref([] as Array<SelectOptions>)
-const pools = ref([] as Array<SelectOptions>)
-const pool = ref({} as SelectOptions)
 const possibleTeams = ref([] as Array<Team>)
 const selectedTeam = ref({} as SelectOptions)
 const showAddTeamForm = ref(false)
 const teamsSelect = ref<InstanceType<typeof Select> | null>(null)
-const poolsSelect = ref<InstanceType<typeof Select> | null>(null)
+const generatingStructure = ref(false)
 
 const structureValue = computed(() => {
   if (!props.tournament.tournament_structure_id) return null
@@ -123,7 +135,6 @@ const structureValue = computed(() => {
 
 watch(() => props.tournament, async () => {
   if (props.tournamentId) {
-    await fetchTeamsForTournament()
     await fetchTeams()
   }
 }, {
@@ -146,8 +157,6 @@ async function deleteTeamFromTournament(id: number) {
     if (response) {
       closeForm()
       await fetchTeamsForTournament()
-      await fetchTeams()
-      await refreshTournament()
     }
   }
 }
@@ -156,27 +165,8 @@ async function fetchTeamsForTournament() {
   const response = await fetchTournamentById(props.tournamentId)
 
   if (response) {
-    pools.value = (response.pools || []).map((pool) => {
-      return {
-        label: pool.name,
-        value: pool.id,
-        disabled: false
-      } as SelectOptions
-    })
-
-    if (pools.value.length) {
-      pool.value = pools.value[0]
-    } else {
-      // Add a "None" option if no pools exist
-      pools.value = [{
-        label: 'None',
-        value: null,
-        disabled: false
-      } as SelectOptions]
-      pool.value = pools.value[0]
-    }
-
     teams.value = (response.teams || []) as Array<Team>
+    emit('update:tournament', response)
   }
 }
 
@@ -196,19 +186,9 @@ async function fetchTeams() {
   }
 }
 
-async function refreshTournament() {
-  const response = await fetchTournamentById(props.tournamentId)
-  if (response) {
-    emit('update:tournament', response)
-  }
-}
-
 function closeSelects() {
   if (teamsSelect.value) {
     teamsSelect.value.closeDropdown()
-  }
-  if (poolsSelect.value) {
-    poolsSelect.value.closeDropdown()
   }
 }
 
@@ -230,18 +210,49 @@ async function addTeam() {
   }
 
   const response = await attachTournamentToTeam(
-      teamId,
+      +teamId,
       props.tournamentId,
-      {
-        poolId: pool.value?.value,
-      }
   )
 
   if (response) {
     closeForm()
     await fetchTeamsForTournament()
-    await fetchTeams()
-    await refreshTournament()
+  }
+}
+
+async function generateStructure() {
+  if (!props.tournamentId || !structureValue.value || generatingStructure.value) {
+    return
+  }
+
+  // Get settings from tournament config
+  const settings = props.tournament.tournament_config?.settings
+  
+  if (!settings) {
+    console.error('Tournament structure settings not found')
+    return
+  }
+
+  generatingStructure.value = true
+
+  try {
+    const response = await useApiV5Fetch(`tournaments/${props.tournamentId}/generate-structure`, {
+      method: 'POST',
+      body: camelToSnake({
+        settings: settings
+      }),
+    })
+
+    if (response.status.value === 'success') {
+      // Refresh tournament data to show generated structure
+      await fetchTeamsForTournament()
+    } else {
+      console.error('Failed to generate structure:', response.error.value)
+    }
+  } catch (error) {
+    console.error('Error generating structure:', error)
+  } finally {
+    generatingStructure.value = false
   }
 }
 

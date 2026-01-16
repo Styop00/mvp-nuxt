@@ -183,12 +183,6 @@
               :required="true"
               :min="0"
               label="Minimum Warmup (min)"/>
-          <Select :options="matchTimes"
-                  v-model:value="matchTime"
-                  label="Match Time Setting"/>
-          <Select :options="combatMoves"
-                  v-model:value="combatMove"
-                  label="Game Movement Rules"/>
         </div>
       </div>
     </div>
@@ -207,40 +201,6 @@
       <div class="section-content">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Select :options="structures" v-model:value="structure" label="Tournament Structure"/>
-          <TextInput v-model:value="tournament.team_count" label="Team Count" :required="true" type="number" :min="0"/>
-          <TextInput
-              v-model:value="tournament.pool_count"
-              label="Number of Pools"
-              type="number"
-              :min="0"
-              placeholder="0"
-          />
-          <TextInput
-              v-model:value="tournament.standing_group_count"
-              label="Position Groups"
-              type="number"
-              :min="0"
-              placeholder="0"
-          />
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-          <TextInput v-model:value="tournament.cross_pool_game_count"
-                     label="Matches Between Pools"
-                     placeholder="0"
-                     type="number"
-                     :min="0"
-          />
-          <TextInput v-model:value="tournament.cross_standing_group_game_count"
-                     label="Intermatches Across Position Groups"
-                     placeholder="0"
-                     type="number"
-                     :min="0"
-          />
-          <Select :options="programs"
-                  v-model:value="program"
-                  label="Program Schema"
-                  ref="programSchemaRef"
-          />
           <Select :options="roundTypes"
                   v-model:value="roundType"
                   label="Round Type"
@@ -248,24 +208,149 @@
           />
         </div>
 
-        <!-- Pools Configuration -->
-        <div v-if="pools.length" class="mt-6 p-4 rounded-lg border border-border-default bg-surface-elevated">
-          <h4 class="text-sm font-semibold mb-4 text-text-primary">Pool Configuration</h4>
-          <div class="grid grid-cols-3 gap-4 mb-2 text-xs font-medium text-text-tertiary uppercase tracking-wider">
-            <p>Pool Name <span class="text-red-500">*</span></p>
-            <p>Teams Count <span class="text-red-500">*</span></p>
-            <p>Games Between <span class="text-red-500">*</span></p>
-          </div>
-          <template v-for="(pool, index) in pools" :key="index">
-            <div class="grid grid-cols-3 gap-4 mb-3">
-              <TextInput v-model:value="pool.name" :required="true" placeholder="Pool name"/>
-              <TextInput v-model:value="pool.teams_count" type="number" :required="true" placeholder="0"
-                         :min="0" :max="tournament.team_count"/>
-              <TextInput v-model:value="pool.games_between" type="number" :required="true" placeholder="0"
-                         :min="0"/>
+        <!-- Regular League Configuration -->
+        <div v-if="currentStructureValue === 'regular_league'" class="mt-6 p-4 rounded-lg border border-border-default bg-surface-elevated">
+          <h4 class="text-sm font-semibold mb-4 text-text-primary">Regular League Configuration</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <TextInput 
+                  v-model:value="structureSettings.regularLeague.teams_count" 
+                  label="Teams Count" 
+                  type="number" 
+                  :required="true"
+                  :min="2"
+                  placeholder="e.g., 8"
+                  :input-classes="teamsCountError && currentStructureValue === 'regular_league' ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''"
+                  ref="regularLeagueTeamsCountRef"
+              />
+              <p v-if="teamsCountError && currentStructureValue === 'regular_league'" class="text-xs text-red-500 mt-1">
+                {{ teamsCountError }}
+              </p>
             </div>
-          </template>
+            <TextInput 
+                v-model:value="structureSettings.regularLeague.games_between" 
+                label="Games Between Teams" 
+                type="number" 
+                :required="true"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+          </div>
+          <p class="text-xs text-text-tertiary mt-2">
+            All teams will play with each other the specified number of times.
+          </p>
         </div>
+
+        <!-- Playoff Configuration -->
+        <div v-if="currentStructureValue === 'playoffs'" class="mt-6 p-4 rounded-lg border border-border-default bg-surface-elevated">
+          <h4 class="text-sm font-semibold mb-4 text-text-primary">Playoff Configuration</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <TextInput 
+                  v-model:value="structureSettings.playoff.teams_count" 
+                  label="Teams Count" 
+                  type="number" 
+                  :required="true"
+                  :min="2"
+                  placeholder="2, 4, 8, 16, 32..."
+                  :input-classes="teamsCountError && currentStructureValue === 'playoffs' ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''"
+                  ref="playoffTeamsCountRef"
+              />
+              <p v-if="teamsCountError && currentStructureValue === 'playoffs'" class="text-xs text-red-500 mt-1">
+                {{ teamsCountError }}
+              </p>
+            </div>
+            <TextInput 
+                v-model:value="structureSettings.playoff.games_between" 
+                label="Games Between Teams" 
+                type="number" 
+                :required="true"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+            <TextInput 
+                v-model:value="structureSettings.playoff.final_games_between" 
+                label="Games in Final Match" 
+                type="number" 
+                :required="false"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+          </div>
+          <p class="text-xs text-text-tertiary mt-2">
+            Teams count must be a power of 2 (2, 4, 8, 16, 32, etc.). Teams will be randomly paired, winners advance, losers are eliminated.
+          </p>
+          <div v-if="!isPowerOfTwo(structureSettings.playoff.teams_count)" class="mt-2 text-xs text-red-500">
+            ⚠️ Teams count must be a power of 2 (2, 4, 8, 16, 32, etc.)
+          </div>
+        </div>
+
+        <!-- Group Stage + Playoff Configuration -->
+        <div v-if="currentStructureValue === 'group_stage_and_playoffs'" class="mt-6 p-4 rounded-lg border border-border-default bg-surface-elevated">
+          <h4 class="text-sm font-semibold mb-4 text-text-primary">Group Stage + Playoff Configuration</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.groups_count" 
+                label="Number of Groups" 
+                type="number" 
+                :required="true"
+                :min="2"
+                placeholder="e.g., 4"
+            />
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.teams_per_group" 
+                label="Teams per Group" 
+                type="number" 
+                :required="true"
+                :min="2"
+                placeholder="e.g., 4"
+            />
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.playoff_teams_count" 
+                label="Playoff Teams Count" 
+                type="number" 
+                :required="true"
+                :min="2"
+                placeholder="2, 4, 8, 16..."
+            />
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.games_between_in_group_stage" 
+                label="Games Between (Group Stage)" 
+                type="number" 
+                :required="true"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.games_between_in_playoff_stage" 
+                label="Games Between (Playoff)" 
+                type="number" 
+                :required="true"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+            <TextInput 
+                v-model:value="structureSettings.groupStagePlayoff.games_between_in_final" 
+                label="Games in Final Match" 
+                type="number" 
+                :required="false"
+                :min="1"
+                placeholder="e.g., 1"
+            />
+          </div>
+          <p class="text-xs text-text-tertiary mt-2">
+            Teams will be divided into groups randomly. Top teams from each group advance to playoff. Playoff teams count must be a power of 2.
+          </p>
+          <div v-if="!isPowerOfTwo(structureSettings.groupStagePlayoff.playoff_teams_count)" class="mt-2 text-xs text-red-500">
+            ⚠️ Playoff teams count must be a power of 2 (2, 4, 8, 16, 32, etc.)
+          </div>
+          <div v-if="getTotalTeamsInGroups() < structureSettings.groupStagePlayoff.playoff_teams_count" class="mt-2 text-xs text-red-500">
+            ⚠️ Total teams in groups ({{ getTotalTeamsInGroups() }}) must be at least equal to playoff teams count ({{ structureSettings.groupStagePlayoff.playoff_teams_count }})
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -348,8 +433,6 @@ import {useTournamentRegistrationTypeStore} from "~/store/tournamentRegistration
 import moment from "moment/moment";
 import {useLeagueFetch} from "~/composables/useLeaguesFetch/useLeaguesFetch";
 import type League from "~/interfaces/league/leagues";
-import type Pools from "~/interfaces/pools/pools";
-import {useTournamentProgramStore} from "~/store/tournamentPrograms";
 import BaseButton from "~/components/buttons/BaseButton.vue";
 import RoundsTable from "~/components/tables/RoundsTable.vue";
 import type Rounds from "~/interfaces/rounds/rounds";
@@ -359,12 +442,11 @@ import {useTournamentFetch} from "~/composables/useTournamentFetch/useTournament
 
 const props = defineProps<{
   tournament?: Tournament;
-  pools?: Array<Pools>;
   rounds?: Array<Rounds>;
   errors?: {}
 }>();
 
-const emit = defineEmits(['update:tournament', 'update:pools', 'update:rounds', 'calculate-rounds', 'delete-rounds']);
+const emit = defineEmits(['update:tournament', 'update:rounds', 'calculate-rounds', 'delete-rounds']);
 
 const route = useRoute()
 const leagueId = route.params.leagueId
@@ -379,23 +461,43 @@ const showRegistrationDeadlineCalendar = ref(false)
 const showFreeRescheduleCalendar = ref(false)
 const startTimeError = ref('')
 const endTimeError = ref('')
+const teamsCountError = ref('')
+const playoffTeamsCountError = ref('')
+const regularLeagueTeamsCountRef = ref<InstanceType<typeof TextInput> | null>(null)
+const playoffTeamsCountRef = ref<InstanceType<typeof TextInput> | null>(null)
+const groupStagePlayoffTeamsCountRef = ref<InstanceType<typeof TextInput> | null>(null)
 const structure = ref({} as SelectOptions)
 const registrationType = ref({} as SelectOptions)
-const matchTime = ref({} as SelectOptions)
-const combatMove = ref({} as SelectOptions)
 const league = ref({} as League)
-const program = ref({} as SelectOptions)
 const region = ref({} as SelectOptions)
 const roundType = ref({} as SelectOptions)
-const pools = ref([] as Array<Pools>)
 const rounds = ref([] as Array<Rounds>)
 const roundTypesRef = ref<InstanceType<typeof Select> | null>(null)
 const regionsRef = ref<InstanceType<typeof Select> | null>(null)
-const programSchemaRef = ref<InstanceType<typeof Select> | null>(null)
+
+// Structure-specific settings
+const structureSettings = ref({
+  regularLeague: {
+    teams_count: 8,
+    games_between: 1,
+  },
+  playoff: {
+    teams_count: 16,
+    games_between: 1,
+    final_games_between: 1,
+  },
+  groupStagePlayoff: {
+    groups_count: 4,
+    teams_per_group: 4,
+    playoff_teams_count: 8,
+    games_between_in_group_stage: 1,
+    games_between_in_playoff_stage: 1,
+    games_between_in_final: 1,
+  },
+})
 
 const structuresStore = useTournamentStructureStore()
 const registrationTypesStore = useTournamentRegistrationTypeStore()
-const programsStore = useTournamentProgramStore()
 const regionStore = useRegionStore()
 const userStore = useUserStore()
 
@@ -528,36 +630,6 @@ const genders = [
   },
 ] as Array<SelectOptions>
 
-const matchTimes = [
-  {
-    label: 'Can only be set by the organizer',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Liquidator can determine before the deadline',
-    value: 1,
-    disabled: false
-  },
-] as Array<SelectOptions>
-
-const combatMoves = [
-  {
-    label: 'Can only be moved by the organizer',
-    value: 0,
-    disabled: false
-  },
-  {
-    label: 'Free until the deadline, after that only the organizer',
-    value: 1,
-    disabled: false
-  },
-  {
-    label: 'Free until the deadline, then only with opponent acceptance',
-    value: 2,
-    disabled: false
-  },
-] as Array<SelectOptions>
 
 const roundTypes = [
   {
@@ -593,6 +665,26 @@ const structures = computed(() => {
   return []
 })
 
+// Get current structure value (regular_league, playoffs, group_stage_and_playoffs)
+const currentStructureValue = computed(() => {
+  if (!structure.value?.value) return null
+  const structureObj = structuresStore.structures.find(s => s.id === structure.value.value)
+  return structureObj?.value || null
+})
+
+// Helper function to check if number is power of 2
+function isPowerOfTwo(n: number | null | undefined): boolean {
+  if (!n || n < 2) return false
+  return (n & (n - 1)) === 0
+}
+
+// Helper function to calculate total teams in groups
+function getTotalTeamsInGroups(): number {
+  const groups = structureSettings.value.groupStagePlayoff.groups_count || 0
+  const teamsPerGroup = structureSettings.value.groupStagePlayoff.teams_per_group || 0
+  return groups * teamsPerGroup
+}
+
 const registrationTypes = computed(() => {
   if (registrationTypesStore.registrationTypes.length) {
     return registrationTypesStore.registrationTypes.map((registrationType) => {
@@ -604,27 +696,6 @@ const registrationTypes = computed(() => {
     })
   }
   return []
-})
-
-const programs = computed(() => {
-  const tournamentPrograms: Array<SelectOptions> = [
-    {
-      label: 'Automatic',
-      value: 0,
-      disabled: false
-    }
-  ]
-  if (programsStore.programs.length) {
-    programsStore.programs.forEach((program) => {
-      tournamentPrograms.push({
-        label: program.name,
-        value: program.id,
-        disabled: false
-      })
-    })
-    return tournamentPrograms
-  }
-  return tournamentPrograms
 })
 
 const regions = computed(() => {
@@ -659,8 +730,8 @@ function formatToDisplayDate(date: string | null | undefined): string {
   return date
 }
 
-watch(() => props.tournament, () => {
-  if (!props.tournament) {
+watch(() => props.tournament?.id, (newId) => {
+  if (!props.tournament || !newId) {
     return
   }
 
@@ -683,29 +754,47 @@ watch(() => props.tournament, () => {
   ageGroup.value = ageGroups.find(ageGroup => ageGroup.value === tournament.value.age_group) as SelectOptions
   structure.value = structures.value.find(structure => structure.value === tournament.value.tournament_structure_id) as SelectOptions
   registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === tournament.value.tournament_registration_type_id) as SelectOptions
-  matchTime.value = matchTimes.find(matchTime => matchTime.value == tournament.value.set_game_strategy_id) as SelectOptions
-  combatMove.value = combatMoves.find(combatMove => combatMove.value === tournament.value.moving_strategy_id) as SelectOptions
-
-  if (tournament.value.tournament_program_id) {
-    program.value = programs.value.find(program => program.value === tournament.value.tournament_program_id) as SelectOptions
-  } else {
-    program.value = programs.value[0]
-  }
   region.value = regions.value.find(region => region.value === tournament.value.region_id) as SelectOptions
   roundType.value = roundTypes.find(type => type.value === tournament.value.round_type) as SelectOptions
+
+  // Load structure settings from tournament_config
+  if (tournament.value.tournament_config?.settings) {
+    const settings = tournament.value.tournament_config.settings
+    // Get structure value from the structure object or from store
+    let structureValue = tournament.value.tournament_structure?.value
+    if (!structureValue && structure.value?.value) {
+      const structureObj = structuresStore.structures.find(s => s.id === structure.value.value)
+      structureValue = structureObj?.value
+    }
+
+    if (structureValue === 'regular_league') {
+      structureSettings.value.regularLeague = {
+        teams_count: settings.teams_count || 8,
+        games_between: settings.games_between || 1,
+      }
+    } else if (structureValue === 'playoffs') {
+      structureSettings.value.playoff = {
+        teams_count: settings.teams_count || 16,
+        games_between: settings.games_between || 1,
+        final_games_between: settings.final_games_between || 1,
+      }
+    } else if (structureValue === 'group_stage_and_playoffs') {
+      structureSettings.value.groupStagePlayoff = {
+        groups_count: settings.groups_count || 4,
+        teams_per_group: settings.teams_per_group || 4,
+        playoff_teams_count: settings.playoff_teams_count || 8,
+        games_between_in_group_stage: settings.games_between_in_group_stage || 1,
+        games_between_in_playoff_stage: settings.games_between_in_playoff_stage || 1,
+        games_between_in_final: settings.games_between_in_final || 1,
+      }
+    }
+  }
 }, {
-  deep: true,
   immediate: true
 })
 
-watch(() => tournament.value, () => {
-  if (JSON.stringify(tournament.value) !== JSON.stringify(props.tournament)) {
-    emit('update:tournament', {...tournament.value})
-  }
-}, {
-  deep: true,
-  immediate: true
-})
+// Removed: This watcher was causing infinite recursive updates
+// The parent should get updates through form submission (editData), not through every change
 
 watch(() => tournament.value.start_date, () => {
   if (tournament.value.end_date && tournament.value.start_date) {
@@ -715,120 +804,103 @@ watch(() => tournament.value.start_date, () => {
       tournament.value.end_date = ''
     }
   }
-}, {
-  deep: true,
-  immediate: true
 })
 
-watch(() => structures.value, () => {
+watch(() => structures.value.length, () => {
   if (!structures.value.length) {
     structuresStore.fetchTournamentStructures()
   } else if (props.tournament) {
     structure.value = structures.value.find(structure => structure.value === props.tournament?.tournament_structure_id) as SelectOptions
   }
 }, {
-  deep: true,
   immediate: true
 })
 
-watch(() => registrationTypes.value, () => {
+watch(() => registrationTypes.value.length, () => {
   if (!registrationTypes.value.length) {
     registrationTypesStore.fetchTournamentRegistrationTypes()
   } else if (props.tournament) {
     registrationType.value = registrationTypes.value.find(registrationType => registrationType.value === props.tournament?.tournament_registration_type_id) as SelectOptions
   }
 }, {
-  deep: true,
   immediate: true
 })
 
-watch(() => props.rounds, () => {
+// Watch props.rounds length changes only (not deep)
+watch(() => props.rounds?.length, () => {
   rounds.value = JSON.parse(JSON.stringify(props.rounds || []))
 }, {
-  deep: true,
   immediate: true
 })
 
-watch(() => rounds.value, () => {
-  if (JSON.stringify(rounds.value) !== JSON.stringify(props.rounds || [])) {
-    emit('update:rounds', [...rounds.value])
+// Watch for structure changes to reset settings
+watch(() => structure.value, (newStructure) => {
+  if (!newStructure?.value) {
+    // Reset to defaults when no structure selected
+    return
   }
-}, {
-  deep: true,
-  immediate: true
-})
 
-watch(() => pools.value, () => {
-  if (JSON.stringify(pools.value) !== JSON.stringify(props.pools || [])) {
-    emit('update:pools', [...pools.value])
-  }
-}, {
-  deep: true,
-  immediate: true
-})
+  const structureObj = structuresStore.structures.find(s => s.id === newStructure.value)
+  const structureValue = structureObj?.value
 
-watch(() => props.pools, () => {
-  pools.value = JSON.parse(JSON.stringify(props.pools || []))
-}, {
-  deep: true,
-  immediate: true
-})
-
-watch(() => program.value, () => {
-  tournament.value.tournament_program_id = +program.value?.value
-}, {
-  deep: true,
-  immediate: true
-})
-
-watch(() => roundType.value, () => {
-  tournament.value.round_type = +roundType.value?.value
-}, {
-  deep: true,
-  immediate: true
-})
-
-watch(() => tournament.value.pool_count, (value, oldValue) => {
-  if (!value) {
-    value = 0
-  }
-  if (+value < pools.value.length) {
-    pools.value.splice(+value, pools.value.length - (+value))
-  } else if (+value === (tournament.value.pools?.length || 0)) {
-    pools.value = JSON.parse(JSON.stringify(tournament.value.pools || []))
-  } else {
-    for (let i = pools.value.length; i < +value; i++) {
-      if (tournament.value.pools?.[i]) {
-        pools.value.push({...tournament.value.pools[i]})
-      } else {
-        pools.value.push({
-          id: 0,
-          name: `Pool ${pools.value.length + 1}`,
-          tournament_id: tournament.value.id,
-          games_between: 2,
-          teams_count: 0,
-          deleted: false,
-        })
-      }
+  // Reset settings to defaults when structure changes
+  if (structureValue === 'regular_league') {
+    structureSettings.value.regularLeague = {
+      teams_count: 8,
+      games_between: 1,
+    }
+  } else if (structureValue === 'playoffs') {
+    structureSettings.value.playoff = {
+      teams_count: 16,
+      games_between: 1,
+      final_games_between: 1,
+    }
+  } else if (structureValue === 'group_stage_and_playoffs') {
+    structureSettings.value.groupStagePlayoff = {
+      groups_count: 4,
+      teams_per_group: 4,
+      playoff_teams_count: 8,
+      games_between_in_group_stage: 1,
+      games_between_in_playoff_stage: 1,
+      games_between_in_final: 1,
     }
   }
-})
+  
+  // Clear error when structure changes
+  teamsCountError.value = ''
+}, { immediate: false })
 
-watch(() => programs.value, () => {
-  if (!programs.value.length || programs.value.length === 1) {
-    programsStore.fetchTournamentPrograms()
+// Watch teams_count fields to clear errors when they change
+watch(() => structureSettings.value.regularLeague.teams_count, () => {
+  if (currentStructureValue.value === 'regular_league') {
+    teamsCountError.value = ''
   }
-}, {
-  deep: true,
-  immediate: true
 })
 
-watch(() => regions.value, () => {
+watch(() => structureSettings.value.playoff.teams_count, () => {
+  if (currentStructureValue.value === 'playoffs') {
+    teamsCountError.value = ''
+  }
+})
+
+watch(() => structureSettings.value.groupStagePlayoff.playoff_teams_count, () => {
+  if (currentStructureValue.value === 'group_stage_and_playoffs') {
+    teamsCountError.value = ''
+  }
+})
+
+
+watch(() => roundType.value?.value, () => {
+  if (roundType.value?.value !== undefined) {
+    tournament.value.round_type = +roundType.value.value
+  }
+})
+
+watch(() => regions.value.length, () => {
   if (!regions.value.length) {
     regionStore.fetchRegions()
   }
 }, {
-  deep: true,
   immediate: true
 })
 
@@ -897,7 +969,6 @@ function closeCalendars() {
   showFreeRescheduleCalendar.value = false
   roundTypesRef.value?.closeDropdown()
   regionsRef.value?.closeDropdown()
-  programSchemaRef.value?.closeDropdown()
 }
 
 function emitCalculateRounds() {
@@ -926,6 +997,30 @@ const editData = computed(() => {
     return date
   }
 
+  // Get structure settings based on current structure
+  let structureConfigSettings = null
+  if (currentStructureValue.value === 'regular_league') {
+    structureConfigSettings = {
+      teams_count: Number(structureSettings.value.regularLeague.teams_count),
+      games_between: Number(structureSettings.value.regularLeague.games_between),
+    }
+  } else if (currentStructureValue.value === 'playoffs') {
+    structureConfigSettings = {
+      teams_count: Number(structureSettings.value.playoff.teams_count),
+      games_between: Number(structureSettings.value.playoff.games_between),
+      final_games_between: Number(structureSettings.value.playoff.final_games_between) || 1,
+    }
+  } else if (currentStructureValue.value === 'group_stage_and_playoffs') {
+    structureConfigSettings = {
+      groups_count: Number(structureSettings.value.groupStagePlayoff.groups_count),
+      teams_per_group: Number(structureSettings.value.groupStagePlayoff.teams_per_group),
+      playoff_teams_count: Number(structureSettings.value.groupStagePlayoff.playoff_teams_count),
+      games_between_in_group_stage: Number(structureSettings.value.groupStagePlayoff.games_between_in_group_stage),
+      games_between_in_playoff_stage: Number(structureSettings.value.groupStagePlayoff.games_between_in_playoff_stage),
+      games_between_in_final: Number(structureSettings.value.groupStagePlayoff.games_between_in_final) || 1,
+    }
+  }
+
   return {
     ...tournament.value,
     start_date: convertDate(tournament.value.start_date),
@@ -936,8 +1031,8 @@ const editData = computed(() => {
     gender: gender.value?.value ? gender.value?.value : null,
     age_group: ageGroup.value?.value ? ageGroup.value?.value : null,
     tournament_structure_id: structure.value?.value ? structure.value?.value : null,
-    set_game_strategy_id: matchTime.value?.value ? matchTime.value?.value : 0,
-    moving_strategy_id: combatMove.value?.value ? combatMove.value?.value : null,
+    // Include structure settings for API
+    structure_settings: structureConfigSettings,
   }
 })
 
@@ -951,11 +1046,124 @@ onMounted(async () => {
   }
 })
 
+// Function to validate teams_count based on structure
+function validateTeamsCount(): boolean {
+  teamsCountError.value = ''
+  playoffTeamsCountError.value = ''
+  
+  if (!currentStructureValue.value) {
+    return true // No validation needed if no structure selected
+  }
+
+  if (currentStructureValue.value === 'regular_league') {
+    const teamsCount = structureSettings.value.regularLeague.teams_count
+    if (!teamsCount || teamsCount < 2) {
+      teamsCountError.value = 'Teams count is required and must be at least 2'
+      scrollToError('regular_league')
+      return false
+    }
+  } else if (currentStructureValue.value === 'playoffs') {
+    const teamsCount = structureSettings.value.playoff.teams_count
+    if (!teamsCount || teamsCount < 2) {
+      teamsCountError.value = 'Teams count is required and must be at least 2'
+      scrollToError('playoffs')
+      return false
+    }
+    if (!isPowerOfTwo(teamsCount)) {
+      teamsCountError.value = 'Teams count must be a power of 2 (2, 4, 8, 16, 32, etc.)'
+      scrollToError('playoffs')
+      return false
+    }
+  } else if (currentStructureValue.value === 'group_stage_and_playoffs') {
+    const playoffTeamsCount = structureSettings.value.groupStagePlayoff.playoff_teams_count
+    if (!playoffTeamsCount || playoffTeamsCount < 2) {
+      playoffTeamsCountError.value = 'Playoff teams count is required and must be at least 2'
+      scrollToError('group_stage_playoff')
+      return false
+    }
+    if (!isPowerOfTwo(playoffTeamsCount)) {
+      playoffTeamsCountError.value = 'Playoff teams count must be a power of 2 (2, 4, 8, 16, 32, etc.)'
+      scrollToError('group_stage_playoff')
+      return false
+    }
+    const totalTeams = getTotalTeamsInGroups()
+    if (totalTeams < playoffTeamsCount) {
+      playoffTeamsCountError.value = `Total teams in groups (${totalTeams}) must be at least equal to playoff teams count (${playoffTeamsCount})`
+      scrollToError('group_stage_playoff')
+      return false
+    }
+  }
+
+  return true
+}
+
+// Function to scroll to error field
+function scrollToError(p0: string) {
+  nextTick(() => {
+    let inputRef: InstanceType<typeof TextInput> | null = null
+    if (currentStructureValue.value === 'regular_league') {
+      inputRef = regularLeagueTeamsCountRef.value
+    } else if (currentStructureValue.value === 'playoffs') {
+      inputRef = playoffTeamsCountRef.value
+    } else if (currentStructureValue.value === 'group_stage_and_playoffs') {
+      inputRef = groupStagePlayoffTeamsCountRef.value
+    }
+
+    if (inputRef) {
+      // Access the component's root element
+      const componentEl = (inputRef as any).$el || (inputRef as any).el
+      if (componentEl) {
+        const inputElement = componentEl.querySelector('input')
+        if (inputElement) {
+          // Scroll to the input element
+          inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          setTimeout(() => {
+            inputElement.focus()
+          }, 300)
+        } else {
+          // Fallback: scroll to the component itself
+          componentEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }
+    }
+  })
+}
+
+// Function to get structure settings for API
+function getStructureSettings() {
+  if (currentStructureValue.value === 'regular_league') {
+    return {
+      teams_count: Number(structureSettings.value.regularLeague.teams_count),
+      games_between: Number(structureSettings.value.regularLeague.games_between),
+    }
+  } else if (currentStructureValue.value === 'playoffs') {
+    return {
+      teams_count: Number(structureSettings.value.playoff.teams_count),
+      games_between: Number(structureSettings.value.playoff.games_between),
+      final_games_between: Number(structureSettings.value.playoff.final_games_between) || 1,
+    }
+  } else if (currentStructureValue.value === 'group_stage_and_playoffs') {
+    return {
+      groups_count: Number(structureSettings.value.groupStagePlayoff.groups_count),
+      teams_per_group: Number(structureSettings.value.groupStagePlayoff.teams_per_group),
+      playoff_teams_count: Number(structureSettings.value.groupStagePlayoff.playoff_teams_count),
+      games_between_in_group_stage: Number(structureSettings.value.groupStagePlayoff.games_between_in_group_stage),
+      games_between_in_playoff_stage: Number(structureSettings.value.groupStagePlayoff.games_between_in_playoff_stage),
+      games_between_in_final: Number(structureSettings.value.groupStagePlayoff.games_between_in_final) || 1,
+    }
+  }
+  return null
+}
+
 defineExpose({
   closeCalendars,
   editData,
   startTimeError,
-  endTimeError
+  endTimeError,
+  teamsCountError,
+  validateTeamsCount,
+  getStructureSettings,
+  currentStructureValue
 })
 
 </script>
@@ -993,7 +1201,6 @@ defineExpose({
   background: var(--color-bg-tertiary);
 }
 
-/* Pool configuration card */
 .border-border-default {
   border-color: var(--color-border-default);
 }

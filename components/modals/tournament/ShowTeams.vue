@@ -10,7 +10,6 @@
       <template v-if="showAddTeamForm">
         <form @click.prevent class="border rounded-2xl p-3 mb-4">
           <Select :options="teamOptions" v-model:value="selectedTeam" label="Select Team" ref="teamsSelect"/>
-          <Select :options="pools" v-model:value="pool" class="mt-4" label="Select Pool" ref="poolsSelect"/>
           <div class="flex items-center justify-center gap-6 mt-3">
             <BaseButton @on-click="addTeam"
                         class="!py-1 !px-1 !text-sm border sm:text-base sm:!px-4 block">
@@ -27,17 +26,11 @@
         <span class="font-bold text-lg tracking-widest">
           Teams
         </span>
-        <span class="font-bold text-lg tracking-widest text-center">
-          Pools
-        </span>
       </div>
       <template v-for="team in teams">
         <div class="grid grid-cols-3 gap-6 items-center justify-between mb-2 text-center">
           <span class="text-start">
             {{ team.tournament_name }}
-          </span>
-          <span>
-            {{ pools.find((tournamentPool) => tournamentPool.value === team.pivot?.pool_id)?.label }}
           </span>
           <span class="relative group text-nowrap">
             <font-awesome
@@ -86,14 +79,11 @@ const {removeTeamFromTournament, fetchTeamById, attachTournamentToTeam} = useTea
 const modal = ref(false)
 const teams = ref([] as Array<Team>)
 const teamOptions = ref([] as Array<SelectOptions>)
-const pools = ref([] as Array<SelectOptions>)
-const pool = ref({} as SelectOptions)
 const possibleTeams = ref([] as Array<Team>)
 const tournament = ref({} as Tournament)
 const selectedTeam = ref({} as SelectOptions)
 const showAddTeamForm = ref(false)
 const teamsSelect = ref<InstanceType<typeof Select> | null>(null)
-const poolsSelect = ref<InstanceType<typeof Select> | null>(null)
 
 const emit = defineEmits([
   'update:visible',
@@ -130,18 +120,6 @@ async function fetchTeamsForTournament() {
   const response = await fetchTournamentById(props.tournamentId)
 
   tournament.value = response as Tournament
-  pools.value = tournament.value.pools.map((pool) => {
-    return {
-      label: pool.name,
-      value: pool.id,
-      disabled: false
-    } as SelectOptions
-  })
-
-  if (pools.value.length) {
-    pool.value = pools.value[0]
-  }
-
   if (!response?.teams) {
     modal.value = false
   }
@@ -170,9 +148,6 @@ function closeSelects() {
   if (teamsSelect.value) {
     teamsSelect.value.closeDropdown()
   }
-  if (poolsSelect.value) {
-    poolsSelect.value.closeDropdown()
-  }
 }
 
 function closeForm() {
@@ -193,11 +168,8 @@ async function addTeam() {
   }
 
   const response = await attachTournamentToTeam(
-      teamId,
+      +teamId,
       props.tournamentId,
-      {
-        poolId: pool.value?.value,
-      }
   )
 
   if (response) {

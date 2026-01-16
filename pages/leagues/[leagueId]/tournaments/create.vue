@@ -37,7 +37,6 @@
         <form action="#" @submit.prevent="createTournament">
           <EditTournamentForm
               :tournament="tournamentBaseData as Tournament"
-              :pools="[]"
               :rounds="[]"
               ref="editTournamentRef"
               :errors="errors"
@@ -93,8 +92,6 @@ const showSuccessAlert = ref(false)
 const tournamentBaseData = ref({
   age_group: null,
   gender: null,
-  moving_strategy_id: null,
-  set_game_strategy_id: 0,
   tournament_registration_type_id: null,
   tournament_structure_id: null,
   id: 0,
@@ -112,12 +109,9 @@ const tournamentBaseData = ref({
   expected_duration_minutes: 90,
   earliest_start: null,
   latest_start: null,
-  pool_count: 0,
   standing_group_count: 0,
-  cross_pool_game_count: 0,
   cross_standing_group_game_count: 0,
   round_type: 0,
-  tournament_program_id: 0,
   deleted: false,
 } as Tournament);
 const errors = ref({})
@@ -187,6 +181,11 @@ async function createTournament() {
   if (loading.value) return;
 
   if (editTournamentRef.value?.startTimeError || editTournamentRef.value?.endTimeError) {
+    return
+  }
+
+  // Validate teams_count
+  if (!editTournamentRef.value?.validateTeamsCount()) {
     return
   }
   errors.value = {}

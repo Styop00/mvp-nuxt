@@ -124,8 +124,8 @@ watch(() => props.visible, async () => {
     guestTeamScore.value = props.game.points_away ?? 0
     homeTeamPoints.value = props.game.points_home ?? 1
     guestTeamPoints.value = props.game.points_away ?? 1
-    homeTeamBonus.value = !!props.game.pool_bonus_fixed_home
-    guestTeamBonus.value = !!props.game.pool_bonus_fixed_away
+    homeTeamBonus.value = !!props.game.bonus_fixed_home
+    guestTeamBonus.value = !!props.game.bonus_fixed_away
     homeTeamSetAutomatic.value = (props.game?.points_home ? props.game?.points_home : 0) > -100
     guestTeamSetAutomatic.value = (props.game?.points_away ? props.game?.points_away : 0) > -100
   }

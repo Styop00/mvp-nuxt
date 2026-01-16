@@ -36,8 +36,8 @@
       <div v-if="activeTab === 'settings'">
         <form action="#" @submit.prevent="updateTournamentData">
           <EditTournamentForm
+              :key="formKey"
               :tournament="tournament"
-              :pools="tournament.pools || []"
               :rounds="tournament.rounds || []"
               ref="editTournamentRef"
               :errors="errors"
@@ -59,7 +59,7 @@
             v-if="tournament.id"
             :tournament-id="tournament.id"
             :tournament="tournament"
-            @update:tournament="(updatedTournament) => tournament = updatedTournament"
+            @update:tournament="handleTournamentUpdate"
         />
       </div>
     </div>
@@ -91,6 +91,7 @@ const loading = ref(true)
 const showSuccessAlert = ref(false)
 const errors = ref({})
 const activeTab = ref('settings')
+const formKey = ref(0) // Key to force form re-render when needed
 
 const {fetchTournamentById, updateTournament} = useTournamentFetch()
 const {createRounds, deleteGeneratedRounds} = useRoundsFetch()
@@ -117,14 +118,17 @@ async function fetchTournament() {
   const response = await fetchTournamentById(+id)
   if (response) {
     tournament.value = response as Tournament
-    tournament.value.start_date = moment(tournament.value.start_date as string).format('YYYY-MM-DD')
-    tournament.value.end_date = moment(tournament.value.end_date as string).format('YYYY-MM-DD')
+    // Format dates to DD-MM-YYYY for display in form
+    tournament.value.start_date = moment(tournament.value.start_date as string).format('DD-MM-YYYY')
+    tournament.value.end_date = moment(tournament.value.end_date as string).format('DD-MM-YYYY')
     if (tournament.value.registration_dead_line) {
-      tournament.value.registration_dead_line = moment(tournament.value.registration_dead_line as string).format('YYYY-MM-DD')
+      tournament.value.registration_dead_line = moment(tournament.value.registration_dead_line as string).format('DD-MM-YYYY')
     }
     if (tournament.value.free_reschedule_until_date) {
-      tournament.value.free_reschedule_until_date = moment(tournament.value.free_reschedule_until_date as string).format('YYYY-MM-DD')
+      tournament.value.free_reschedule_until_date = moment(tournament.value.free_reschedule_until_date as string).format('DD-MM-YYYY')
     }
+    // Increment form key to force re-render with new data
+    formKey.value++
   }
   loading.value = false
 }
@@ -178,10 +182,29 @@ async function deleteRounds() {
   }
 }
 
+function handleTournamentUpdate(updatedTournament: Tournament) {
+  // Only update non-form fields to avoid triggering form watchers
+  // Form fields are managed by the EditTournamentForm component
+  tournament.value = {
+    ...tournament.value,
+    teams: updatedTournament.teams,
+    rounds: updatedTournament.rounds,
+    tournament_groups: updatedTournament.tournament_groups,
+    tournamentMatches: updatedTournament.tournamentMatches,
+    tournament_config: updatedTournament.tournament_config,
+    tournament_structure: updatedTournament.tournament_structure,
+  }
+}
+
 async function updateTournamentData() {
   if (loading.value) return;
 
   if (editTournamentRef.value?.startTimeError || editTournamentRef.value?.endTimeError) {
+    return
+  }
+
+  // Validate teams_count
+  if (!editTournamentRef.value?.validateTeamsCount()) {
     return
   }
   errors.value = {}
