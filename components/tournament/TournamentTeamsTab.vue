@@ -60,18 +60,19 @@
     <LeagueTable 
         v-if="structureValue === 'regular_league'" 
         :teams="teams" 
-        :matches="props.tournament.tournamentMatches || []"
+        :matches="props.tournament.tournament_matches || []"
     />
     <PlayoffBracket 
         v-if="structureValue === 'playoffs'" 
         :teams="teams" 
-        :matches="props.tournament.tournamentMatches || []"
+        :matches="props.tournament.tournament_matches || []"
+        :tournament="tournament"
     />
     <GroupStageAndPlayoffs 
         v-if="structureValue === 'group_stage_and_playoffs'" 
         :teams="teams" 
         :groups="props.tournament.tournament_groups || []"
-        :matches="props.tournament.tournamentMatches || []"
+        :matches="props.tournament.tournament_matches || []"
     />
   </div>
 </template>

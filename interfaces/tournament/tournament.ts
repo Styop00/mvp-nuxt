@@ -34,7 +34,7 @@ export default interface Tournament {
     rounds?: Array<Rounds>;
     teams?: Array<Team>;
     TeamTournament?: any;
-    tournamentMatches?: Array<any>;
+    tournament_matches?: Array<any>;
     tournament_groups?: Array<any>;
     tournament_config?: {
         id?: number;

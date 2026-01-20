@@ -452,7 +452,7 @@ const route = useRoute()
 const leagueId = route.params.leagueId
 const tournamentId = route.params.tournamentId
 
-const tournament = ref({} as Tournament)
+const tournament = defineModel('tournament')
 const ageGroup = ref({} as SelectOptions)
 const gender = ref({} as SelectOptions)
 const showStartDateCalendar = ref(false)
@@ -979,12 +979,6 @@ function emitCalculateRounds() {
   emit('calculate-rounds')
 }
 
-async function fetchGroup() {
-  if (tournamentId) {
-    tournament.value = await fetchTournamentById(+tournamentId)
-  }
-}
-
 const editData = computed(() => {
   // Convert dates from DD-MM-YYYY (display format) to YYYY-MM-DD (API format)
   const convertDate = (date: string | null | undefined): string | null => {
@@ -1040,9 +1034,6 @@ onMounted(async () => {
   document.body.addEventListener('click', closeCalendars)
   if (leagueId) {
     league.value = await fetchLeagueById(+leagueId)
-  }
-  if (tournamentId) {
-    await fetchGroup()
   }
 })
 

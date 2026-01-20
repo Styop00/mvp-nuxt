@@ -36,8 +36,7 @@
       <div v-if="activeTab === 'settings'">
         <form action="#" @submit.prevent="updateTournamentData">
           <EditTournamentForm
-              :key="formKey"
-              :tournament="tournament"
+              v-model:tournament="tournament"
               :rounds="tournament.rounds || []"
               ref="editTournamentRef"
               :errors="errors"
@@ -150,9 +149,7 @@ async function calculateRounds() {
     const createdRounds = await createRounds(camelToSnake(roundsData))
     
     if (createdRounds && createdRounds.length > 0) {
-      // Refresh tournament data to get updated rounds
-      await fetchTournament()
-      showSuccessAlert.value = true
+      tournament.value.rounds = createdRounds
     }
   } catch (error) {
     console.error('Error calculating rounds:', error)
@@ -171,8 +168,7 @@ async function deleteRounds() {
   try {
     const deleted = await deleteGeneratedRounds(tournament.value.id)
     if (deleted) {
-      // Refresh tournament data to get updated rounds
-      await fetchTournament()
+      tournament.value.rounds = []
       showSuccessAlert.value = true
     }
   } catch (error) {
@@ -190,7 +186,7 @@ function handleTournamentUpdate(updatedTournament: Tournament) {
     teams: updatedTournament.teams,
     rounds: updatedTournament.rounds,
     tournament_groups: updatedTournament.tournament_groups,
-    tournamentMatches: updatedTournament.tournamentMatches,
+    tournament_matches: updatedTournament.tournament_matches,
     tournament_config: updatedTournament.tournament_config,
     tournament_structure: updatedTournament.tournament_structure,
   }

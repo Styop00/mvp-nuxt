@@ -36,7 +36,7 @@
       <div v-if="activeTab === 'settings'">
         <form action="#" @submit.prevent="createTournament">
           <EditTournamentForm
-              :tournament="tournamentBaseData as Tournament"
+              v-model:tournament="tournamentBaseData as Tournament"
               :rounds="[]"
               ref="editTournamentRef"
               :errors="errors"

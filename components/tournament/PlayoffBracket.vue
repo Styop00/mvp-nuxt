@@ -5,7 +5,7 @@
       <div class="bracket-container min-w-max p-8 rounded-2xl relative">
         <!-- Background Grid Pattern -->
         <div class="bracket-bg"></div>
-        
+
         <div class="flex items-stretch justify-center relative z-10">
           <!-- LEFT BRACKET -->
           <div class="flex items-center">
@@ -14,16 +14,16 @@
                 <div class="round-header left" :class="{ semi: round.isSemiFinal }">
                   <span>{{ round.name }}</span>
                 </div>
-                <div 
-                    class="matches-container" 
-                    :class="{ 
-                      spaced: roundIdx > 0, 
-                      centered: round.isSemiFinal 
+                <div
+                    class="matches-container"
+                    :class="{
+                      spaced: roundIdx > 0,
+                      centered: round.isSemiFinal
                     }"
                     :style="{ gap: `${20 * Math.pow(2, roundIdx)}px` }"
                 >
-                  <div 
-                      v-for="(match, matchIdx) in round.matches" 
+                  <div
+                      v-for="(match, matchIdx) in round.matches"
                       :key="'lm-' + roundIdx + '-' + matchIdx"
                       class="match-wrapper"
                   >
@@ -39,8 +39,8 @@
                         <span class="score">{{ match.score2 ?? '-' }}</span>
                       </div>
                     </div>
-                    <div 
-                        class="connector-h-right" 
+                    <div
+                        class="connector-h-right"
                         :class="{ final: round.isSemiFinal }"
                         v-if="roundIdx < leftRounds.length - 1 || round.isSemiFinal"
                     ></div>
@@ -63,14 +63,16 @@
             <div class="final-match-container">
               <div class="final-header">FINAL</div>
               <div class="final-match-box">
-                <div class="final-team left-finalist" :class="{ winner: finalMatch.winner === 1, 'has-team': finalMatch.team1 }">
+                <div class="final-team left-finalist"
+                     :class="{ winner: finalMatch.winner === 1, 'has-team': finalMatch.team1 }">
                   <span class="name">{{ finalMatch.team1 || 'TBD' }}</span>
                   <span class="score">{{ finalMatch.score1 ?? '-' }}</span>
                 </div>
                 <div class="vs-divider">
                   <span>VS</span>
                 </div>
-                <div class="final-team right-finalist" :class="{ winner: finalMatch.winner === 2, 'has-team': finalMatch.team2 }">
+                <div class="final-team right-finalist"
+                     :class="{ winner: finalMatch.winner === 2, 'has-team': finalMatch.team2 }">
                   <span class="score">{{ finalMatch.score2 ?? '-' }}</span>
                   <span class="name">{{ finalMatch.team2 || 'TBD' }}</span>
                 </div>
@@ -85,21 +87,21 @@
                 <div class="round-header right" :class="{ semi: round.isSemiFinal }">
                   <span>{{ round.name }}</span>
                 </div>
-                <div 
-                    class="matches-container" 
+                <div
+                    class="matches-container"
                     :class="{ 
                       spaced: roundIdx > 0, 
                       centered: round.isSemiFinal 
                     }"
                     :style="{ gap: `${20 * Math.pow(2, roundIdx)}px` }"
                 >
-                  <div 
-                      v-for="(match, matchIdx) in round.matches" 
+                  <div
+                      v-for="(match, matchIdx) in round.matches"
                       :key="'rm-' + roundIdx + '-' + matchIdx"
                       class="match-wrapper"
                   >
-                    <div 
-                        class="connector-h-left" 
+                    <div
+                        class="connector-h-left"
                         :class="{ final: round.isSemiFinal }"
                         v-if="roundIdx < rightRounds.length - 1 || round.isSemiFinal"
                     ></div>
@@ -109,7 +111,8 @@
                         <span class="name">{{ match.team1 || 'TBD' }}</span>
                         <span class="score">{{ match.score1 ?? '-' }}</span>
                       </div>
-                      <div class="team-row bottom right" :class="{ winner: match.winner === 2, 'has-team': match.team2 }">
+                      <div class="team-row bottom right"
+                           :class="{ winner: match.winner === 2, 'has-team': match.team2 }">
                         <span class="seed">{{ match.seed2 || '-' }}</span>
                         <span class="name">{{ match.team2 || 'TBD' }}</span>
                         <span class="score">{{ match.score2 ?? '-' }}</span>
@@ -128,7 +131,8 @@
 
 <script setup lang="ts">
 import type Team from "~/interfaces/teams/team";
-import { computed } from 'vue';
+import {computed} from 'vue';
+import type Tournament from "~/interfaces/tournament/tournament";
 
 interface Match {
   team1: string | null;
@@ -138,6 +142,7 @@ interface Match {
   score1: number | null;
   score2: number | null;
   winner: number | null;
+  _matchNumber?: number; // Internal: for sorting within sides
 }
 
 interface Round {
@@ -148,7 +153,8 @@ interface Round {
 
 const props = defineProps<{
   teams: Array<Team>
-  matches?: Array<any>
+  matches?: Array<Match>
+  tournament: Tournament
 }>()
 
 function getRoundName(totalTeamsInRound: number): string {
@@ -163,8 +169,8 @@ function getRoundName(totalTeamsInRound: number): string {
 
 function createMatch(team1?: Team, team2?: Team, seed1?: number, seed2?: number): Match {
   return {
-    team1: team1?.tournament_name || null,
-    team2: team2?.tournament_name || null,
+    team1: team1?.tournament_name as string || null,
+    team2: team2?.tournament_name as string || null,
     seed1,
     seed2,
     score1: null,
@@ -184,99 +190,146 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
     }
   }
 
-  // Group matches by round_number
-  const matchesByRound = new Map<number, Array<any>>()
+  const matchupsByRound = new Map<number, Map<number, Array<any>>>()
+
   matches.forEach(match => {
     const roundNum = match.round_number || 0
-    if (!matchesByRound.has(roundNum)) {
-      matchesByRound.set(roundNum, [])
-    }
-    matchesByRound.get(roundNum)!.push(match)
-  })
-  
+    const matchupNum = match.match_number || 0
 
-  // Sort rounds
-  const sortedRounds = Array.from(matchesByRound.keys()).sort((a, b) => a - b)
-  
-  // Find final match (is_final = true or highest round_number)
-  const finalMatchData = matches.find(m => m.is_final) || 
-    matches.filter(m => m.round_number === sortedRounds[sortedRounds.length - 1])[0]
-  
+    if (!matchupsByRound.has(roundNum)) {
+      matchupsByRound.set(roundNum, new Map())
+    }
+    const roundMatchups = matchupsByRound.get(roundNum)!
+
+    if (!roundMatchups.has(matchupNum)) {
+      roundMatchups.set(matchupNum, [])
+    }
+    roundMatchups.get(matchupNum)!.push(match)
+  })
+
+  const sortedRounds = Array.from(matchupsByRound.keys()).sort((a, b) => a - b)
+  const finalRoundNum = sortedRounds[sortedRounds.length - 1]
+
+  // Find final matchup (from the highest round number)
+  const finalRoundMatchups = matchupsByRound.get(finalRoundNum)
+  const finalMatchupGames = finalRoundMatchups?.get(1) || [] // Final should have matchup 1
+  const finalMatchData = finalMatchupGames[0] // First game of the final matchup
+
+  // Helper to get team name from match data
+  const getTeamName = (match: any, isHome: boolean): string | null => {
+    const teamIdField = isHome ? 'team_id_home' : 'team_id_away'
+    const teamField = isHome ? 'home_team' : 'guest_team'
+    const teamFieldAlt = isHome ? 'homeTeam' : 'guestTeam'
+
+    const team = match[teamField] || match[teamFieldAlt] ||
+        (match[teamIdField] ? props.teams.find(t => t.id === match[teamIdField]) : null)
+
+    if (!team && !match[teamIdField]) {
+      return null // Teams not yet determined (TBD)
+    }
+
+    return team?.tournament_name || team?.name || null
+  }
+
+  // Calculate aggregate score for a matchup (sum of all games)
+  const calculateAggregateScore = (games: Array<any>): { team1Total: number, team2Total: number } => {
+    let team1Total = 0
+    let team2Total = 0
+
+    games.forEach((game, idx) => {
+      const homeScore = game.points_home ?? 0
+      const awayScore = game.points_away ?? 0
+
+      // For odd games (1, 3, 5...), team1 is home; for even games (2, 4...), team1 is away
+      if (idx % 2 === 0) {
+        team1Total += homeScore
+        team2Total += awayScore
+      } else {
+        team1Total += awayScore
+        team2Total += homeScore
+      }
+    })
+
+    return {team1Total, team2Total}
+  }
+
   const finalMatch: Match = finalMatchData ? {
-    team1: (() => {
-      const homeTeam = finalMatchData.home_team || finalMatchData.homeTeam || 
-                      (finalMatchData.team_id_home ? props.teams.find(t => t.id === finalMatchData.team_id_home) : null)
-      return homeTeam?.tournament_name || homeTeam?.name || null
-    })(),
-    team2: (() => {
-      const guestTeam = finalMatchData.guest_team || finalMatchData.guestTeam || 
-                       (finalMatchData.team_id_away ? props.teams.find(t => t.id === finalMatchData.team_id_away) : null)
-      return guestTeam?.tournament_name || guestTeam?.name || null
-    })(),
+    team1: getTeamName(finalMatchData, true),
+    team2: getTeamName(finalMatchData, false),
     seed1: null,
     seed2: null,
-    score1: finalMatchData.points_home ?? null,
-    score2: finalMatchData.points_away ?? null,
-    winner: finalMatchData.team_id_winner === finalMatchData.team_id_home ? 1 : 
-            finalMatchData.team_id_winner === finalMatchData.team_id_away ? 2 : null
+    score1: finalMatchupGames.length > 0 ? calculateAggregateScore(finalMatchupGames).team1Total : null,
+    score2: finalMatchupGames.length > 0 ? calculateAggregateScore(finalMatchupGames).team2Total : null,
+    winner: finalMatchData.team_id_winner ?
+        (finalMatchData.team_id_winner === finalMatchData.team_id_home ? 1 : 2) : null
   } : createMatch()
 
-  // Separate left and right bracket matches
-  // Matches with position = 1 or lower match_number go to left, position = 2 or higher go to right
+  // Separate left and right bracket matchups
   const leftRounds: Round[] = []
   const rightRounds: Round[] = []
-  
+
   // Process each round (excluding final)
   sortedRounds.forEach(roundNum => {
-    const roundMatches = matchesByRound.get(roundNum) || []
-    if (roundMatches.length === 0) return
-    
-    // Skip final round (handled separately)
-    if (roundMatches.some(m => m.is_final)) return
-    
-    // Sort matches by match_number
-    roundMatches.sort((a, b) => (a.match_number || 0) - (b.match_number || 0))
-    
-    // Determine if this is semi-final (4 teams total in round)
-    const isSemiFinal = roundMatches.length === 2 && roundNum === sortedRounds[sortedRounds.length - 1]
-    
-    // Split matches into left and right based on match_number
-    // First half of matches go to left bracket, second half to right bracket
+    const roundMatchups = matchupsByRound.get(roundNum)
+    if (!roundMatchups || roundMatchups.size === 0) return
+
+    // Check if this is the final round
+    const firstMatchup = roundMatchups.get(1)
+    if (firstMatchup && firstMatchup[0]?.is_final) return // Skip final (handled separately)
+
+    // Get sorted matchup numbers
+    const sortedMatchups = Array.from(roundMatchups.keys()).sort((a, b) => a - b)
+
+    // Determine if this is semi-final (2 matchups in this round)
+    const isSemiFinal = sortedMatchups.length === 2 && roundNum === finalRoundNum - 1
+
+    // Split matchups into left and right based on side field
     const leftMatches: Match[] = []
     const rightMatches: Match[] = []
-    const halfPoint = Math.ceil(roundMatches.length / 2)
-    
-    roundMatches.forEach((match, idx) => {
-      // Get team names - try multiple possible field names and also lookup from props.teams
-      const homeTeam = match.home_team || match.homeTeam || 
-                     (match.team_id_home ? props.teams.find(t => t.id === match.team_id_home) : null)
-      const guestTeam = match.guest_team || match.guestTeam || 
-                       (match.team_id_away ? props.teams.find(t => t.id === match.team_id_away) : null)
-      
-      const team1Name = homeTeam?.tournament_name || homeTeam?.name || null
-      const team2Name = guestTeam?.tournament_name || guestTeam?.name || null
-      
+
+    sortedMatchups.forEach((matchupNum) => {
+      const matchupGames = roundMatchups.get(matchupNum) || []
+      const firstGame = matchupGames[0]
+
+      if (!firstGame) return
+
+      // Get side from first game (all games in matchup have same side)
+      const side = firstGame.side
+
+      // Skip if side is null (shouldn't happen for non-final rounds, but just in case)
+      if (side === null) return
+
+      const {team1Total, team2Total} = calculateAggregateScore(matchupGames)
+
+      // Check if any game has scores (to show aggregate)
+      const hasScores = matchupGames.some(g => g.points_home !== null || g.points_away !== null)
+
       const matchData: Match = {
-        team1: team1Name,
-        team2: team2Name,
+        team1: getTeamName(firstGame, true),
+        team2: getTeamName(firstGame, false),
         seed1: null,
         seed2: null,
-        score1: match.points_home ?? null,
-        score2: match.points_away ?? null,
-        winner: match.team_id_winner === match.team_id_home ? 1 : 
-                match.team_id_winner === match.team_id_away ? 2 : null
+        score1: hasScores ? team1Total : null,
+        score2: hasScores ? team2Total : null,
+        winner: firstGame.team_id_winner ?
+            (firstGame.team_id_winner === firstGame.team_id_home ? 1 : 2) : null,
+        _matchNumber: matchupNum // Store match_number for sorting
       }
-      
-      // Split by match_number: lower numbers go to left, higher to right
-      if (idx < halfPoint) {
+
+      // Split by side field: 'left' goes to leftMatches, 'right' goes to rightMatches
+      if (side === 'left') {
         leftMatches.push(matchData)
-      } else {
+      } else if (side === 'right') {
         rightMatches.push(matchData)
       }
     })
-    
-    const roundName = roundMatches[0]?.round_name || getRoundName(roundMatches.length * 2)
-    
+
+    // Sort left and right matches by match_number to maintain order within each side
+    leftMatches.sort((a, b) => (a._matchNumber || 0) - (b._matchNumber || 0))
+    rightMatches.sort((a, b) => (a._matchNumber || 0) - (b._matchNumber || 0))
+
+    const roundName = roundMatchups.get(sortedMatchups[0])?.[0]?.round_name || getRoundName(sortedMatchups.length * 2)
+
     if (leftMatches.length > 0) {
       leftRounds.push({
         name: roundName,
@@ -284,7 +337,7 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
         isSemiFinal
       })
     }
-    
+
     if (rightMatches.length > 0) {
       rightRounds.push({
         name: roundName,
@@ -293,59 +346,58 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
       })
     }
   })
-  
-  return { leftRounds, rightRounds, finalMatch }
+
+  return {leftRounds, rightRounds, finalMatch}
 }
 
 // Calculate bracket rounds dynamically (fallback when no matches)
-function generateBracketRounds(teams: Team[], seedOffset: number = 0): Round[] {
-  const teamCount = teams.length;
-  if (teamCount === 0) return [];
-  
+function generateBracketRounds(teams?: Team[], seedOffset: number = 0): Round[] {
+  const teamCount = teams?.length;
+  if (!teamCount) return [];
+
   // Calculate number of rounds needed (excluding final)
-  const totalRounds = Math.max(1, Math.ceil(Math.log2(teamCount)));
   const rounds: Round[] = [];
-  
+
   // First round - populate with actual teams
   const firstRoundMatches: Match[] = [];
   for (let i = 0; i < teamCount; i += 2) {
     firstRoundMatches.push(createMatch(
-      teams[i],
-      teams[i + 1],
-      seedOffset + i + 1,
-      teams[i + 1] ? seedOffset + i + 2 : undefined
+        teams[i],
+        teams[i + 1],
+        seedOffset + i + 1,
+        teams[i + 1] ? seedOffset + i + 2 : undefined
     ));
   }
-  
+
   // Total teams in this bracket side * 2 (for both sides) gives round name
   const totalTeamsInTournament = teamCount * 2;
-  
+
   rounds.push({
     name: getRoundName(totalTeamsInTournament),
     matches: firstRoundMatches,
     isSemiFinal: totalTeamsInTournament === 4
   });
-  
+
   // Generate subsequent rounds (empty matches - TBD)
   let currentMatchCount = Math.ceil(firstRoundMatches.length / 2);
   let currentTotalTeams = totalTeamsInTournament / 2;
-  
+
   while (currentMatchCount >= 1 && currentTotalTeams > 2) {
     const roundMatches: Match[] = [];
     for (let i = 0; i < currentMatchCount; i++) {
       roundMatches.push(createMatch());
     }
-    
+
     rounds.push({
       name: getRoundName(currentTotalTeams),
       matches: roundMatches,
       isSemiFinal: currentTotalTeams === 4
     });
-    
+
     currentMatchCount = Math.ceil(currentMatchCount / 2);
     currentTotalTeams = currentTotalTeams / 2;
   }
-  
+
   return rounds;
 }
 
@@ -400,9 +452,9 @@ const champion = computed(() => {
 .playoff-bracket-wrapper,
 .playoff-bracket-wrapper * {
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+  border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bracket-title {
@@ -419,9 +471,8 @@ const champion = computed(() => {
 .bracket-bg {
   position: absolute;
   inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+  background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+  radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
 }
 
 .round-column {
@@ -604,7 +655,7 @@ const champion = computed(() => {
 
 .trophy-icon {
   font-size: 48px;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .trophy-label {
