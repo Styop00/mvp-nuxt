@@ -190,21 +190,37 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
     }
   }
 
+  // First, group all matches by match_number to handle series (multiple games between same teams)
+  // Then group by the first round_number for each matchup
+  const matchupsByMatchNumber = new Map<number, Array<any>>()
+  
+  matches.forEach(match => {
+    const matchupNum = match.match_number || 0
+    
+    if (!matchupsByMatchNumber.has(matchupNum)) {
+      matchupsByMatchNumber.set(matchupNum, [])
+    }
+    matchupsByMatchNumber.get(matchupNum)!.push(match)
+  })
+
+  // Now group by round_number, but use the first (minimum) round_number for each matchup
   const matchupsByRound = new Map<number, Map<number, Array<any>>>()
 
-  matches.forEach(match => {
-    const roundNum = match.round_number || 0
-    const matchupNum = match.match_number || 0
-
-    if (!matchupsByRound.has(roundNum)) {
-      matchupsByRound.set(roundNum, new Map())
+  matchupsByMatchNumber.forEach((games, matchupNum) => {
+    // Find the minimum round_number for this matchup (first round)
+    const roundNumbers = games.map(g => g.round_number || 0).filter(r => r > 0)
+    if (roundNumbers.length === 0) return
+    
+    const firstRoundNum = Math.min(...roundNumbers)
+    
+    // Group all games for this matchup under the first round
+    if (!matchupsByRound.has(firstRoundNum)) {
+      matchupsByRound.set(firstRoundNum, new Map())
     }
-    const roundMatchups = matchupsByRound.get(roundNum)!
-
-    if (!roundMatchups.has(matchupNum)) {
-      roundMatchups.set(matchupNum, [])
-    }
-    roundMatchups.get(matchupNum)!.push(match)
+    const roundMatchups = matchupsByRound.get(firstRoundNum)!
+    
+    // Store all games for this matchup (from all rounds) under the first round
+    roundMatchups.set(matchupNum, games)
   })
 
   const sortedRounds = Array.from(matchupsByRound.keys()).sort((a, b) => a - b)
@@ -256,8 +272,8 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
   const finalMatch: Match = finalMatchData ? {
     team1: getTeamName(finalMatchData, true),
     team2: getTeamName(finalMatchData, false),
-    seed1: null,
-    seed2: null,
+    seed1: undefined,
+    seed2: undefined,
     score1: finalMatchupGames.length > 0 ? calculateAggregateScore(finalMatchupGames).team1Total : null,
     score2: finalMatchupGames.length > 0 ? calculateAggregateScore(finalMatchupGames).team2Total : null,
     winner: finalMatchData.team_id_winner ?
@@ -307,8 +323,8 @@ function processMatches(matches: Array<any>): { leftRounds: Round[], rightRounds
       const matchData: Match = {
         team1: getTeamName(firstGame, true),
         team2: getTeamName(firstGame, false),
-        seed1: null,
-        seed2: null,
+        seed1: undefined,
+        seed2: undefined,
         score1: hasScores ? team1Total : null,
         score2: hasScores ? team2Total : null,
         winner: firstGame.team_id_winner ?
