@@ -4,7 +4,7 @@
   >
     <div class="w-full max-w-lg p-4 sm:p-8 md:p-12 rounded-lg">
       <div class="mb-6 sm:mb-8 md:mb-12">
-        <NuxtLink class="flex justify-center items-center gap-2" to="/">
+        <NuxtLink class="flex justify-center items-center gap-2" to="/public">
           <span class="text-2xl font-bold bg-gradient-to-br from-white via-red-500 to-red-950 bg-clip-text text-transparent">T</span>
           <span class="text-xl text-white"> Tourney </span>
         </NuxtLink>

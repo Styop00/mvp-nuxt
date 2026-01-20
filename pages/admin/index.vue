@@ -21,9 +21,9 @@
 <script setup>
 import {ref} from 'vue';
 import DashboardItem from '~/components/adminDashboard/DashboardItem.vue';
-import {useGamesFetch} from "~/composables/useGamesFetch/useGamesFetch";
-import {useUserStore} from "~/store/user";
-import {useMessageFetch} from "~/composables/useMessagesFetch/useMessagesFetch";
+import {useGamesFetch} from "~/composables/useGamesFetch/useGamesFetch.ts";
+import {useUserStore} from "~/store/user.ts";
+import {useMessageFetch} from "~/composables/useMessagesFetch/useMessagesFetch.ts";
 
 const {getGamesCount} = useGamesFetch()
 const {getMessagesCount} = useMessageFetch()
